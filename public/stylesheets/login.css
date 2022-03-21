@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+
+
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+img{
+    width: 40vw;
+    height: 40vw;
+    margin-left: 4rem;
+}
+
+h1{
+    color: #212529;
+    padding-bottom: 1em;
+    text-align: start;
+
+}
+
+#all{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.btn1{
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+    background-color: #80fbbd;
+    border-radius: 5px;
+    color: #262626;
+    padding: 0.4em .8em 0.4em .8em;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 400;
+}
+
+
+::placeholder{
+    color: #9ca7b3;
+    font-size: 1.25rem;
+}
+
+input
+{
+    width: 350px;
+    height: 30px;
+    min-width: 200px;
+    background: #fff;
+    border-style: solid;
+    border-color: rgb(240,240,240);    
+    border-width: medium;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 5px;
+    margin-bottom: 1.5em;
+}
+
+
+
+input:focus{
+    outline: 2px solid #80fbbd; 
+    border-color: #fff;
+  }
+
+.btn2{
+    text-decoration: none;
+    background-color: #80fbbd;
+    border-radius: 5px;
+    color: #262626;
+    padding: 0.3em .8em 0.3em .8em;
+    font-size: .9rem;
+    border: none;
+    text-align: center;
+    width: 350px;
+    height: 50px;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+h5{
+    padding-top: 3em;
+    color: #212529;
+    text-align: center;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+
+@media only screen and (max-width: 900px)  {
+
+    img{
+        display: none;
+    }
+    input{
+        width: 80vw;
+    }
+    main{
+        padding: 20px 75px 200px 75px;
+    }
+
+    .btn2{
+        width: 80vw;
+    }
+}
+    
+
+
+
+

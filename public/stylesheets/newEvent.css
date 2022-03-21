@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+
+
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+h1{
+    color: #212529;
+    margin: 32px 0 10px 0px;
+}
+
+.alignStartToCenter{
+    align-items: flex-start;
+}
+
+.row1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+
+::placeholder{
+    color: #9ca7b3;
+    font-size: 16px;
+}
+
+.input
+{
+    background: #fff;
+    border-style: solid;
+    border-color: rgb(240,240,240);    
+    border-width: medium;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #212529;
+    margin: 5px;
+    margin-bottom: 15px;
+}
+
+.large{
+    width: 680px;
+    height: 100px;
+}
+
+.mid{
+    width: 200px;
+    height: 30px;
+
+}
+
+.small{
+    width: 110px;
+    height: 30px;
+}
+
+#skill{
+    height: 45px;
+
+}
+
+.input:focus{
+    outline: 2px solid #80fbbd; 
+    border-color: #fff;
+  }
+
+.bottomSpan{
+    display: block;
+    font-weight: 400;
+    padding: 5px;
+}
+
+.btn{
+    text-decoration: none;
+    background-color: #80fbbd;
+    border-radius: 5px;
+    color: #262626;
+    padding: 0.3em .8em 0.3em .8em;
+    font-size: .9rem;
+    border: none;
+    text-align: center;
+    width: 350px;
+    height: 50px;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+
+h5{
+    padding-top: 3em;
+    color: #212529;
+    text-align: center;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+
+
+a{
+    color: #80fbbd;
+    text-decoration: none;
+}
+
+
+h4{
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+h3{
+    margin: 1rem 0px 1rem 3px;
+    font-size: 1.5rem;
+}
+
+h6{
+    margin: 1rem 0px 1rem 3px;
+    font-size: 1.5rem;
+}
+
+
+
+  .radio-button input[type="radio"] {
+    display: none;
+  }
+
+  .radio-button label:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 28px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+  }
+
+  .radio-button label {
+    border: 1px solid #262626;
+    border-radius: 5px;
+    padding: 7px;
+    display: block;
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+  }      
+
+  .radio-button input[type="radio"]:checked+label:before {
+    content: "✓";
+    background-color: #80fbbd;
+    transform: scale(1);
+  }
+
+  .radio-button input[type="radio"]:checked+label {
+    margin: 8px;
+    border: 3px solid #80fbbd;
+  }
+
+  .cardImg{
+    width: 60px;
+    height: 60px;
+}
+
+ .btn1{
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+    background-color: #80fbbd;
+    border-radius: 5px;
+    color: #262626;
+    padding: 0.4em .8em 0.4em .8em;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 400;
+}
+
+@media only screen and (max-width: 900px)  {
+
+    h1{
+        margin-top: 150px;
+    }
+
+    .radio-button{
+        flex-wrap: wrap;
+    }
+    .input{
+        margin-bottom: 1rem;
+    }
+    .btn{
+        width: 85vw;
+    }
+    .small{
+        width: 20vw;
+    }
+    
+    #skill{
+        width: 23vw;
+    
+    }
+    .mid{
+        width: 60vw;
+    }
+    .large{
+        width: 85vw;
+    }
+    .main{
+        margin-left: 3vw;
+    }
+    .row1{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    body{
+        display: flex;
+        align-items: center;
+    }
+
+    
+}
