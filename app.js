@@ -273,7 +273,11 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err })
 })
 
+let PORT = process.env.PORT
 
-app.listen(3000, () => {
+if (PORT == null || PORT == "") {
+    PORT = 3000
+}
+app.listen(PORT, () => {
     console.log('Serving on port 3000')
 })
