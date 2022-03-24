@@ -16,6 +16,15 @@ module.exports.createSportsIdArr = async (dict) => {
     return returnArr;
 }
 
+module.exports.adjustTime = (time) => {
+    const offset = time.getTimezoneOffset();
+    changeAmount = 300 - offset
+    minutes = changeAmount % 60
+    hours = (changeAmount - minutes) / 60
+    time.setHours(time.getHours() - hours)
+    time.setMinutes(time.getMinutes() - minutes)
+    return time
+}
 
 module.exports.timeSwitch = (date) => {
     var hours = date.getHours()
@@ -53,13 +62,13 @@ module.exports.sendText = async (dateStr = 'today', event) => {
             telePhoneArr.push(String(usersArr[i].phoneNumber))
         }
     }
-    for (i in telePhoneArr) {
-        client.messages.create({
-            to: String(telePhoneArr[i]),
-            from: '+19033213407',
-            body: textStr
-        })
-    }
+    // for (i in telePhoneArr) {
+    //     client.messages.create({
+    //         to: String(telePhoneArr[i]),
+    //         from: '+19033213407',
+    //         body: textStr
+    //     })
+    // }
 }
 
 

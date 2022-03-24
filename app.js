@@ -16,7 +16,7 @@ const User = require('./models/user.js');
 const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
 const { isLoggedIn } = require('./utils/middleware');
-const { createSportsIdArr, timeSwitch, subtractMonths, sendText } = require('./utils/constructors');
+const { createSportsIdArr, timeSwitch, adjustTime, sendText } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
@@ -132,11 +132,14 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
     var d = new Date(parseInt(time.substring(0, 4)), parseInt(time.substring(5, 7) - 1), parseInt(time.substring(8, 10)), parseInt(time.substring(11, 13)), parseInt(time.substring(14, 16)))
+    d = adjustTime(d)
     const id = String(req.session.currentId);
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
     await event.save();
-    const today = new Date();
+    var today = new Date();
+    today = adjustTime(today)
     var tomorrow = new Date();
+    tomorrow = adjustTime(tomorrow)
     tomorrow.setDate(tomorrow.getDate() + 1)
     if (d.getHours() > 7 & d.getDate() == today.getDate() & d > today) {
         await sendText('today', event)
@@ -221,12 +224,15 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var idArr = []
     var userSports = []
     var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball']
-    const date = Date.now()
+    var date = new Date()
+    date = adjustTime(date)
+    console.log("Time zone offest " + date.getTimezoneOffset())
     const user = await User.findById(req.session.currentId);
     for (eventIds in user.enrolledEvents) {
         const event = await Event.findById(user.enrolledEvents[eventIds]);
         const host = await User.findById(event.hostId);
-        if (!idArr.includes(event.id) & event.time > date) {
+
+        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
             newTime = timeSwitch(event.time)
             arr = [(host.firstName + ' ' + host.lastName), event, newTime];
             idArr.push(event.id);
@@ -235,7 +241,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     }
     for (eventIds in user.hostedEvents) {
         const event = await Event.findById(user.hostedEvents[eventIds])
-        if (!idArr.includes(event.id) & event.time > date) {
+        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
             newTime = timeSwitch(event.time)
             arr = [(user.firstName + ' ' + user.lastName), event, newTime];
             idArr.push(event.id);
@@ -252,7 +258,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
         if (sport !== null) {
             for (i in sport.eventId) {
                 var event = await Event.findById(sport.eventId[i]);
-                if (!idArr.includes(event.id) & event.time > date) {
+                if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
                     const host = await User.findById(event.hostId);
                     newTime = timeSwitch(event.time)
                     arr = [(host.firstName + ' ' + host.lastName), event, newTime];
