@@ -16,13 +16,15 @@ const User = require('./models/user.js');
 const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
 const { isLoggedIn } = require('./utils/middleware');
-const { createSportsIdArr, timeSwitch, subtractMonths } = require('./utils/constructors');
+const { createSportsIdArr, timeSwitch, subtractMonths, sendText } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
 const currentUrl = db_url
 const MongoStore = require('connect-mongo');
+const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
+
 
 mongoose.connect(currentUrl, {
     useNewUrlParser: true,
@@ -134,6 +136,14 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const id = String(req.session.currentId);
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
     await event.save();
+    const today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    if (d.getHours() > 7 & d.getDate() == today.getDate() & d > today) {
+        await sendText('today', event)
+    } else if (d.getHours() < 8 & d.getDate() == tomorrow.getDate()) {
+        await sendText('tomorrow', event)
+    }
     const foundSport = await Sport.find({ type: type });
     const updatingSport = await Sport.findById(foundSport[0].id)
     updatingSport.eventId.push(event.id)
