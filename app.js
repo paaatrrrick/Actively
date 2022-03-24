@@ -131,8 +131,7 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
-    var d = new Date(parseInt(time.substring(0, 4)), parseInt(time.substring(5, 7)), parseInt(time.substring(8, 10)), parseInt(time.substring(11, 13)), parseInt(time.substring(14, 16)))
-    d = subtractMonths(1, d)
+    var d = new Date(parseInt(time.substring(0, 4)), parseInt(time.substring(5, 7) - 1), parseInt(time.substring(8, 10)), parseInt(time.substring(11, 13)), parseInt(time.substring(14, 16)))
     const id = String(req.session.currentId);
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
     await event.save();

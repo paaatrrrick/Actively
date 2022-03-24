@@ -18,21 +18,21 @@ module.exports.createSportsIdArr = async (dict) => {
 
 
 module.exports.timeSwitch = (date) => {
-    const day = String(date.toGMTString()).slice(0, 11)
-    const dateString = String(date.toLocaleTimeString()).slice(0, String(date.toLocaleTimeString()).length - 6)
-    const hours = date.getHours()
+    var hours = date.getHours()
     var str = 'AM'
     if (hours > 11) {
         str = 'PM'
+        hours = hours - 12
     }
-    const returnStr = String(day + " at " + dateString + " " + str)
+    if (hours == 0) {
+        hours = 12
+    }
+    var minutes = String(date.getMinutes())
+    if (String(minutes).length == 1) {
+        minutes = '0' + minutes
+    }
+    const returnStr = String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0, 10))
     return returnStr
-}
-
-
-module.exports.subtractMonths = (numOfMonths, date) => {
-    date.setMonth(date.getMonth() - numOfMonths);
-    return date;
 }
 
 
@@ -54,7 +54,6 @@ module.exports.sendText = async (dateStr = 'today', event) => {
         }
     }
     for (i in telePhoneArr) {
-        console.log('sending')
         client.messages.create({
             to: String(telePhoneArr[i]),
             from: '+19033213407',
