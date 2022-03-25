@@ -16,7 +16,7 @@ const User = require('./models/user.js');
 const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
 const { isLoggedIn } = require('./utils/middleware');
-const { createSportsIdArr, timeSwitch, sendText } = require('./utils/constructors');
+const { createSportsIdArr, timeSwitch, sendText, adjustTime } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
@@ -132,40 +132,40 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
-    const d = new Date(time)
-    console.log(d.toISOString())
-    console.log(d.toLocaleDateString())
-    console.log(d.toLocaleTimeString())
-    console.log(d.getTimezoneOffset())
-    console.log(d.getHours())
-    console.log(d.getDate())
+    var d = new Date(time)
+    client.messages.create({
+        body: String(String(d.toISOString()) + '--- ---' + String(d.toLocaleDateString()) + '--- ---' + String(d.toLocaleTimeString()) + '--- ---' + String(d.getTimezoneOffset()) + '--- ---' + String(d.getHours()) + '--- ---' + String(d.getDate())),
+        from: '+19033213407',
+        to: '+15159431423'
+    })
+    d = adjustTime(d)
     client.messages.create({
         body: String(String(d.toISOString()) + '--- ---' + String(d.toLocaleDateString()) + '--- ---' + String(d.toLocaleTimeString()) + '--- ---' + String(d.getTimezoneOffset()) + '--- ---' + String(d.getHours()) + '--- ---' + String(d.getDate())),
         from: '+19033213407',
         to: '+15159431423'
     })
     res.redirect('/dashboard');
-    // await event.save();
-    // const id = String(req.session.currentId);
-    // const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
-    // await event.save();
-    // var today = new Date();
-    // var tomorrow = new Date();
-    // tomorrow.setDate(tomorrow.getDate() + 1)
+    await event.save();
+    const id = String(req.session.currentId);
+    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
+    await event.save();
+    var today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1)
     // if (d.getHours() > 7 & d.getDate() == today.getDate() & d > today) {
     //     await sendText('today', event)
     // } else if (d.getHours() < 8 & d.getDate() == tomorrow.getDate()) {
     //     await sendText('tomorrow', event)
     // }
-    // const foundSport = await Sport.find({ type: type });
-    // const updatingSport = await Sport.findById(foundSport[0].id)
-    // updatingSport.eventId.push(event.id)
-    // await updatingSport.save();
-    // var user = await User.findById(id)
-    // user.hostedEvents.push(event.id)
-    // await user.save();
-    // req.flash('success', 'Successfully Created New Event');
-    // res.redirect('/dashboard');
+    const foundSport = await Sport.find({ type: type });
+    const updatingSport = await Sport.findById(foundSport[0].id)
+    updatingSport.eventId.push(event.id)
+    await updatingSport.save();
+    var user = await User.findById(id)
+    user.hostedEvents.push(event.id)
+    await user.save();
+    req.flash('success', 'Successfully Created New Event');
+    res.redirect('/dashboard');
 }));
 
 
