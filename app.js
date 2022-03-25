@@ -16,13 +16,14 @@ const User = require('./models/user.js');
 const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
 const { isLoggedIn } = require('./utils/middleware');
-const { createSportsIdArr, timeSwitch, adjustTime, sendText } = require('./utils/constructors');
+const { createSportsIdArr, timeSwitch, sendText } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
 const currentUrl = db_url
 const MongoStore = require('connect-mongo');
+const { constants } = require('buffer');
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
 
 
@@ -131,30 +132,40 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
-    var d = new Date(parseInt(time.substring(0, 4)), parseInt(time.substring(5, 7) - 1), parseInt(time.substring(8, 10)), parseInt(time.substring(11, 13)), parseInt(time.substring(14, 16)))
-    d = adjustTime(d)
-    const id = String(req.session.currentId);
-    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
-    await event.save();
-    var today = new Date();
-    today = adjustTime(today)
-    var tomorrow = new Date();
-    tomorrow = adjustTime(tomorrow)
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    if (d.getHours() > 7 & d.getDate() == today.getDate() & d > today) {
-        await sendText('today', event)
-    } else if (d.getHours() < 8 & d.getDate() == tomorrow.getDate()) {
-        await sendText('tomorrow', event)
-    }
-    const foundSport = await Sport.find({ type: type });
-    const updatingSport = await Sport.findById(foundSport[0].id)
-    updatingSport.eventId.push(event.id)
-    await updatingSport.save();
-    var user = await User.findById(id)
-    user.hostedEvents.push(event.id)
-    await user.save();
-    req.flash('success', 'Successfully Created New Event');
+    const d = new Date(time)
+    console.log(d.toISOString())
+    console.log(d.toLocaleDateString())
+    console.log(d.toLocaleTimeString())
+    console.log(d.getTimezoneOffset())
+    console.log(d.getHours())
+    console.log(d.getDate())
+    client.messages.create({
+        body: String(String(d.toISOString()) + '--- ---' + String(d.toLocaleDateString()) + '--- ---' + String(d.toLocaleTimeString()) + '--- ---' + String(d.getTimezoneOffset()) + '--- ---' + String(d.getHours()) + '--- ---' + String(d.getDate())),
+        from: '+19033213407',
+        to: '+15159431423'
+    })
     res.redirect('/dashboard');
+    // await event.save();
+    // const id = String(req.session.currentId);
+    // const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
+    // await event.save();
+    // var today = new Date();
+    // var tomorrow = new Date();
+    // tomorrow.setDate(tomorrow.getDate() + 1)
+    // if (d.getHours() > 7 & d.getDate() == today.getDate() & d > today) {
+    //     await sendText('today', event)
+    // } else if (d.getHours() < 8 & d.getDate() == tomorrow.getDate()) {
+    //     await sendText('tomorrow', event)
+    // }
+    // const foundSport = await Sport.find({ type: type });
+    // const updatingSport = await Sport.findById(foundSport[0].id)
+    // updatingSport.eventId.push(event.id)
+    // await updatingSport.save();
+    // var user = await User.findById(id)
+    // user.hostedEvents.push(event.id)
+    // await user.save();
+    // req.flash('success', 'Successfully Created New Event');
+    // res.redirect('/dashboard');
 }));
 
 
@@ -225,7 +236,6 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var userSports = []
     var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball']
     var date = new Date()
-    date = adjustTime(date)
     console.log("Time zone offest " + date.getTimezoneOffset())
     const user = await User.findById(req.session.currentId);
     for (eventIds in user.enrolledEvents) {
@@ -234,6 +244,8 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
 
         if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
             newTime = timeSwitch(event.time)
+            console.log("Time zone offest " + event.time.getTimezoneOffset())
+            console.log(event)
             arr = [(host.firstName + ' ' + host.lastName), event, newTime];
             idArr.push(event.id);
             currentContent.push(arr);
@@ -243,6 +255,8 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
         const event = await Event.findById(user.hostedEvents[eventIds])
         if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
             newTime = timeSwitch(event.time)
+            console.log("Time zone offest " + event.time.getTimezoneOffset())
+            console.log(event)
             arr = [(user.firstName + ' ' + user.lastName), event, newTime];
             idArr.push(event.id);
             currentContent.push(arr);
@@ -260,6 +274,8 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
                 var event = await Event.findById(sport.eventId[i]);
                 if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
                     const host = await User.findById(event.hostId);
+                    console.log("Time zone offest " + event.time.getTimezoneOffset())
+                    console.log(event)
                     newTime = timeSwitch(event.time)
                     arr = [(host.firstName + ' ' + host.lastName), event, newTime];
                     idArr.push(event.id);
