@@ -132,22 +132,28 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
-    var dOrig = new Date(time);
+    const dOrig = new Date(time);
+    const d = adjustTime(dOrig);
+    const id = String(req.session.currentId);
+    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
+
+    client.messages.create({
+        to: '+15159431423',
+        from: '+19033213407',
+        body: String('Bottom ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + d + ' ----- ' + d.getTimezoneOffset() + ' ----- ' + event.time + ' ----- ' + event.time.getTimezoneOffset())
+    })
+    await event.save();
     var today = new Date();
     var tomorrow = new Date();
-    d = adjustTime(dOrig);
-    dSub = adjustTime(dOrig, false);
+    const dSub = adjustTime(dOrig, false);
     today = adjustTime(today, false);
     tomorrow = adjustTime(tomorrow, false);
     tomorrow.setDate(tomorrow.getDate() + 1)
-    const id = String(req.session.currentId);
-    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
-    await event.save();
-    if (dSub.getDate() == today.getDate() & dSub > today) {
-        await sendText('today', event)
-    } else if (dSub.getHours() < 9 & dSub.getDate() == tomorrow.getDate()) {
-        await sendText('tomorrow', event)
-    }
+    // if (dSub.getDate() == today.getDate() & dSub > today) {
+    //     await sendText('today', event)
+    // } else if (dSub.getHours() < 9 & dSub.getDate() == tomorrow.getDate()) {
+    //     await sendText('tomorrow', event)
+    // }
     const foundSport = await Sport.find({ type: type });
     const updatingSport = await Sport.findById(foundSport[0].id)
     updatingSport.eventId.push(event.id)
