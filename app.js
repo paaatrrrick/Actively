@@ -132,31 +132,43 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
-    var d = new Date(time);
-    d = adjustTime(d);
+    var dOrig = new Date(time);
+    d = adjustTime(dOrig);
     const id = String(req.session.currentId);
-    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
-    await event.save();
+    // const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
+    // await event.save();
     var today = new Date();
-    today = adjustTime(today);
-    tomorrow = today;
+    today = adjustTime(today, false);
+    var tomorrow = new Date();
+    tomorrow = adjustTime(tomorrow, false);
     tomorrow.setDate(tomorrow.getDate() + 1)
-    // if (d.getDate() == today.getDate() & d > today) {
-    //     console.log('top')
-    //     await sendText('today', event)
-    // } else if (d.getHours() < 8 & d.getDate() == tomorrow.getDate()) {
-    //     console.log('bottom')
-    //     await sendText('tomorrow', event)
-    // }
-    const foundSport = await Sport.find({ type: type });
-    const updatingSport = await Sport.findById(foundSport[0].id)
-    updatingSport.eventId.push(event.id)
-    await updatingSport.save();
-    var user = await User.findById(id)
-    user.hostedEvents.push(event.id)
-    await user.save();
-    req.flash('success', 'Successfully Created New Event');
+    if (d.getDate() == today.getDate() & dOrig > today) {
+        console.log('top')
+        client.messages.create({
+            to: '+15159431423',
+            from: '+19033213407',
+            body: String('Top ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + today + ' ----- ' + today.getTimezoneOffset())
+        })
+        // await sendText('today', event)
+    } else if (dOrig.getHours() < 9 & dOrig.getDate() == tomorrow.getDate()) {
+        console.log('bottom')
+        client.messages.create({
+            to: '+15159431423',
+            from: '+19033213407',
+            body: String('Bottom ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + tomorrow + ' ----- ' + tomorrow.getTimezoneOffset())
+        })
+        // await sendText('tomorrow', event)
+    }
     res.redirect('/dashboard');
+    // const foundSport = await Sport.find({ type: type });
+    // const updatingSport = await Sport.findById(foundSport[0].id)
+    // updatingSport.eventId.push(event.id)
+    // await updatingSport.save();
+    // var user = await User.findById(id)
+    // user.hostedEvents.push(event.id)
+    // await user.save();
+    // req.flash('success', 'Successfully Created New Event');
+    // res.redirect('/dashboard');
 }));
 
 
