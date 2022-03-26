@@ -22,11 +22,9 @@ module.exports.adjustTime = (time, add = true) => {
     minutes = changeAmount % 60
     hours = (changeAmount - minutes) / 60
     if (add) {
-        console.log('adding')
         time.setHours(time.getHours() + hours)
         time.setMinutes(time.getMinutes() + minutes)
     } else {
-        console.log('subtracting')
         time.setHours(time.getHours() - hours)
         time.setMinutes(time.getMinutes() - minutes)
     }
@@ -69,6 +67,7 @@ module.exports.sendText = async (dateStr = 'today', event) => {
             telePhoneArr.push(String(usersArr[i].phoneNumber))
         }
     }
+    console.log('texting: ' + textStr)
     // for (i in telePhoneArr) {
     //     client.messages.create({
     //         to: String(telePhoneArr[i]),

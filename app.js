@@ -132,28 +132,20 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
-    var d = new Date(time)
-    client.messages.create({
-        body: String(String(d.toISOString()) + '--- ---' + String(d.toLocaleDateString()) + '--- ---' + String(d.toLocaleTimeString()) + '--- ---' + String(d.getTimezoneOffset()) + '--- ---' + String(d.getHours()) + '--- ---' + String(d.getDate())),
-        from: '+19033213407',
-        to: '+15159431423'
-    })
-    d = adjustTime(d)
-    client.messages.create({
-        body: String(String(d.toISOString()) + '--- ---' + String(d.toLocaleDateString()) + '--- ---' + String(d.toLocaleTimeString()) + '--- ---' + String(d.getTimezoneOffset()) + '--- ---' + String(d.getHours()) + '--- ---' + String(d.getDate())),
-        from: '+19033213407',
-        to: '+15159431423'
-    })
-    res.redirect('/dashboard');
+    var d = new Date(time);
+    d = adjustTime(d);
     const id = String(req.session.currentId);
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
     await event.save();
     var today = new Date();
-    var tomorrow = new Date();
+    today = adjustTime(today);
+    tomorrow = today;
     tomorrow.setDate(tomorrow.getDate() + 1)
-    // if (d.getHours() > 7 & d.getDate() == today.getDate() & d > today) {
+    // if (d.getDate() == today.getDate() & d > today) {
+    //     console.log('top')
     //     await sendText('today', event)
     // } else if (d.getHours() < 8 & d.getDate() == tomorrow.getDate()) {
+    //     console.log('bottom')
     //     await sendText('tomorrow', event)
     // }
     const foundSport = await Sport.find({ type: type });
@@ -233,22 +225,16 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var currentContent = []
     var idArr = []
     var userSports = []
-    var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball']
-    console.log('dashboard')
-    var date = new Date()
-    console.log(date)
-    date = adjustTime(date, false)
-    console.log(date)
+    var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball'];
+    var date = new Date();
+    date = adjustTime(date, false);
     const user = await User.findById(req.session.currentId);
     for (eventIds in user.enrolledEvents) {
         const event = await Event.findById(user.enrolledEvents[eventIds]);
         const host = await User.findById(event.hostId);
-        console.log(event.time)
         const time = adjustTime(event.time, false);
-        console.log(time)
         if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
-            newTime = timeSwitch(event.time)
-            console.log(event)
+            newTime = timeSwitch(event.time);
             arr = [(host.firstName + ' ' + host.lastName), event, newTime];
             idArr.push(event.id);
             currentContent.push(arr);
@@ -256,9 +242,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     }
     for (eventIds in user.hostedEvents) {
         const event = await Event.findById(user.hostedEvents[eventIds])
-        console.log(event.time)
         const time = adjustTime(event.time, false);
-        console.log(time)
         if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
             newTime = timeSwitch(event.time)
             arr = [(user.firstName + ' ' + user.lastName), event, newTime];
@@ -276,9 +260,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
         if (sport !== null) {
             for (i in sport.eventId) {
                 var event = await Event.findById(sport.eventId[i]);
-                console.log(event.time)
                 const time = adjustTime(event.time, false);
-                console.log(time)
                 if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
                     const host = await User.findById(event.hostId);
                     newTime = timeSwitch(event.time)
