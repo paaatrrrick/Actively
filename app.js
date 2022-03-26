@@ -137,11 +137,11 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const id = String(req.session.currentId);
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
 
-    client.messages.create({
-        to: '+15159431423',
-        from: '+19033213407',
-        body: String('Bottom ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + event.time + ' ----- ' + event.time.getTimezoneOffset() + ' ----- ' + d + ' ----- ' + d.getTimezoneOffset())
-    })
+    // client.messages.create({
+    //     to: '+15159431423',
+    //     from: '+19033213407',
+    //     body: String('Bottom ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + event.time + ' ----- ' + event.time.getTimezoneOffset() + ' ----- ' + d + ' ----- ' + d.getTimezoneOffset())
+    // })
     await event.save();
     var today = new Date();
     var tomorrow = new Date();
