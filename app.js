@@ -133,43 +133,30 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
     var dOrig = new Date(time);
+    var today = new Date();
+    var tomorrow = new Date();
     d = adjustTime(dOrig);
     dSub = adjustTime(dOrig, false);
-    const id = String(req.session.currentId);
-    // const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
-    // await event.save();
-    var today = new Date();
     today = adjustTime(today, false);
-    var tomorrow = new Date();
     tomorrow = adjustTime(tomorrow, false);
     tomorrow.setDate(tomorrow.getDate() + 1)
+    const id = String(req.session.currentId);
+    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
+    await event.save();
     if (dSub.getDate() == today.getDate() & dSub > today) {
-        console.log('top')
-        client.messages.create({
-            to: '+15159431423',
-            from: '+19033213407',
-            body: String('Top ---- ' + ' ----- ' + dSub + ' ----- ' + dSub.getTimezoneOffset() + ' ----- ' + today + ' ----- ' + today.getTimezoneOffset())
-        })
-        // await sendText('today', event)
+        await sendText('today', event)
     } else if (dSub.getHours() < 9 & dSub.getDate() == tomorrow.getDate()) {
-        console.log('bottom')
-        client.messages.create({
-            to: '+15159431423',
-            from: '+19033213407',
-            body: String('Bottom ---- ' + ' ----- ' + dSub + ' ----- ' + dSub.getTimezoneOffset() + ' ----- ' + tomorrow + ' ----- ' + tomorrow.getTimezoneOffset())
-        })
-        // await sendText('tomorrow', event)
+        await sendText('tomorrow', event)
     }
+    const foundSport = await Sport.find({ type: type });
+    const updatingSport = await Sport.findById(foundSport[0].id)
+    updatingSport.eventId.push(event.id)
+    await updatingSport.save();
+    var user = await User.findById(id)
+    user.hostedEvents.push(event.id)
+    await user.save();
+    req.flash('success', 'Successfully Created New Event');
     res.redirect('/dashboard');
-    // const foundSport = await Sport.find({ type: type });
-    // const updatingSport = await Sport.findById(foundSport[0].id)
-    // updatingSport.eventId.push(event.id)
-    // await updatingSport.save();
-    // var user = await User.findById(id)
-    // user.hostedEvents.push(event.id)
-    // await user.save();
-    // req.flash('success', 'Successfully Created New Event');
-    // res.redirect('/dashboard');
 }));
 
 
@@ -312,3 +299,11 @@ if (PORT == null || PORT == "") {
 app.listen(PORT, () => {
     console.log('Serving on port 3000')
 })
+
+
+        // console.log('bottom')
+        // client.messages.create({
+        //     to: '+15159431423',
+        //     from: '+19033213407',
+        //     body: String('Bottom ---- ' + ' ----- ' + dSub + ' ----- ' + dSub.getTimezoneOffset() + ' ----- ' + tomorrow + ' ----- ' + tomorrow.getTimezoneOffset())
+        // })

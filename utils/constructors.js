@@ -51,6 +51,7 @@ module.exports.timeSwitch = (date) => {
 
 
 module.exports.sendText = async (dateStr = 'today', event) => {
+    const time = this.adjustTime(event.time, false)
     const timeStr = String(event.time.toLocaleTimeString()).slice(0, String(event.time.toLocaleTimeString()).length - 6)
     var amPm = 'AM'
     if (event.time.getHours() > 11) {
@@ -67,14 +68,13 @@ module.exports.sendText = async (dateStr = 'today', event) => {
             telePhoneArr.push(String(usersArr[i].phoneNumber))
         }
     }
-    console.log('texting: ' + textStr)
-    // for (i in telePhoneArr) {
-    //     client.messages.create({
-    //         to: String(telePhoneArr[i]),
-    //         from: '+19033213407',
-    //         body: textStr
-    //     })
-    // }
+    for (i in telePhoneArr) {
+        client.messages.create({
+            to: String(telePhoneArr[i]),
+            from: '+19033213407',
+            body: textStr
+        })
+    }
 }
 
 
