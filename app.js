@@ -145,7 +145,6 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
         to: '+15159431423'
     })
     res.redirect('/dashboard');
-    await event.save();
     const id = String(req.session.currentId);
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
     await event.save();
@@ -235,16 +234,20 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var idArr = []
     var userSports = []
     var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball']
+    console.log('dashboard')
     var date = new Date()
-    console.log("Time zone offest " + date.getTimezoneOffset())
+    console.log(date)
+    date = adjustTime(date, false)
+    console.log(date)
     const user = await User.findById(req.session.currentId);
     for (eventIds in user.enrolledEvents) {
         const event = await Event.findById(user.enrolledEvents[eventIds]);
         const host = await User.findById(event.hostId);
-
-        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
+        console.log(event.time)
+        const time = adjustTime(event.time, false);
+        console.log(time)
+        if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
             newTime = timeSwitch(event.time)
-            console.log("Time zone offest " + event.time.getTimezoneOffset())
             console.log(event)
             arr = [(host.firstName + ' ' + host.lastName), event, newTime];
             idArr.push(event.id);
@@ -253,10 +256,11 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     }
     for (eventIds in user.hostedEvents) {
         const event = await Event.findById(user.hostedEvents[eventIds])
-        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
+        console.log(event.time)
+        const time = adjustTime(event.time, false);
+        console.log(time)
+        if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
             newTime = timeSwitch(event.time)
-            console.log("Time zone offest " + event.time.getTimezoneOffset())
-            console.log(event)
             arr = [(user.firstName + ' ' + user.lastName), event, newTime];
             idArr.push(event.id);
             currentContent.push(arr);
@@ -272,10 +276,11 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
         if (sport !== null) {
             for (i in sport.eventId) {
                 var event = await Event.findById(sport.eventId[i]);
-                if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
+                console.log(event.time)
+                const time = adjustTime(event.time, false);
+                console.log(time)
+                if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
                     const host = await User.findById(event.hostId);
-                    console.log("Time zone offest " + event.time.getTimezoneOffset())
-                    console.log(event)
                     newTime = timeSwitch(event.time)
                     arr = [(host.firstName + ' ' + host.lastName), event, newTime];
                     idArr.push(event.id);

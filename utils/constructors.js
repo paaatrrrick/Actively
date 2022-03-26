@@ -16,13 +16,20 @@ module.exports.createSportsIdArr = async (dict) => {
     return returnArr;
 }
 
-module.exports.adjustTime = (time) => {
+module.exports.adjustTime = (time, add = true) => {
     const offset = time.getTimezoneOffset();
     changeAmount = 300 - offset
     minutes = changeAmount % 60
     hours = (changeAmount - minutes) / 60
-    time.setHours(time.getHours() + hours)
-    time.setMinutes(time.getMinutes() + minutes)
+    if (add) {
+        console.log('adding')
+        time.setHours(time.getHours() + hours)
+        time.setMinutes(time.getMinutes() + minutes)
+    } else {
+        console.log('subtracting')
+        time.setHours(time.getHours() - hours)
+        time.setMinutes(time.getMinutes() - minutes)
+    }
     return time
 }
 
