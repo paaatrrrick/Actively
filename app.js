@@ -145,7 +145,7 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     await event.save();
     var today = new Date();
     var tomorrow = new Date();
-    const dSub = adjustTime(dOrig2, false);
+    const dSub = adjustTime(dOrig, false);
     today = adjustTime(today, false);
     tomorrow = adjustTime(tomorrow, false);
     tomorrow.setDate(tomorrow.getDate() + 1)
