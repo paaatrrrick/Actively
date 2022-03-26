@@ -134,6 +134,7 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
     var dOrig = new Date(time);
     d = adjustTime(dOrig);
+    dSub = adjustTime(dOrig, false);
     const id = String(req.session.currentId);
     // const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
     // await event.save();
@@ -142,20 +143,20 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     var tomorrow = new Date();
     tomorrow = adjustTime(tomorrow, false);
     tomorrow.setDate(tomorrow.getDate() + 1)
-    if (d.getDate() == today.getDate() & dOrig > today) {
+    if (dSub.getDate() == today.getDate() & dSub > today) {
         console.log('top')
         client.messages.create({
             to: '+15159431423',
             from: '+19033213407',
-            body: String('Top ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + today + ' ----- ' + today.getTimezoneOffset())
+            body: String('Top ---- ' + ' ----- ' + dSub + ' ----- ' + dSub.getTimezoneOffset() + ' ----- ' + today + ' ----- ' + today.getTimezoneOffset())
         })
         // await sendText('today', event)
-    } else if (dOrig.getHours() < 9 & dOrig.getDate() == tomorrow.getDate()) {
+    } else if (dSub.getHours() < 9 & dSub.getDate() == tomorrow.getDate()) {
         console.log('bottom')
         client.messages.create({
             to: '+15159431423',
             from: '+19033213407',
-            body: String('Bottom ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + tomorrow + ' ----- ' + tomorrow.getTimezoneOffset())
+            body: String('Bottom ---- ' + ' ----- ' + dSub + ' ----- ' + dSub.getTimezoneOffset() + ' ----- ' + tomorrow + ' ----- ' + tomorrow.getTimezoneOffset())
         })
         // await sendText('tomorrow', event)
     }
