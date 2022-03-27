@@ -22,7 +22,7 @@ const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
 const currentUrl = db_url
-const sendTextMessages = true;
+const sendTextMessages = false;
 const MongoStore = require('connect-mongo');
 const { constants } = require('buffer');
 const Events = require('twilio/lib/rest/Events');
@@ -176,13 +176,18 @@ app.post('/register', catchAsync(async (req, res, next) => {
     const sportsArr = await createSportsIdArr(req.body.sport)
     const { email, firstName, lastName, password, sportA, phoneNumber } = req.body.user
     const username = email
-    const user = new User({ email: email, sports: sportsArr, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, username: username });
-    const newUser = await User.register(user, password)
+    try {
+        const user = new User({ email: email, sports: sportsArr, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, username: username });
+        const newUser = await User.register(user, password)
+        req.session.isAuthenticated = true
+        req.session.currentId = user.id
+        req.flash('success', 'Successfully Created a New Account!');
+        return res.redirect('../dashboard')
+    } catch {
+        req.flash('error', 'That email has already been taken');
+        return res.redirect('./register')
+    }
     await user.save();
-    req.session.isAuthenticated = true
-    req.session.currentId = user.id
-    req.flash('success', 'Successfully Created a New Account!');
-    return res.redirect('../dashboard')
 }));
 
 app.get('/logout', (req, res) => {
@@ -196,7 +201,6 @@ app.post('/login', catchAsync(async (req, res, next) => {
     try {
         const { email, password } = req.body.user;
         const user = await User.authenticate()(email, password)
-        console.log(user)
         if (user.user.email == null) {
             req.session.isAuthenticated = false
             req.flash('error', 'No Account Found with that Information');

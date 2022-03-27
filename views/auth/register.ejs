@@ -14,119 +14,131 @@
 
 <body>
     <a href="/logout" id='logout' class="btn1">Home</a>
-
-    <div class="column alignStartToCenter main">
-        <form id='formForm' action="./register" method="POST" onsubmit="return runChecks()">
-            <div class="column">
-                <h1>Join Actively</h1>
-                <div class="row1">
-                    <div id='form1'>
-                        <div class="inputBox1">
-                            <input type="text" name='user[email]' id='email' placeholder="Email" class="input">
+    <% if(error.length> 0){ %>
+        <div class="flashHolder" id='holderG'>
+            <div class="innerFlash innerR">
+                <p class="flashText textR">
+                    <%= error %>
+                </p>
+                <button class="flashBtn btnR" onclick="disapearG()">X</button>
+            </div>
+        </div>
+        <% } %>
+            <div class="column alignStartToCenter main">
+                <form id='formForm' action="./register" method="POST" onsubmit="return runChecks()">
+                    <div class="column">
+                        <h1>Join Actively</h1>
+                        <div class="row1">
+                            <div id='form1'>
+                                <div class="inputBox1">
+                                    <input type="text" name='user[email]' id='email' placeholder="Email" class="input">
+                                </div>
+                            </div>
+                            <div id='form2'>
+                                <div class="inputBox2">
+                                    <input type="password" name='user[password]' id='password' placeholder="Password"
+                                        class="input">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div id='form2'>
-                        <div class="inputBox2">
-                            <input type="password" name='user[password]' id='password' placeholder="Password"
-                                class="input">
-                        </div>
+                    <div class="row1">
+                        <input type="text" name='user[firstName]' id='firstName' placeholder="First Name" class="input">
+                        <input type="text" name='user[lastName]' id='lastName' placeholder="Last Name" class="input">
                     </div>
-                </div>
-            </div>
-            <div class="row1">
-                <input type="text" name='user[firstName]' id='firstName' placeholder="First Name" class="input">
-                <input type="text" name='user[lastName]' id='lastName' placeholder="Last Name" class="input">
-            </div>
-            <h3>What Sports do you Like?</h3>
-            <ul>
-                <li>
-                    <input type="checkbox" id="PingPong" name='sport[PingPong]' />
-                    <label for="PingPong" class='checkboxLabel'>
-                        <div class="column alignCenter checkboxHolder"><img class="cardImg"
-                                src="/images/PingPong.png" />
-                            <h4>PingPong</h4>
-                        </div>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Tennis" name='sport[Tennis]' />
-                    <label for="Tennis" class='checkboxLabel'>
-                        <div class="column alignCenter checkboxHolder"><img class="cardImg" src="/images/Tennis.png" />
-                            <h4>Tennis</h4>
-                        </div>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Spikeball" name='sport[Spikeball]' />
-                    <label for="Spikeball" class='checkboxLabel'>
-                        <div class="column alignCenter checkboxHolder"><img class="cardImg"
-                                src="/images/Spikeball.png" />
-                            <h4>Spikeball</h4>
-                        </div>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Basketball" name='sport[Basketball]' />
-                    <label for="Basketball" class='checkboxLabel'>
-                        <div class="column alignCenter checkboxHolder"><img class="cardImg"
-                                src="/images/Basketball.png" />
-                            <h4>Basketball</h4>
-                        </div>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Soccer" name='sport[Soccer]' />
-                    <label for="Soccer" class='checkboxLabel'>
-                        <div class="column alignCenter checkboxHolder"><img class="cardImg" src="/images/Soccer.png" />
-                            <h4>Soccer</h4>
-                        </div>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Football" name='sport[Football]' />
-                    <label for="Football" class='checkboxLabel'>
-                        <div class="column alignCenter checkboxHolder"><img class="cardImg"
-                                src="/images/Football.png" />
-                            <h4>Football</h4>
-                        </div>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Pickleball" name='sport[Pickleball]' />
-                    <label for="Pickleball" class='checkboxLabel'>
-                        <div class="column alignCenter checkboxHolder"><img class="cardImg"
-                                src="/images/Pickleball.png" />
-                            <h4>Pickleball</h4>
-                        </div>
-                    </label>
-                </li>
-            </ul>
-            <h6>Phone Number</h6>
-            <div class="row1">
-                <input type="tel" name='user[phoneNumber]' id='phoneNumber' placeholder="###-###-####" class="input">
-                <button class='btn'>Sign Up</button>
+                    <h3>What Sports do you Like?</h3>
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="PingPong" name='sport[PingPong]' />
+                            <label for="PingPong" class='checkboxLabel'>
+                                <div class="column alignCenter checkboxHolder"><img class="cardImg"
+                                        src="/images/PingPong.png" />
+                                    <h4>PingPong</h4>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Tennis" name='sport[Tennis]' />
+                            <label for="Tennis" class='checkboxLabel'>
+                                <div class="column alignCenter checkboxHolder"><img class="cardImg"
+                                        src="/images/Tennis.png" />
+                                    <h4>Tennis</h4>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Spikeball" name='sport[Spikeball]' />
+                            <label for="Spikeball" class='checkboxLabel'>
+                                <div class="column alignCenter checkboxHolder"><img class="cardImg"
+                                        src="/images/Spikeball.png" />
+                                    <h4>Spikeball</h4>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Basketball" name='sport[Basketball]' />
+                            <label for="Basketball" class='checkboxLabel'>
+                                <div class="column alignCenter checkboxHolder"><img class="cardImg"
+                                        src="/images/Basketball.png" />
+                                    <h4>Basketball</h4>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Soccer" name='sport[Soccer]' />
+                            <label for="Soccer" class='checkboxLabel'>
+                                <div class="column alignCenter checkboxHolder"><img class="cardImg"
+                                        src="/images/Soccer.png" />
+                                    <h4>Soccer</h4>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Football" name='sport[Football]' />
+                            <label for="Football" class='checkboxLabel'>
+                                <div class="column alignCenter checkboxHolder"><img class="cardImg"
+                                        src="/images/Football.png" />
+                                    <h4>Football</h4>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Pickleball" name='sport[Pickleball]' />
+                            <label for="Pickleball" class='checkboxLabel'>
+                                <div class="column alignCenter checkboxHolder"><img class="cardImg"
+                                        src="/images/Pickleball.png" />
+                                    <h4>Pickleball</h4>
+                                </div>
+                            </label>
+                        </li>
+                    </ul>
+                    <h6>Phone Number</h6>
+                    <div class="row1">
+                        <input type="tel" name='user[phoneNumber]' id='phoneNumber' placeholder="###-###-####"
+                            class="input">
+                        <button class='btn'>Sign Up</button>
+                    </div>
+
+                    <h5>Already Have an Account? <a href="/login" class="btn1">Log in</a></h5>
+                </form>
             </div>
 
-            <h5>Already Have an Account? <a href="/login" class="btn1">Log in</a></h5>
-        </form>
-    </div>
-
-    <script>
-        function runChecks() {
-            var returnVar = true
-            const elements = document.getElementsByClassName('input')
-            console.log(elements)
-            for (const element of elements) {
-                if (element.value == "") {
-                    element.classList.add('badInput')
-                    returnVar = false
-                } else {
-                    element.classList.add('goodInput')
+            <script>
+                function runChecks() {
+                    var returnVar = true
+                    const elements = document.getElementsByClassName('input')
+                    console.log(elements)
+                    for (const element of elements) {
+                        if (element.value == "") {
+                            element.classList.add('badInput')
+                            returnVar = false
+                        } else {
+                            element.classList.add('goodInput')
+                        }
+                    };
+                    return returnVar
                 }
-            };
-            return returnVar
-        }
-    </script>
+            </script>
 
 </body>
 
