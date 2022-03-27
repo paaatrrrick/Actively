@@ -22,8 +22,10 @@ const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
 const currentUrl = db_url
+const sendTextMessages = true;
 const MongoStore = require('connect-mongo');
 const { constants } = require('buffer');
+const Events = require('twilio/lib/rest/Events');
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
 
 
@@ -77,24 +79,7 @@ app.use((req, res, next) => {
 })
 
 
-// app.get('/yomakesports', catchAsync(async (req, res) => {
-//     console.log('here')
-//     const sport1 = new Sport({ type: 'Tennis', expectedPeople: 4 })
-//     await sport1.save()
-//     const sport2 = new Sport({ type: 'Pickleball', expectedPeople: 4 })
-//     await sport2.save()
-//     const sport3 = new Sport({ type: 'Basketball', expectedPeople: 6 })
-//     await sport3.save()
-//     const sport4 = new Sport({ type: 'Soccer', expectedPeople: 8 })
-//     await sport4.save()
-//     const sport5 = new Sport({ type: 'Football', expectedPeople: 8 })
-//     await sport5.save()
-//     const sport6 = new Sport({ type: 'Spikeball', expectedPeople: 4 })
-//     await sport6.save()
-//     const sport7 = new Sport({ type: 'PingPong', expectedPeople: 4 })
-//     await sport7.save()
-//     res.redirect('/')
-// }))
+
 
 app.get('/', (req, res) => {
     const isLoggedIn = req.session.isAuthenticated
@@ -136,12 +121,6 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const d = adjustTime(dOrig)
     const id = String(req.session.currentId);
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
-
-    // client.messages.create({
-    //     to: '+15159431423',
-    //     from: '+19033213407',
-    //     body: String('Bottom ---- ' + ' ----- ' + dOrig + ' ----- ' + dOrig.getTimezoneOffset() + ' ----- ' + event.time + ' ----- ' + event.time.getTimezoneOffset() + ' ----- ' + d + ' ----- ' + d.getTimezoneOffset())
-    // })
     await event.save();
     var today = new Date();
     var tomorrow = new Date();
@@ -149,10 +128,12 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     today = adjustTime(today, false);
     tomorrow = adjustTime(tomorrow, false);
     tomorrow.setDate(tomorrow.getDate() + 1)
-    if (dSub.getDate() == today.getDate() & dSub > today) {
-        await sendText('today', event)
-    } else if (dSub.getHours() < 9 & dSub.getDate() == tomorrow.getDate()) {
-        await sendText('tomorrow', event)
+    if (sendTextMessages) {
+        if (dSub.getDate() == today.getDate() & dSub > today) {
+            await sendText('today', event)
+        } else if (dSub.getHours() < 9 & dSub.getDate() == tomorrow.getDate()) {
+            await sendText('tomorrow', event)
+        }
     }
     const foundSport = await Sport.find({ type: type });
     const updatingSport = await Sport.findById(foundSport[0].id)
@@ -162,7 +143,7 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     user.hostedEvents.push(event.id)
     await user.save();
     req.flash('success', 'Successfully Created New Event');
-    res.redirect('/dashboard');
+    return res.redirect('/dashboard');
 }));
 
 
@@ -187,7 +168,7 @@ app.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req, res, next
     user.enrolledEvents = user.enrolledEvents.concat([String(req.params.eventId)])
     await user.save();
     req.flash('success', 'Joined the ' + event.type);
-    res.redirect('/dashboard');
+    return res.redirect('/dashboard');
 }));
 
 
@@ -201,28 +182,35 @@ app.post('/register', catchAsync(async (req, res, next) => {
     req.session.isAuthenticated = true
     req.session.currentId = user.id
     req.flash('success', 'Successfully Created a New Account!');
-    res.redirect('../dashboard')
+    return res.redirect('../dashboard')
 }));
 
 app.get('/logout', (req, res) => {
     req.session.isAuthenticated = false
     req.session.currentId = null
     req.flash('success', 'Successfully Logged Out');
-    res.redirect('/')
+    return res.redirect('/')
 });
 
 app.post('/login', catchAsync(async (req, res, next) => {
-    const { email, password } = req.body.user;
-    const user = await User.authenticate()(email, password)
-    if (user.user.email == null) {
+    try {
+        const { email, password } = req.body.user;
+        const user = await User.authenticate()(email, password)
+        console.log(user)
+        if (user.user.email == null) {
+            req.session.isAuthenticated = false
+            req.flash('error', 'No Account Found with that Information');
+            return res.redirect('./login')
+        } else {
+            req.session.isAuthenticated = true
+            req.session.currentId = user.user.id
+        }
+        res.redirect('../dashboard')
+    } catch {
         req.session.isAuthenticated = false
         req.flash('error', 'No Account Found with that Information');
-        res.redirect('./login')
-    } else {
-        req.session.isAuthenticated = true
-        req.session.currentId = user.user.id
+        return res.redirect('./login')
     }
-    res.redirect('../dashboard')
 }));
 
 
@@ -235,6 +223,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var date = new Date();
     date = adjustTime(date, false);
     const user = await User.findById(req.session.currentId);
+
     for (eventIds in user.enrolledEvents) {
         const event = await Event.findById(user.enrolledEvents[eventIds]);
         const host = await User.findById(event.hostId);
@@ -246,6 +235,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
             currentContent.push(arr);
         }
     }
+
     for (eventIds in user.hostedEvents) {
         const event = await Event.findById(user.hostedEvents[eventIds])
         const time = adjustTime(event.time, false);
@@ -256,6 +246,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
             currentContent.push(arr);
         }
     }
+
     for (sportIds in user.sports) {
         const sport = await Sport.findById(user.sports[sportIds]);
         userSports.push(sport.type)
@@ -287,6 +278,45 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     res.render('dashboard', { upcomingContent, currentContent, userId, userSports })
 }));
 
+
+// app.get('/yomakesports', catchAsync(async (req, res) => {
+//     console.log('here')
+//     const sport1 = new Sport({ type: 'Tennis', expectedPeople: 4 })
+//     await sport1.save()
+//     const sport2 = new Sport({ type: 'Pickleball', expectedPeople: 4 })
+//     await sport2.save()
+//     const sport3 = new Sport({ type: 'Basketball', expectedPeople: 6 })
+//     await sport3.save()
+//     const sport4 = new Sport({ type: 'Soccer', expectedPeople: 8 })
+//     await sport4.save()
+//     const sport5 = new Sport({ type: 'Football', expectedPeople: 8 })
+//     await sport5.save()
+//     const sport6 = new Sport({ type: 'Spikeball', expectedPeople: 4 })
+//     await sport6.save()
+//     const sport7 = new Sport({ type: 'PingPong', expectedPeople: 4 })
+//     await sport7.save()
+//     res.redirect('/')
+// }))
+
+app.get('/deleteEvents901', catchAsync(async (req, res) => {
+    delIdArr = []
+    var date = new Date();
+    date = adjustTime(date, false);
+    date.setHours(date.getHours() - 6)
+    eventsArr = await Event.find({})
+    for (i in eventsArr) {
+        var eTime = eventsArr[i].time
+        eTime = adjustTime(eTime, false);
+        if (eTime.getTime() < date.getTime()) {
+            delIdArr.push(eventsArr[i].id)
+            await Event.findByIdAndDelete(eventsArr[i].id)
+        }
+    }
+    await Sport.updateMany({}, { $pullAll: { eventId: delIdArr } })
+    await User.updateMany({}, { $pullAll: { enrolledEvents: delIdArr, hostedEvents: delIdArr } })
+    res.redirect('/')
+}))
+
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
@@ -305,11 +335,3 @@ if (PORT == null || PORT == "") {
 app.listen(PORT, () => {
     console.log('Serving on port 3000')
 })
-
-
-        // console.log('bottom')
-        // client.messages.create({
-        //     to: '+15159431423',
-        //     from: '+19033213407',
-        //     body: String('Bottom ---- ' + ' ----- ' + dSub + ' ----- ' + dSub.getTimezoneOffset() + ' ----- ' + tomorrow + ' ----- ' + tomorrow.getTimezoneOffset())
-        // })
