@@ -114,6 +114,9 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
     res.render('newEvent')
 });
 
+// app.get('/profile', isLoggedIn, (req, res) => {
+//     res.render('profile')
+// });
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
@@ -176,19 +179,15 @@ app.post('/register', catchAsync(async (req, res, next) => {
     const sportsArr = await createSportsIdArr(req.body.sport)
     const { email, firstName, lastName, password, sportA, phoneNumber } = req.body.user
     const username = email
-    try {
-        const user = new User({ email: email, sports: sportsArr, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, username: username });
-        const newUser = await User.register(user, password)
-        req.session.isAuthenticated = true
-        req.session.currentId = user.id
-        req.flash('success', 'Successfully Created a New Account!');
-        return res.redirect('../dashboard')
-    } catch {
-        req.flash('error', 'That email has already been taken');
-        return res.redirect('./register')
-    }
+    const user = new User({ email: email, sports: sportsArr, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, username: username });
+    const newUser = await User.register(user, password)
     await user.save();
+    req.session.isAuthenticated = true
+    req.session.currentId = user.id
+    req.flash('success', 'Successfully Created a New Account!');
+    res.redirect('../dashboard')
 }));
+
 
 app.get('/logout', (req, res) => {
     req.session.isAuthenticated = false
@@ -339,3 +338,20 @@ if (PORT == null || PORT == "") {
 app.listen(PORT, () => {
     console.log('Serving on port 3000')
 })
+
+
+// router.post('/register', catchAsync(async (req, res, next) => {
+//     try {
+//         const { email, username, password } = req.body;
+//         const user = new User({ email, username });
+//         const registeredUser = await User.register(user, password);
+//         req.login(registeredUser, err => {
+//             if (err) return next(err);
+//             req.flash('success', 'Welcome to Yelp Camp!');
+//             res.redirect('/campgrounds');
+//         })
+//     } catch (e) {
+//         req.flash('error', e.message);
+//         res.redirect('register');
+//     }
+// }));
