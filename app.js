@@ -118,6 +118,14 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 //     res.render('profile')
 // });
 
+// app.get('/deldeldel', async (req, res, next) => {
+//     await User.deleteMany({})
+//     await Sport.deleteMany({})
+//     await Event.deleteMany({})
+//     return res.redirect('./');
+
+// });
+
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout } = req.body;
     var dOrig = new Date(time);

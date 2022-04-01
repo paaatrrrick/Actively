@@ -57,6 +57,11 @@
                     var returnVar = true
                     const elements = document.getElementsByClassName('checkr')
                     console.log(elements)
+                    var today = new Date();
+                    console.log(today)
+                    console.log(today.toString())
+                    console.log(today.getTimezoneOffset())
+                    console.log(elements)
                     for (const element of elements) {
                         if (element.value == "") {
                             element.classList.add('badInput')
