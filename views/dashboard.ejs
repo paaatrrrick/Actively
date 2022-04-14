@@ -82,7 +82,7 @@
                                         <p class='insideHolder row'>
                                             <%=currentContent[i][1].location%>:
                                                 <% console.log('what is up my ggs') %>
-                                                    <%= currentContent[i][2]%>
+                                                    <%= currentContent[i][2].toLocaleTimeString()%>
                                                         - <%=currentContent[i][1].participantId.length + 1%> /
                                                             <%=currentContent[i][1].groupSize%> People Joined
 
@@ -128,7 +128,7 @@
                                                     </div>
                                                     <p class='insideHolder row' onload="adjustTime()">
                                                         <%=upcomingContent[i][1].location%>:
-                                                            <%= makeTimePretty(upcomingContent[i][2])%>
+                                                            <%= upcomingContent[i][2].toLocaleTimeString()%>
                                                                 - <%=upcomingContent[i][1].participantId.length + 1%> /
                                                                     <%=upcomingContent[i][1].groupSize%> People
                                                                         Joined
