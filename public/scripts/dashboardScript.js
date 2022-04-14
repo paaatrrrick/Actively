@@ -14,8 +14,6 @@ hamburger.addEventListener("click", async (e) => {
         }
     }
     if (canUpdate == true && dataArr.length > 0) {
-        console.log('sending Data')
-        console.log(dataArr)
 
         const data = {
             desiredSports: dataArr

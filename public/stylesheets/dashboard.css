@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
 
-*{
+* {
     margin: 0px;
     padding: 0px;
     overflow: none;
 }
 
-body{
+body {
     background-color: #f7f7fa;
 }
 
-.headerStuff{
+.headerStuff {
     position: fixed;
     top: 0;
     display: flex;
@@ -24,26 +24,26 @@ body{
 }
 
 
-.secondButtonHolder{
+.secondButtonHolder {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-.buttonHolder{
+.buttonHolder {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
 }
 
-h1{
+h1 {
     font-family: 'Open Sans', sans-serif;
     color: #212529;
     font-size: 24px;
 }
 
-.btn1{
+.btn1 {
     font-family: 'Open Sans', sans-serif;
     text-decoration: none;
     color: #263238;
@@ -56,45 +56,43 @@ h1{
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.bottomSection{
+.bottomSection {
     margin-top: 90px;
 }
 
 
-h3{
+h3 {
     font-family: 'Open Sans', sans-serif;
-    color: #212529; 
+    color: #212529;
     font-size: 1.5rem;
     margin: 0rem 1.5rem 0.5rem 1.5rem;
 }
 
-hr{
+hr {
     background: #f7f7fa;
     margin: 0rem 1.5rem 1rem 1.5rem;
     height: .25rem;
     border-radius: 5px;
     border: none;
-    background-image: linear-gradient(
-        100deg,
-        hsl(150deg 94% 74%) 0%,
-        hsl(152deg 89% 74%) 9%,
-        hsl(154deg 85% 73%) 18%,
-        hsl(156deg 81% 73%) 28%,
-        hsl(158deg 76% 72%) 38%,
-        hsl(161deg 73% 72%) 49%,
-        hsl(164deg 69% 71%) 60%,
-        hsl(167deg 65% 71%) 71%,
-        hsl(170deg 62% 70%) 81%,
-        hsl(173deg 59% 69%) 88%,
-        hsl(177deg 55% 69%) 93%,
-        hsl(180deg 53% 68%) 96%,
-        hsl(184deg 55% 69%) 98%,
-        hsl(188deg 58% 69%) 99%,
-        hsl(191deg 60% 69%) 100%
-      );
+    background-image: linear-gradient(100deg,
+            hsl(150deg 94% 74%) 0%,
+            hsl(152deg 89% 74%) 9%,
+            hsl(154deg 85% 73%) 18%,
+            hsl(156deg 81% 73%) 28%,
+            hsl(158deg 76% 72%) 38%,
+            hsl(161deg 73% 72%) 49%,
+            hsl(164deg 69% 71%) 60%,
+            hsl(167deg 65% 71%) 71%,
+            hsl(170deg 62% 70%) 81%,
+            hsl(173deg 59% 69%) 88%,
+            hsl(177deg 55% 69%) 93%,
+            hsl(180deg 53% 68%) 96%,
+            hsl(184deg 55% 69%) 98%,
+            hsl(188deg 58% 69%) 99%,
+            hsl(191deg 60% 69%) 100%);
 }
 
-.dashBoardHolderDiv{
+.dashBoardHolderDiv {
     padding: 15px;
     margin: 2rem;
     border-radius: 10px;
@@ -105,40 +103,40 @@ hr{
     align-items: flex-start;
 }
 
-h4{
+h4 {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.5rem;
 }
 
-h5{
+h5 {
     font-family: 'Open Sans', sans-serif;
-    color: #212529; 
+    color: #212529;
     font-size: 1.5rem;
 }
 
 
-p{
+p {
     font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     font-weight: 400;
 }
 
-img{
+img {
     width: 30px;
     margin-right: 10px;
 }
 
-.marginLeft{
- margin-left: 4px;
+.marginLeft {
+    margin-left: 4px;
 }
 
 
-.insideHolder{
+.insideHolder {
     margin-left: 40px;
     margin-bottom: 6px;
 }
 
-#nameText{
+#nameText {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     font-size: 1.25rem;
@@ -146,19 +144,19 @@ img{
     margin-bottom: 0px;
 }
 
-.rec{
-    background-color:  #82cfe0;
+.rec {
+    background-color: #82cfe0;
 }
 
-.advanced{
+.advanced {
     background-color: #ffddc0;
 }
 
-.everyThingElse{
+.everyThingElse {
     background-color: #80fbbd;
 }
 
-.divBottomItem{
+.divBottomItem {
     margin-right: 0.5rem;
     margin-top: 0.5rem;
     padding: 3px 6px 3px 6px;
@@ -166,7 +164,7 @@ img{
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-#joinBtn{
+#joinBtn {
     font-family: 'Open Sans', sans-serif;
     border: none;
     font-size: 1rem;
@@ -175,29 +173,30 @@ img{
 
 /* ----------------------------------------- */
 
-header{
-    width: 100%; 
+header {
+    width: 100%;
     display: flex;
     justify-content: end;
 }
 
 
-.nav-menu{
+.nav-menu {
     display: flex;
-    position:fixed;
+    position: fixed;
     left: -100%;
     top: 50px;
     flex-direction: column;
     width: 100%;
     height: 100%;
     transition: 0.3s;
-    backdrop-filter: blur(2.5px);
+    background: rgba(205, 205, 205, 0.5);
+    backdrop-filter: blur(2px);
     justify-content: flex-start;
     align-items: center;
     margin-top: 10px;
 }
 
-.nav-link{
+.nav-link {
     font-family: 'Open Sans', sans-serif;
     transition: 0.7s ease;
     color: #262626;
@@ -210,23 +209,21 @@ header{
     font-weight: 400;
 }
 
-.nav-item{
+.nav-item {
     margin-bottom: 50px;
 }
 
-.nav-menu.active{
+.nav-menu.active {
     left: 0;
 }
 
 
-.nav-branding{
+.nav-branding {
     font-size: 36px;
 }
 
 
-
-
-.hamburger{
+.hamburger {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -239,7 +236,7 @@ header{
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.bar{
+.bar {
     width: 18px;
     height: 2.5px;
     margin: 1px;
@@ -248,53 +245,58 @@ header{
     background-color: #212529;
 
 }
- 
-.check{
+
+.check {
     font-weight: 600;
     border: 1.5px solid #82cfe0;
 }
 
-.hamburger.active .bar:nth-child(2){
+.hamburger.active .bar:nth-child(2) {
     opacity: 0;
 }
-.hamburger.active .bar:nth-child(1){
+
+.hamburger.active .bar:nth-child(1) {
     transform: translateY(6.8px) rotate(45deg);
 }
-.hamburger.active .bar:nth-child(3){
+
+.hamburger.active .bar:nth-child(3) {
     transform: translateY(-6.8px) rotate(-45deg);
 }
 
 
 
-@media only screen and (max-width: 1100px)  {
+@media only screen and (max-width: 1100px) {
 
-    .nav-item{
+    .nav-item {
         margin-bottom: 30px;
     }
-    h1{
+
+    h1 {
         font-size: 20px;
     }
 
-    .bar{
+    .bar {
         width: 15px;
         height: 2px;
         margin: 1px;
     }
-    .hamburger{
+
+    .hamburger {
         padding: 5px;
         margin-right: 0;
         margin-left: 1rem;
     }
-    .hamburger.active .bar:nth-child(1){
+
+    .hamburger.active .bar:nth-child(1) {
         transform: translateY(6.9px) rotate(45deg);
     }
-    .hamburger.active .bar:nth-child(3){
+
+    .hamburger.active .bar:nth-child(3) {
         transform: translateY(-6.9px) rotate(-45deg);
     }
 
-    .headerStuff{
+    .headerStuff {
         width: 95%;
     }
 
 }
-

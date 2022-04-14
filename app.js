@@ -118,33 +118,21 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
 //     res.render('profile')
 // });
 
-// app.get('/deldeldel', async (req, res, next) => {
-//     await User.deleteMany({})
-//     await Sport.deleteMany({})
-//     await Event.deleteMany({})
-//     return res.redirect('./');
+app.get('/deldeldel', async (req, res, next) => {
+    await User.deleteMany({})
+    await Sport.deleteMany({})
+    await Event.deleteMany({})
+    return res.redirect('./');
 
-// });
+});
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
-    const { type, location, time, skill, description, turnout } = req.body;
-    var dOrig = new Date(time);
-    const d = adjustTime(dOrig)
+    const { type, location, time, skill, description, turnout, notifcation } = req.body;
     const id = String(req.session.currentId);
-    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: d, hostId: id, groupSize: turnout })
+    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: time, hostId: id, groupSize: turnout })
     await event.save();
-    var today = new Date();
-    var tomorrow = new Date();
-    const dSub = adjustTime(dOrig, false);
-    today = adjustTime(today, false);
-    tomorrow = adjustTime(tomorrow, false);
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    if (sendTextMessages) {
-        if (dSub.getDate() == today.getDate() & dSub > today) {
-            await sendText('today', event)
-        } else if (dSub.getHours() < 9 & dSub.getDate() == tomorrow.getDate()) {
-            await sendText('tomorrow', event)
-        }
+    if (notifcation !== 'nothing' & sendTextMessages) {
+        await sendText(notifcation, event)
     }
     const foundSport = await Sport.find({ type: type });
     const updatingSport = await Sport.findById(foundSport[0].id)
@@ -153,8 +141,10 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     var user = await User.findById(id)
     user.hostedEvents.push(event.id)
     await user.save();
-    req.flash('success', 'Successfully Created New Event');
-    return res.redirect('/dashboard');
+    // req.flash('success', 'Successfully Created New Event');
+    res.redirect('/dashboard');
+    // return 'hello'
+    // return res.redirect('/dashboard');
 }));
 
 
@@ -173,12 +163,12 @@ app.post('/updateSportInterests', catchAsync(async (req, res, next) => {
 
 app.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
     const event = await Event.findById(req.params.eventId);
-    event.participantId = event.participantId.push(req.params.userId);
+    event.participantId = event.participantId.concat([String(req.params.userId)])
     await event.save();
     const user = await User.findById(req.params.userId);
     user.enrolledEvents = user.enrolledEvents.concat([String(req.params.eventId)])
     await user.save();
-    req.flash('success', 'Joined the ' + event.type);
+    req.flash('success', 'Successfully Joined the ' + event.sportType + ' Match');
     return res.redirect('/dashboard');
 }));
 
@@ -232,16 +222,12 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var userSports = []
     var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball'];
     var date = new Date();
-    date = adjustTime(date, false);
     const user = await User.findById(req.session.currentId);
-
     for (eventIds in user.enrolledEvents) {
         const event = await Event.findById(user.enrolledEvents[eventIds]);
         const host = await User.findById(event.hostId);
-        const time = adjustTime(event.time, false);
-        if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
-            newTime = timeSwitch(event.time);
-            arr = [(host.firstName + ' ' + host.lastName), event, newTime];
+        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
+            arr = [(host.firstName + ' ' + host.lastName), event, event.time];
             idArr.push(event.id);
             currentContent.push(arr);
         }
@@ -249,10 +235,8 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
 
     for (eventIds in user.hostedEvents) {
         const event = await Event.findById(user.hostedEvents[eventIds])
-        const time = adjustTime(event.time, false);
-        if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
-            newTime = timeSwitch(event.time)
-            arr = [(user.firstName + ' ' + user.lastName), event, newTime];
+        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
+            arr = [(user.firstName + ' ' + user.lastName), event, event.time];
             idArr.push(event.id);
             currentContent.push(arr);
         }
@@ -267,12 +251,10 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
         }
         if (sport !== null) {
             for (i in sport.eventId) {
-                var event = await Event.findById(sport.eventId[i]);
-                const time = adjustTime(event.time, false);
-                if (!idArr.includes(event.id) & time.getTime() >= date.getTime()) {
+                const event = await Event.findById(sport.eventId[i]);
+                if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
                     const host = await User.findById(event.hostId);
-                    newTime = timeSwitch(event.time)
-                    arr = [(host.firstName + ' ' + host.lastName), event, newTime];
+                    arr = [(host.firstName + ' ' + host.lastName), event, event.time];
                     idArr.push(event.id);
                     upcomingContent.push(arr);
                 }
@@ -312,12 +294,10 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
 app.get('/deleteEvents901', catchAsync(async (req, res) => {
     delIdArr = []
     var date = new Date();
-    date = adjustTime(date, false);
     date.setHours(date.getHours() - 6)
     eventsArr = await Event.find({})
     for (i in eventsArr) {
         var eTime = eventsArr[i].time
-        eTime = adjustTime(eTime, false);
         if (eTime.getTime() < date.getTime()) {
             delIdArr.push(eventsArr[i].id)
             await Event.findByIdAndDelete(eventsArr[i].id)

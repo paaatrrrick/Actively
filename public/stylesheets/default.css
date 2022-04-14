@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
-.flashHolder{
+.flashHolder {
     position: absolute;
     top: 70px;
     left: 0px;
@@ -11,7 +11,7 @@
     justify-content: center;
 }
 
-.innerFlash{
+.innerFlash {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -25,20 +25,20 @@
     height: 50px;
 }
 
-.vanish{
+.vanish {
     display: none;
 }
 
-.innerFlash *{
+.innerFlash * {
     z-index: 501;
     font-family: 'Open Sans', sans-serif;
 }
 
-.flashText{
+.flashText {
     font-weight: 400;
 }
 
-.flashBtn{
+.flashBtn {
     text-decoration: none;
     background-color: transparent;
     border-radius: 5px;
@@ -48,32 +48,32 @@
     font-weight: 700;
 }
 
-.innerG{
+.innerG {
     background-color: #d4edda;
 }
 
-.textG{
+.textG {
     color: #155724;
 }
 
-.btnG{
+.btnG {
     color: #0b2e13;
 }
 
-.innerR{
+.innerR {
     background-color: #f8d7da;
 }
 
-.textR{
+.textR {
     color: #813138;
 }
 
-.btnR{
+.btnR {
     color: #491217;
 }
 
 
-.btn{
+.btn {
     font-family: 'Open Sans', sans-serif;
     text-decoration: none;
     background-color: #80fbbd;
@@ -85,37 +85,37 @@
     font-weight: 600;
 }
 
-.row{
+.row {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.column{
+.column {
     display: flex;
     flex-direction: column;
 }
 
-.alignCenter{
+.alignCenter {
     align-items: center;
 }
 
-.alignStart{
+.alignStart {
     align-items: flex-start;
 }
 
-.badInput{
+.badInput {
     border-color: #fff;
-    outline: 2px solid #f8d7da; 
+    outline: 2px solid #f8d7da;
 }
 
-.goodInput{
+.goodInput {
     border-color: #fff;
-    outline: 2px solid #80fbbd; 
+    outline: 2px solid #80fbbd;
 }
 
 
-#login{
+#login {
     position: absolute;
     right: 200px;
     top: 44px;
@@ -130,57 +130,57 @@
     border-color: #263238;
 }
 
-#register{
+#register {
     position: absolute;
     right: 3vw;
     top: 40px;
     letter-spacing: 1.2px
 }
 
-#logout{
+#logout {
     position: absolute;
     right: 3vw;
     top: 40px;
     letter-spacing: 1.2px
 }
 
-#logo{
+#logo {
     background-clip: text;
-    background-image: -webkit-gradient(linear,left top,right top,from(#03F57C),color-stop(23%,#03F57C),to(#82cfe0));
-background-image: linear-gradient(
-90deg,#03F57C,#03F57C 4%,#82cfe0);
--webkit-background-clip: text;
-background-clip: text;
--webkit-text-fill-color: transparent;
-font-size: 4rem;
+    background-image: -webkit-gradient(linear, left top, right top, from(#03F57C), color-stop(23%, #03F57C), to(#82cfe0));
+    background-image: linear-gradient(90deg, #03F57C, #03F57C 4%, #82cfe0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 4rem;
 }
 
-@media only screen and (max-width: 1000px)  {
+@media only screen and (max-width: 1000px) {
 
-    #login{
+    #login {
         top: 17px;
         right: 160px;
     }
 
-    #logo{
+    #logo {
         font-size: 2.5rem;
     }
 
-    #logout{
+    #logout {
         top: 15px;
     }
 
-    #register{
+    #register {
         top: 15px;
     }
 }
 
-@media only screen and (max-width: 800px)  {
-    #login{
+@media only screen and (max-width: 800px) {
+    #login {
         font-size: 12px;
         right: 125px;
     }
-    #register{
+
+    #register {
         font-size: 12px;
     }
 }

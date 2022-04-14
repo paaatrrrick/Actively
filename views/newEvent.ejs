@@ -17,7 +17,8 @@
     <a href="/logout" id='logout' class="btn1">Logout</a>
 
     <div class="column alignStartToCenter main">
-        <form id='formForm' action="./newEvent" method="POST" onsubmit="return runChecks()">
+        <!-- <form id='formForm' action="./newEvent" method="POST" onsubmit="return runChecks()"> -->
+        <div id="formForm">
             <div class="column">
                 <h1>Create Event</h1>
                 <div class="radio-button row">
@@ -84,35 +85,19 @@
                 </div>
                 <textarea name="description" id="description" cols="40" rows="5" class="input large"
                     placeholder="Description"></textarea>
-                <button class='btn'>Create Event</button>
-        </form>
-    </div>
+                <button class='btn createEvent' id='createEvent'>Create Event</button>
+            </div>
+            <!-- </form> -->
+        </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        flatpickr("input[type=datetime-local]", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-        });
-
-        function runChecks() {
-            var returnVar = true
-            const elements = document.getElementsByClassName('input')
-            console.log(elements)
-            for (const element of elements) {
-                if (element.value == "") {
-                    element.classList.add('badInput')
-                    returnVar = false
-                } else {
-                    element.classList.add('goodInput')
-                }
-            };
-            return returnVar
-        }
-
-    </script>
-
+        <script src="/scripts/newEventScript.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            flatpickr("input[type=datetime-local]", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+        </script>
 </body>
 
 </html>

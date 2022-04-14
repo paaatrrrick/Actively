@@ -50,14 +50,9 @@ module.exports.timeSwitch = (date) => {
 }
 
 
-module.exports.sendText = async (dateStr = 'today', event) => {
-    const timeStr = String(event.time.toLocaleTimeString()).slice(0, String(event.time.toLocaleTimeString()).length - 6)
-    var amPm = 'AM'
-    if (event.time.getHours() > 11) {
-        amPm = 'PM'
-    }
+module.exports.sendText = async (notifcation, event) => {
     const user = await User.findById(event.hostId)
-    textStr = user.firstName + ' ' + user.lastName + " scheduled " + event.sportType + " for " + dateStr + ' at ' + timeStr + " " + amPm + " at the " + event.location + '.' + '\n' + 'Check it out on Actively: www.actively.group'
+    textStr = user.firstName + ' ' + user.lastName + " scheduled " + event.sportType + " for " + notifcation + " at the " + event.location + '.' + '\n' + 'Check it out on Actively: www.actively.group'
     const sport = await Sport.find({ type: event.sportType })
     const sportId = sport[0].id
     usersArr = await User.find({})
