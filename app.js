@@ -22,7 +22,7 @@ const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
 const currentUrl = db_url
-const sendTextMessages = true;
+const sendTextMessages = false;
 const MongoStore = require('connect-mongo');
 const { constants } = require('buffer');
 const Events = require('twilio/lib/rest/Events');
@@ -77,9 +77,6 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
-
-
-
 
 app.get('/', (req, res) => {
     const isLoggedIn = req.session.isAuthenticated

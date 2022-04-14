@@ -13,17 +13,21 @@
 </head>
 
 <body>
-    <% function makeTimePretty(date) { var hours=date.getHours(); var str='AM' ; if (hours> 11) {
+    <% function makeTimePretty(date) { console.log(''); console.log('here123'); console.log(date);
+        console.log(date.getTimezoneOffset()); var hours=date.getHours(); var str='AM' ; if (hours> 11) {
         str = 'PM';
         hours = hours - 12;
         }
         if (hours == 0) {
         hours = 12;
         }
+        console.log('this point 123')
         var minutes = String(date.getMinutes());
         if (String(minutes).length == 1) {
         minutes = '0' + minutes;
         }
+        console.log(String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0,
+        10)))
         return String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0, 10));
         }
         %>
@@ -77,9 +81,10 @@
                                         </div>
                                         <p class='insideHolder row'>
                                             <%=currentContent[i][1].location%>:
-                                                <%= makeTimePretty(currentContent[i][2])%>
-                                                    - <%=currentContent[i][1].participantId.length + 1%> /
-                                                        <%=currentContent[i][1].groupSize%> People Joined
+                                                <% console.log('what is up my ggs') %>
+                                                    <%= currentContent[i][2]%>
+                                                        - <%=currentContent[i][1].participantId.length + 1%> /
+                                                            <%=currentContent[i][1].groupSize%> People Joined
 
                                         </p>
                                         <h5 class='insideHolder' id='nameText'>
@@ -121,7 +126,7 @@
                                                             <%= upcomingContent[i][1].sportType %>
                                                         </h4>
                                                     </div>
-                                                    <p class='insideHolder row'>
+                                                    <p class='insideHolder row' onload="adjustTime()">
                                                         <%=upcomingContent[i][1].location%>:
                                                             <%= makeTimePretty(upcomingContent[i][2])%>
                                                                 - <%=upcomingContent[i][1].participantId.length + 1%> /
@@ -209,6 +214,16 @@
                         element.classList.add('vanish')
                     }
                 </script>
+
+
+                <script>
+
+                    function adjustTime(p1) {
+                        console.log(curren)
+                        console.log(p1)
+                    }
+                </script>
+
 
 </body>
 

@@ -4,6 +4,9 @@ const elements = document.getElementsByClassName('input')
 
 
 createBtn.addEventListener("click", async (e) => {
+    console.log('here123')
+    datee = new Date()
+    console.log(datee.getTimezoneOffset())
 
     var returnVar = true
     for (const element of elements) {
