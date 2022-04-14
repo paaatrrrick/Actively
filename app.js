@@ -22,7 +22,7 @@ const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
 const currentUrl = db_url
-const sendTextMessages = false;
+const sendTextMessages = true;
 const MongoStore = require('connect-mongo');
 const { constants } = require('buffer');
 const Events = require('twilio/lib/rest/Events');
@@ -266,7 +266,6 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
         return x[1].time - y[1].time;
     });
     // var people = []
-    console.log(currentContent[0])
     res.render('dashboard', { upcomingContent, currentContent, userId, userSports })
 }));
 
@@ -287,6 +286,15 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
 //     await sport6.save()
 //     const sport7 = new Sport({ type: 'PingPong', expectedPeople: 4 })
 //     await sport7.save()
+//     res.redirect('/')
+// }))
+
+// app.get('/delEvent', catchAsync(async (req, res) => {
+//     id = '625848bd0b9493f608716b4f'
+//     delIdArr = [id]
+//     await Event.findByIdAndDelete(id)
+//     await Sport.updateMany({}, { $pullAll: { eventId: delIdArr } })
+//     await User.updateMany({}, { $pullAll: { enrolledEvents: delIdArr, hostedEvents: delIdArr } })
 //     res.redirect('/')
 // }))
 

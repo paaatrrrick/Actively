@@ -72,7 +72,7 @@
                                     </span>
 
                                 </div>
-                                <span id='groupsize'>
+                                <span class='groupsize'>
                                     <%=currentContent[i][1].participantId.length + 1%> /
                                         <%=currentContent[i][1].groupSize%> People Joined
                                 </span>
@@ -118,14 +118,22 @@
                                                     <%= upcomingContent[i][1].sportType %>
                                                 </h4>
                                             </div>
-                                            <p class='insideHolder row'>
-                                                <%=upcomingContent[i][1].location%>:
-                                                    <%= upcomingContent[i][2]%>
-                                                        - <%=upcomingContent[i][1].participantId.length + 1%> /
-                                                            <%=upcomingContent[i][1].groupSize%> People
-                                                                Joined
 
-                                            </p>
+                                            <div class='insideHolder'>
+                                                <span class='textSpan'>
+                                                    <%=upcomingContent[i][1].location%>:
+                                                </span>
+
+                                                <span class='cct textSpan'>
+                                                    <%=upcomingContent[i][2]%>
+                                                </span>
+
+                                            </div>
+                                            <span class='groupsize'>
+                                                <%=upcomingContent[i][1].participantId.length + 1%> /
+                                                    <%=upcomingContent[i][1].groupSize%> People Joined
+                                            </span>
+
                                             <h5 class='insideHolder' id='nameText'>
                                                 Host: <%= upcomingContent[i][0]%>
                                             </h5>
@@ -138,7 +146,7 @@
 
                                             <div class="insideHolder row">
                                                 <% if (upcomingContent[i][1].level=='Recreational' ) { %>
-                                                    <div class='rec levelBtn divBottomItem'>
+                                                    <p class='rec levelBtn divBottomItem'>
                                                         <% } else if (upcomingContent[i][1].level=='Advanced' ) {%>
                                                             <p class='advanced levelBtn divBottomItem'>
                                                                 <% } else { %>
@@ -154,85 +162,84 @@
                                                                             class='everyThingElse levelBtn divBottomItem'>Join
                                                                             Event</button>
                                                                     </form>
-                                                    </div>
+
                                             </div>
-
-                                            <% } %>
-                                                <% } %>
-
-
                                         </div>
-                                        <header>
-                                            <nav class="navbar">
-                                                <div class="nav-menu">
-                                                    <div class="nav-item">
-                                                        <h5>Select Your Sports</h5>
-                                                    </div>
-                                                    <div class="nav-item"> <a href="#" id='top'
-                                                            class="nav-link<% if(userSports.includes('PingPong')){ %> check<% } %>">PingPong</a>
-                                                    </div>
-                                                    <div class="nav-item"> <a href="#"
-                                                            class="nav-link<% if(userSports.includes('Tennis')){ %> check<% } %>">Tennis</a>
-                                                    </div>
-                                                    <div class="nav-item"> <a href="#"
-                                                            class="nav-link<% if(userSports.includes('Pickleball')){ %> check<% } %>">Pickleball</a>
-                                                    </div>
-                                                    <div class="nav-item"> <a href="#"
-                                                            class="nav-link <% if(userSports.includes('Basketball')){ %> check<% } %>">Basketball</a>
-                                                    </div>
-                                                    <div class="nav-item"> <a href="#"
-                                                            class="nav-link <% if(userSports.includes('Soccer')){ %> check<% } %>">Soccer</a>
-                                                    </div>
-                                                    <div class="nav-item"> <a href="#"
-                                                            class="nav-link <% if(userSports.includes('Football')){ %> check<% } %>">Football</a>
-                                                    </div>
-                                                    <div class="nav-item"> <a href="#"
-                                                            class="nav-link <% if(userSports.includes('Spikeball')){ %> check<% } %>">Spikeball</a>
-                                                    </div>
-                                                </div>
-                                            </nav>
-                                        </header>
+
+                                        <% } %>
+                                            <% } %>
+
+
+                                                <header>
+                                                    <nav class="navbar">
+                                                        <div class="nav-menu">
+                                                            <div class="nav-item">
+                                                                <h5>Select Your Sports</h5>
+                                                            </div>
+                                                            <div class="nav-item"> <a href="#" id='top'
+                                                                    class="nav-link<% if(userSports.includes('PingPong')){ %> check<% } %>">PingPong</a>
+                                                            </div>
+                                                            <div class="nav-item"> <a href="#"
+                                                                    class="nav-link<% if(userSports.includes('Tennis')){ %> check<% } %>">Tennis</a>
+                                                            </div>
+                                                            <div class="nav-item"> <a href="#"
+                                                                    class="nav-link<% if(userSports.includes('Pickleball')){ %> check<% } %>">Pickleball</a>
+                                                            </div>
+                                                            <div class="nav-item"> <a href="#"
+                                                                    class="nav-link <% if(userSports.includes('Basketball')){ %> check<% } %>">Basketball</a>
+                                                            </div>
+                                                            <div class="nav-item"> <a href="#"
+                                                                    class="nav-link <% if(userSports.includes('Soccer')){ %> check<% } %>">Soccer</a>
+                                                            </div>
+                                                            <div class="nav-item"> <a href="#"
+                                                                    class="nav-link <% if(userSports.includes('Football')){ %> check<% } %>">Football</a>
+                                                            </div>
+                                                            <div class="nav-item"> <a href="#"
+                                                                    class="nav-link <% if(userSports.includes('Spikeball')){ %> check<% } %>">Spikeball</a>
+                                                            </div>
+                                                        </div>
+                                                    </nav>
+                                                </header>
 
 
 
-                                        <script src=/scripts/dashboardScript.js></script>
-                                        <script
-                                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-                                            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-                                            crossorigin="anonymous"></script>
+                                                <script src=/scripts/dashboardScript.js></script>
+                                                <script
+                                                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                                                    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+                                                    crossorigin="anonymous"></script>
 
-                                        <script>
-                                            function disapearG() {
-                                                const element = document.getElementById('holderG')
-                                                element.classList.add('vanish')
-                                            }
+                                                <script>
+                                                    function disapearG() {
+                                                        const element = document.getElementById('holderG')
+                                                        element.classList.add('vanish')
+                                                    }
 
-                                            function makeTimePretty(date) {
-                                                console.log('here')
-                                                var hours = date.getHours(); var str = 'AM'; if (hours > 11) {
-                                                    str = 'PM';
-                                                    hours = hours - 12;
-                                                }
-                                                if (hours == 0) {
-                                                    hours = 12;
-                                                }
-                                                console.log('this point 123')
-                                                var minutes = String(date.getMinutes());
-                                                if (String(minutes).length == 1) {
-                                                    minutes = '0' + minutes;
-                                                }
-                                                console.log(String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0,
-                                                    10)))
-                                                return String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0, 10));
-                                            }
-                                            const elements = document.getElementsByClassName('cct')
-                                            for (let i = 0; i < elements.length; i++) {
-                                                date = new Date(elements[i].innerHTML)
-                                                elements[i].innerHTML = makeTimePretty(date)
-                                            }
+                                                    function makeTimePretty(date) {
+                                                        console.log('here')
+                                                        var hours = date.getHours(); var str = 'AM'; if (hours > 11) {
+                                                            str = 'PM';
+                                                            hours = hours - 12;
+                                                        }
+                                                        if (hours == 0) {
+                                                            hours = 12;
+                                                        }
+                                                        console.log('this point 123')
+                                                        var minutes = String(date.getMinutes());
+                                                        if (String(minutes).length == 1) {
+                                                            minutes = '0' + minutes;
+                                                        }
+                                                        console.log(String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0,
+                                                            10)))
+                                                        return String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0, 10));
+                                                    }
+                                                    const elements = document.getElementsByClassName('cct')
+                                                    for (let i = 0; i < elements.length; i++) {
+                                                        date = new Date(elements[i].innerHTML)
+                                                        elements[i].innerHTML = makeTimePretty(date)
+                                                    }
 
-                                        </script>
-
-                                        </body>
+                                                </script>
+                                                </body>
 
 </html>
