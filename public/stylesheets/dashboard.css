@@ -121,6 +121,25 @@ p {
     font-weight: 400;
 }
 
+.textSpan {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+
+#groupsize {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-left: 40px;
+    margin-bottom: 6px;
+    background-color: #f7f7fa;
+    padding: 3px 6px 3px 6px;
+    border-radius: 5px;
+
+}
+
 img {
     width: 30px;
     margin-right: 10px;

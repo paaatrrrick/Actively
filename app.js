@@ -265,6 +265,8 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     currentContent.sort(function (x, y) {
         return x[1].time - y[1].time;
     });
+    // var people = []
+    console.log(currentContent[0])
     res.render('dashboard', { upcomingContent, currentContent, userId, userSports })
 }));
 
