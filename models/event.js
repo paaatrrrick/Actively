@@ -9,7 +9,7 @@ const eventSchema = new Schema({
     time: { type: Date, required: true },
     hostId: { type: String, required: true },
     groupSize: { type: Number, required: false },
-    participantId: []
+    participantId: [],
 });
 
 module.exports = mongoose.model("Event", eventSchema);

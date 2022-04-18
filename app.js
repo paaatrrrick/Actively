@@ -21,8 +21,8 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
-const currentUrl = db_url
-const sendTextMessages = true;
+const currentUrl = DB_DEFAULT
+const sendTextMessages = false;
 const MongoStore = require('connect-mongo');
 const { constants } = require('buffer');
 const Events = require('twilio/lib/rest/Events');
@@ -111,17 +111,33 @@ app.get('/newEvent', isLoggedIn, (req, res) => {
     res.render('newEvent')
 });
 
-// app.get('/profile', isLoggedIn, (req, res) => {
-//     res.render('profile')
-// });
+app.get('/profile', isLoggedIn, catchAsync(async (req, res) => {
+    const user = await User.findById(req.session.currentId);
+    const img = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/'
+    res.render('profile', { user, img })
+}));
 
-app.get('/deldeldel', async (req, res, next) => {
-    await User.deleteMany({})
-    await Sport.deleteMany({})
-    await Event.deleteMany({})
-    return res.redirect('./');
+app.post('/profilephoto', isLoggedIn, catchAsync(async (req, res) => {
+    await User.findByIdAndUpdate({ _id: String(req.session.currentId) }, { profileImg: req.body.idUrl })
+    return '123'
+}));
 
-});
+app.post('/profileinfo', isLoggedIn, catchAsync(async (req, res) => {
+    const { location, description, instagram, facebook, age, shareNumber, notifcations } = req.body;
+    var number = false
+    var notifcation = false
+    if (shareNumber == 'on') {
+        number = true
+    }
+
+    if (notifcations == 'on') {
+        notifcation = true
+    }
+    user = await User.findByIdAndUpdate({ _id: String(req.session.currentId) }, { profileBio: description, mainLocation: location, instagramLink: instagram, facebookLink: facebook, publicSocials: number, age: age, notifcations: notifcation })
+    req.flash('success', 'Successfully Updated Profile');
+    res.redirect('/profile');
+
+}));
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout, notifcation } = req.body;
@@ -140,8 +156,6 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     await user.save();
     // req.flash('success', 'Successfully Created New Event');
     res.redirect('/dashboard');
-    // return 'hello'
-    // return res.redirect('/dashboard');
 }));
 
 
@@ -265,7 +279,6 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     currentContent.sort(function (x, y) {
         return x[1].time - y[1].time;
     });
-    // var people = []
     res.render('dashboard', { upcomingContent, currentContent, userId, userSports })
 }));
 
@@ -297,6 +310,14 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
 //     await User.updateMany({}, { $pullAll: { enrolledEvents: delIdArr, hostedEvents: delIdArr } })
 //     res.redirect('/')
 // }))
+
+// app.get('/deldeldel', async (req, res, next) => {
+//     await User.deleteMany({})
+//     await Sport.deleteMany({})
+//     await Event.deleteMany({})
+//     return res.redirect('./');
+// });
+
 
 app.get('/deleteEvents901', catchAsync(async (req, res) => {
     delIdArr = []
@@ -334,19 +355,3 @@ app.listen(PORT, () => {
     console.log('Serving on port 3000')
 })
 
-
-// router.post('/register', catchAsync(async (req, res, next) => {
-//     try {
-//         const { email, username, password } = req.body;
-//         const user = new User({ email, username });
-//         const registeredUser = await User.register(user, password);
-//         req.login(registeredUser, err => {
-//             if (err) return next(err);
-//             req.flash('success', 'Welcome to Yelp Camp!');
-//             res.redirect('/campgrounds');
-//         })
-//     } catch (e) {
-//         req.flash('error', e.message);
-//         res.redirect('register');
-//     }
-// }));

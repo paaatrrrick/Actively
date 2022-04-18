@@ -29,6 +29,11 @@
     display: none;
 }
 
+.wrap {
+    flex-wrap: wrap;
+}
+
+
 .innerFlash * {
     z-index: 501;
     font-family: 'Open Sans', sans-serif;
@@ -98,6 +103,11 @@
 
 .alignCenter {
     align-items: center;
+}
+
+.justifyconentCenter {
+    justify-content: center;
+
 }
 
 .alignStart {
