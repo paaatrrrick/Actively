@@ -251,6 +251,7 @@ label input {
     position: relative;
     z-index: 1;
     appearance: none;
+    display: none;
 }
 
 label span {
