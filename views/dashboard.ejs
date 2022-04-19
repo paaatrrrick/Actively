@@ -287,7 +287,7 @@
                     const headerDiv = document.createElement("div");
                     headerDiv.classList.add('headerDiv')
                     const headerText = document.createElement("h4")
-                    headerText.innerHTML = d.at(-1)[4] + ' Roster'
+                    headerText.innerHTML = d[d.length - 1][4] + ' Roster'
                     const button = document.createElement("button")
                     button.onclick = function (event) {
                         closePopUp()
@@ -296,7 +296,6 @@
                     headerDiv.appendChild(headerText)
                     headerDiv.appendChild(button)
                     holderDiv.appendChild(headerDiv)
-
                     const cardHolder = document.createElement("div");
                     cardHolder.classList.add('cardHolder')
 
