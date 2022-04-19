@@ -14,232 +14,337 @@
 
 <body>
 </body>
-<% if(success.length> 0){ %>
-    <div class="flashHolder" id='holderG'>
-        <div class="innerFlash innerG">
-            <p class="flashText textG">
-                <%= success %>
-            </p>
-            <button class="flashBtn btnG" onclick="disapearG()">X</button>
-        </div>
-    </div>
-    <% } %>
+<div class="body">
 
-        <div class="headerStuff">
-            <div class="row">
-                <h1>Events</h1>
-                <a href="/logout" class="btn1" id='log'>Logout</a>
-                <a href="/newEvent" class="btn1">New Event +</a>
-            </div>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+    <% if(success.length> 0){ %>
+        <div class="flashHolder" id='holderG'>
+            <div class="innerFlash innerG">
+                <p class="flashText textG">
+                    <%= success %>
+                </p>
+                <button class="flashBtn btnG" onclick="disapearG()">X</button>
             </div>
         </div>
-        <div class="bottomSection">
-            <% if (upcomingContent.length==0 && currentContent.length==0){%>
-                <h3>Nothing posted yet, try other sports!</h3>
-                <hr>
+        <% } %>
 
-                <%} else {%>
-                    <% if (currentContent.length> 0) { %>
-                        <h3>Joined Events</h3>
-                        <hr>
+            <div class="headerStuff">
+                <div class="row">
+                    <h1>Events</h1>
+                    <a href="/logout" class="btn1" id='log'>Logout</a>
+                    <a href="/newEvent" class="btn1">New Event +</a>
+                    <div class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </div>
+                <a href="./profile">
+                    <img src="<%=userImg %> " alt="Profile Img" id='profileImg'>
+                </a>
+            </div>
+            <div class="bottomSection">
+                <% if (upcomingContent.length==0 && currentContent.length==0){%>
+                    <h3>Nothing posted yet, try other sports!</h3>
+                    <hr>
+
+                    <%} else {%>
+                        <% if (currentContent.length> 0) { %>
+                            <h3>Joined Events</h3>
+                            <hr>
 
 
-                        <% for (i in currentContent) { %>
+                            <% for (i in currentContent) { %>
 
-                            <div class="dashBoardHolderDiv">
-                                <div class="row">
-                                    <img src="/images/<%=currentContent[i][1].sportType%>.png" alt="here123">
-                                    <h4>
-                                        <%= currentContent[i][1].sportType %>
-                                    </h4>
-                                    <% if (userId==currentContent[i][1].hostId) { %>
-                                        <p class="marginLeft"> - Your Event</p>
-                                        <% } else { %>
-                                            <p class="marginLeft"> - Joined</p>
-                                            <% } %>
-                                </div>
-                                <div class='insideHolder'>
-                                    <span class='textSpan'>
-                                        <%=currentContent[i][1].location%>:
-                                    </span>
-
-                                    <span class='cct textSpan'>
-                                        <%=currentContent[i][2]%>
-                                    </span>
-
-                                </div>
-                                <span class='groupsize'>
-                                    <%=currentContent[i][1].participantId.length + 1%> /
-                                        <%=currentContent[i][1].groupSize%> People Joined
-                                </span>
-                                <h5 class='insideHolder' id='nameText'>
-                                    Host: <%= currentContent[i][0]%>
-                                </h5>
-
-                                <p class='insideHolder'>
-                                    <%=currentContent[i][1].description%>
-                                </p>
+                                <div class="dashBoardHolderDiv">
 
 
 
-                                <div class="insideHolder row">
-                                    <% if (currentContent[i][1].level=='Recreational' ) { %>
-                                        <p class='rec levelBtn divBottomItem'>
-                                            <% } else if (currentContent[i][1].level=='Advanced' ) {%>
-                                                <p class='advanced levelBtn divBottomItem'>
-                                                    <% } else { %>
-                                                        <p class='everyThingElse levelBtn divBottomItem'>
+                                    <div class="personalInfoDiv">
+                                        <img src="<%=currentContent[i][3]%>" alt="here123" class="profileIcon">
+                                        <div class="column justifyconentCenter">
+                                            <h5 id='nameText'>
+                                                <%= currentContent[i][0]%>
+                                                    <% if (userId==currentContent[i][1].hostId) { %>
+                                                        - your event
+                                                        <% } else { %>
+                                                            - joined
                                                             <% } %>
-                                                                Skill: <%=currentContent[i][1].level %>
-                                                        </p>
-                                </div>
-                            </div>
+                                            </h5>
 
-                            <% } %>
-                                <% } %>
-
-
-
-                                    <h3>Upcoming Events</h3>
-                                    <hr>
-                                    <% for (i in upcomingContent) { %>
-
-
-
-                                        <div class="dashBoardHolderDiv">
-                                            <div class="row">
-                                                <img src="/images/<%=upcomingContent[i][1].sportType%>.png"
-                                                    alt="here123">
-                                                <h4>
-                                                    <%= upcomingContent[i][1].sportType %>
-                                                </h4>
-                                            </div>
-
-                                            <div class='insideHolder'>
+                                            <div>
                                                 <span class='textSpan'>
-                                                    <%=upcomingContent[i][1].location%>:
+                                                    <%=currentContent[i][1].location%> at
                                                 </span>
 
                                                 <span class='cct textSpan'>
-                                                    <%=upcomingContent[i][2]%>
+                                                    <%=currentContent[i][2]%>
                                                 </span>
-
-                                            </div>
-                                            <span class='groupsize'>
-                                                <%=upcomingContent[i][1].participantId.length + 1%> /
-                                                    <%=upcomingContent[i][1].groupSize%> People Joined
-                                            </span>
-
-                                            <h5 class='insideHolder' id='nameText'>
-                                                Host: <%= upcomingContent[i][0]%>
-                                            </h5>
-
-                                            <p class='insideHolder'>
-                                                <%=upcomingContent[i][1].description%>
-                                            </p>
-
-
-
-                                            <div class="insideHolder row">
-                                                <% if (upcomingContent[i][1].level=='Recreational' ) { %>
-                                                    <p class='rec levelBtn divBottomItem'>
-                                                        <% } else if (upcomingContent[i][1].level=='Advanced' ) {%>
-                                                            <p class='advanced levelBtn divBottomItem'>
-                                                                <% } else { %>
-                                                                    <p class='everyThingElse levelBtn divBottomItem'>
-                                                                        <% } %>
-                                                                            Skill:
-                                                                            <%=upcomingContent[i][1].level %>
-                                                                    </p>
-                                                                    <form
-                                                                        action="/event/<%=upcomingContent[i][1].id%>/<%=userId%>"
-                                                                        method="post">
-                                                                        <button id='joinBtn'
-                                                                            class='everyThingElse levelBtn divBottomItem'>Join
-                                                                            Event</button>
-                                                                    </form>
 
                                             </div>
                                         </div>
 
-                                        <% } %>
-                                            <% } %>
+                                    </div>
 
 
-                                                <header>
-                                                    <nav class="navbar">
-                                                        <div class="nav-menu">
-                                                            <div class="nav-item">
-                                                                <h5>Select Your Sports</h5>
-                                                            </div>
-                                                            <div class="nav-item"> <a href="#" id='top'
-                                                                    class="nav-link<% if(userSports.includes('PingPong')){ %> check<% } %>">PingPong</a>
-                                                            </div>
-                                                            <div class="nav-item"> <a href="#"
-                                                                    class="nav-link<% if(userSports.includes('Tennis')){ %> check<% } %>">Tennis</a>
-                                                            </div>
-                                                            <div class="nav-item"> <a href="#"
-                                                                    class="nav-link<% if(userSports.includes('Pickleball')){ %> check<% } %>">Pickleball</a>
-                                                            </div>
-                                                            <div class="nav-item"> <a href="#"
-                                                                    class="nav-link <% if(userSports.includes('Basketball')){ %> check<% } %>">Basketball</a>
-                                                            </div>
-                                                            <div class="nav-item"> <a href="#"
-                                                                    class="nav-link <% if(userSports.includes('Soccer')){ %> check<% } %>">Soccer</a>
-                                                            </div>
-                                                            <div class="nav-item"> <a href="#"
-                                                                    class="nav-link <% if(userSports.includes('Football')){ %> check<% } %>">Football</a>
-                                                            </div>
-                                                            <div class="nav-item"> <a href="#"
-                                                                    class="nav-link <% if(userSports.includes('Spikeball')){ %> check<% } %>">Spikeball</a>
-                                                            </div>
+
+                                    <div class="row">
+
+                                        <img src="/images/<%=currentContent[i][1].sportType%>.png" alt="here123"
+                                            class="sportIconImg">
+                                        <h4>
+                                            <%= currentContent[i][1].sportType %>
+                                        </h4>
+
+                                        <div class='groupsize row alignCenter' id="<%=currentContent[i][1].id%>">
+                                            <p id="<%=currentContent[i][1].id%>">
+                                                <%=currentContent[i][1].participantId.length + 1%> /
+                                                    <%=currentContent[i][1].groupSize%> People Joined
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                    <p class='insideHolder'>
+                                        <%=currentContent[i][1].description%>
+                                    </p>
+
+
+
+                                    <div class="insideHolder row">
+                                        <% if (currentContent[i][1].level=='Recreational' ) { %>
+                                            <p class='rec levelBtn divBottomItem'>
+                                                <% } else if (currentContent[i][1].level=='Advanced' ) {%>
+                                                    <p class='advanced levelBtn divBottomItem'>
+                                                        <% } else { %>
+                                                            <p class='everyThingElse levelBtn divBottomItem'>
+                                                                <% } %>
+                                                                    Skill: <%=currentContent[i][1].level %>
+                                                            </p>
+                                    </div>
+                                </div>
+
+                                <% } %>
+                                    <% } %>
+
+
+
+                                        <h3>Upcoming Events</h3>
+                                        <hr>
+                                        <% for (i in upcomingContent) { %>
+
+                                            <div class="dashBoardHolderDiv">
+
+
+
+                                                <div class="personalInfoDiv">
+                                                    <img src="<%=upcomingContent[i][3]%>" alt="here123"
+                                                        class="profileIcon">
+                                                    <div class="column justifyconentCenter">
+                                                        <h5 id='nameText'>
+                                                            <%= upcomingContent[i][0]%>
+                                                        </h5>
+
+                                                        <div>
+                                                            <span class='textSpan'>
+                                                                <%=upcomingContent[i][1].location%> at
+                                                            </span>
+
+                                                            <span class='cct textSpan'>
+                                                                <%=upcomingContent[i][2]%>
+                                                            </span>
+
                                                         </div>
-                                                    </nav>
-                                                </header>
+                                                    </div>
+
+                                                </div>
 
 
 
-                                                <script src=/scripts/dashboardScript.js></script>
-                                                <script
-                                                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-                                                    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-                                                    crossorigin="anonymous"></script>
+                                                <div class="row">
 
-                                                <script>
-                                                    function disapearG() {
-                                                        const element = document.getElementById('holderG')
-                                                        element.classList.add('vanish')
-                                                    }
+                                                    <img src="/images/<%=upcomingContent[i][1].sportType%>.png"
+                                                        alt="here123" class="sportIconImg">
+                                                    <h4>
+                                                        <%= upcomingContent[i][1].sportType %>
+                                                    </h4>
 
-                                                    function makeTimePretty(date) {
-                                                        console.log('here')
-                                                        var hours = date.getHours(); var str = 'AM'; if (hours > 11) {
-                                                            str = 'PM';
-                                                            hours = hours - 12;
-                                                        }
-                                                        if (hours == 0) {
-                                                            hours = 12;
-                                                        }
-                                                        console.log('this point 123')
-                                                        var minutes = String(date.getMinutes());
-                                                        if (String(minutes).length == 1) {
-                                                            minutes = '0' + minutes;
-                                                        }
-                                                        console.log(String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0,
-                                                            10)))
-                                                        return String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0, 10));
-                                                    }
-                                                    const elements = document.getElementsByClassName('cct')
-                                                    for (let i = 0; i < elements.length; i++) {
-                                                        date = new Date(elements[i].innerHTML)
-                                                        elements[i].innerHTML = makeTimePretty(date)
-                                                    }
+                                                    <div class='groupsize row alignCenter'
+                                                        id="<%=upcomingContent[i][1].id%>">
+                                                        <p id="<%=upcomingContent[i][1].id%>">
+                                                            <%=upcomingContent[i][1].participantId.length + 1%> /
+                                                                <%=upcomingContent[i][1].groupSize%> People Joined
+                                                        </p>
 
-                                                </script>
-                                                </body>
+                                                    </div>
+                                                </div>
+
+                                                <p class='insideHolder'>
+                                                    <%=upcomingContent[i][1].description%>
+                                                </p>
+
+
+
+                                                <div class="insideHolder row">
+                                                    <% if (upcomingContent[i][1].level=='Recreational' ) { %>
+                                                        <p class='rec levelBtn divBottomItem'>
+                                                            <% } else if (upcomingContent[i][1].level=='Advanced' ) {%>
+                                                                <p class='advanced levelBtn divBottomItem'>
+                                                                    <% } else { %>
+                                                                        <p
+                                                                            class='everyThingElse levelBtn divBottomItem'>
+                                                                            <% } %>
+                                                                                Skill:
+                                                                                <%=upcomingContent[i][1].level %>
+                                                                        </p>
+                                                                        <form
+                                                                            action="/event/<%=upcomingContent[i][1].id%>/<%=userId%>"
+                                                                            method="post">
+                                                                            <button id='joinBtn'
+                                                                                class='everyThingElse levelBtn divBottomItem'>Join
+                                                                                Event</button>
+                                                                        </form>
+
+                                                </div>
+                                            </div>
+
+                                            <% } %>
+                                                <% } %>
+
+
+                                                    <header>
+                                                        <nav class="navbar">
+                                                            <div class="nav-menu">
+                                                                <div class="nav-item">
+                                                                    <h5>Select Your Sports</h5>
+                                                                </div>
+                                                                <div class="nav-item"> <a href="#" id='top'
+                                                                        class="nav-link<% if(userSports.includes('PingPong')){ %> check<% } %>">PingPong</a>
+                                                                </div>
+                                                                <div class="nav-item"> <a href="#"
+                                                                        class="nav-link<% if(userSports.includes('Tennis')){ %> check<% } %>">Tennis</a>
+                                                                </div>
+                                                                <div class="nav-item"> <a href="#"
+                                                                        class="nav-link<% if(userSports.includes('Pickleball')){ %> check<% } %>">Pickleball</a>
+                                                                </div>
+                                                                <div class="nav-item"> <a href="#"
+                                                                        class="nav-link <% if(userSports.includes('Basketball')){ %> check<% } %>">Basketball</a>
+                                                                </div>
+                                                                <div class="nav-item"> <a href="#"
+                                                                        class="nav-link <% if(userSports.includes('Soccer')){ %> check<% } %>">Soccer</a>
+                                                                </div>
+                                                                <div class="nav-item"> <a href="#"
+                                                                        class="nav-link <% if(userSports.includes('Football')){ %> check<% } %>">Football</a>
+                                                                </div>
+                                                                <div class="nav-item"> <a href="#"
+                                                                        class="nav-link <% if(userSports.includes('Spikeball')){ %> check<% } %>">Spikeball</a>
+                                                                </div>
+                                                            </div>
+                                                        </nav>
+                                                    </header>
+
+            </div>
+
+
+            <script src=/scripts/dashboardScript.js></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+                crossorigin="anonymous"></script>
+            <script>
+                function makeTimePretty(date) {
+                    var hours = date.getHours(); var str = 'AM'; if (hours > 11) {
+                        str = 'PM';
+                        hours = hours - 12;
+                    }
+                    if (hours == 0) {
+                        hours = 12;
+                    }
+                    var minutes = String(date.getMinutes());
+                    if (String(minutes).length == 1) {
+                        minutes = '0' + minutes;
+                    }
+                    return String(String(hours) + ':' + minutes + ' ' + str + ' on ' + String(date.toDateString()).slice(0, 10));
+                }
+                const elements = document.getElementsByClassName('cct')
+                for (let i = 0; i < elements.length; i++) {
+                    date = new Date(elements[i].innerHTML)
+                    elements[i].innerHTML = makeTimePretty(date)
+                }
+
+            </script>
+            <script>
+                function closePopUp() {
+                    const holderdiv = document.getElementsByClassName('popupDiv')
+                    for (let i = 0; i < holderdiv.length; i++) {
+                        holderdiv[i].classList.add('close')
+                        console.log('donzo')
+                    }
+                }
+                function createButton(d) {
+                    closePopUp()
+                    const holderDiv = document.createElement("div");
+                    holderDiv.classList.add('popupDiv')
+                    document.body.appendChild(holderDiv)
+                    const headerDiv = document.createElement("div");
+                    headerDiv.classList.add('headerDiv')
+                    const headerText = document.createElement("h4")
+                    headerText.innerHTML = d.at(-1)[4] + ' Roster'
+                    const button = document.createElement("button")
+                    button.onclick = function (event) {
+                        closePopUp()
+                    }
+                    button.innerHTML = 'x'
+                    headerDiv.appendChild(headerText)
+                    headerDiv.appendChild(button)
+                    holderDiv.appendChild(headerDiv)
+
+                    const cardHolder = document.createElement("div");
+                    cardHolder.classList.add('cardHolder')
+
+                    for (let i = 0; i < d.length; i++) {
+                        const card = document.createElement("div");
+                        card.classList.add('card')
+                        const img = document.createElement("img");
+                        img.src = d[i][0]
+                        const link = document.createElement("a");
+                        link.href = '/profile/' + d[i][1]
+                        link.text = d[i][2] + ' ' + d[i][3]
+                        card.appendChild(img)
+                        card.appendChild(link)
+                        cardHolder.appendChild(card)
+                    }
+                    holderDiv.appendChild(cardHolder)
+                }
+
+                const btnElements = document.getElementsByClassName('groupsize')
+                for (let i = 0; i < btnElements.length; i++) {
+                    btnElements[i].addEventListener("click", async (e) => {
+                        const data1 = {
+                            id: e.srcElement.id
+                        };
+
+                        await fetch('/getProfiles', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data1),
+                        })
+                            .then(res => {
+                                return res.json()
+                            })
+                            .then(response => { createButton(response.key) })
+                            .catch(error => console.log(error))
+                        console.log('done123')
+                    });
+                }
+
+
+                function disapearG() {
+                    const element = document.getElementById('holderG')
+                    element.classList.add('vanish')
+                }
+
+            </script>
+            </body>
 
 </html>

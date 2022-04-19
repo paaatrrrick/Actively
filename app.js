@@ -16,16 +16,17 @@ const User = require('./models/user.js');
 const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
 const { isLoggedIn } = require('./utils/middleware');
-const { createSportsIdArr, timeSwitch, sendText, adjustTime } = require('./utils/constructors');
+const { createSportsIdArr, timeSwitch, sendText, adjustTime, updateNotification } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
 const db_url = process.env.DB_URL
-const currentUrl = DB_DEFAULT
-const sendTextMessages = false;
+const currentUrl = db_url
+const sendTextMessages = true;
 const MongoStore = require('connect-mongo');
 const { constants } = require('buffer');
 const Events = require('twilio/lib/rest/Events');
+const user = require('./models/user.js');
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
 
 
@@ -123,20 +124,25 @@ app.post('/profilephoto', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 app.post('/profileinfo', isLoggedIn, catchAsync(async (req, res) => {
-    const { location, description, instagram, facebook, age, shareNumber, notifcations } = req.body;
-    var number = false
-    var notifcation = false
-    if (shareNumber == 'on') {
+    var { location, description, instagram, facebook, age, shareNumber, notifcations } = req.body;
+    let number = false
+    let showNotifications = false
+    if (shareNumber === 'on') {
         number = true
     }
 
-    if (notifcations == 'on') {
-        notifcation = true
+    if (notifcations === 'on') {
+        showNotifications = true
     }
-    user = await User.findByIdAndUpdate({ _id: String(req.session.currentId) }, { profileBio: description, mainLocation: location, instagramLink: instagram, facebookLink: facebook, publicSocials: number, age: age, notifcations: notifcation })
-    req.flash('success', 'Successfully Updated Profile');
+    const user = await User.findByIdAndUpdate({ _id: String(req.session.currentId) }, { profileBio: description, mainLocation: location, age: age, instagramLink: instagram, facebookLink: facebook, publicSocials: number, notifcations: showNotifications })
     res.redirect('/profile');
 
+}));
+
+app.get('/profile/:id', isLoggedIn, catchAsync(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const img = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/'
+    res.render('viewprofile', { user, img })
 }));
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
@@ -179,6 +185,9 @@ app.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req, res, next
     const user = await User.findById(req.params.userId);
     user.enrolledEvents = user.enrolledEvents.concat([String(req.params.eventId)])
     await user.save();
+    if (sendTextMessages) {
+        updateNotification(user, event)
+    }
     req.flash('success', 'Successfully Joined the ' + event.sportType + ' Match');
     return res.redirect('/dashboard');
 }));
@@ -226,6 +235,25 @@ app.post('/login', catchAsync(async (req, res, next) => {
 }));
 
 
+app.post('/getProfiles', isLoggedIn, catchAsync(async (req, res) => {
+    const event = await Event.findById(req.body.id);
+    var users = []
+    for (let i = 0; i < event.participantId.length; i++) {
+        try {
+            const user = await User.findById(event.participantId[i]);
+            users.push([user.profileImg, user.id, user.firstName, user.lastName]);
+        } catch {
+
+        }
+    }
+    const host = await User.findById(event.hostId);
+    const hostid = (host.id) ? host.id : 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/'
+    users.push([host.profileImg, hostid, host.firstName, host.lastName, event.sportType]);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ key: users }))
+}));
+
+
 app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var upcomingContent = []
     var currentContent = []
@@ -233,12 +261,15 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var userSports = []
     var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball'];
     var date = new Date();
+    const iconImg = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/';
     const user = await User.findById(req.session.currentId);
+    const userImg = (user.profileImg) ? (user.profileImg) : iconImg;
     for (eventIds in user.enrolledEvents) {
         const event = await Event.findById(user.enrolledEvents[eventIds]);
         const host = await User.findById(event.hostId);
         if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
-            arr = [(host.firstName + ' ' + host.lastName), event, event.time];
+            const iconUrl = (host.profileImg) ? (host.profileImg) : iconImg;
+            arr = [(host.firstName + ' ' + host.lastName), event, event.time, iconUrl];
             idArr.push(event.id);
             currentContent.push(arr);
         }
@@ -247,7 +278,8 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     for (eventIds in user.hostedEvents) {
         const event = await Event.findById(user.hostedEvents[eventIds])
         if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
-            arr = [(user.firstName + ' ' + user.lastName), event, event.time];
+            const iconUrl = (user.profileImg) ? (user.profileImg) : iconImg;
+            arr = [(user.firstName + ' ' + user.lastName), event, event.time, iconUrl];
             idArr.push(event.id);
             currentContent.push(arr);
         }
@@ -265,7 +297,8 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
                 const event = await Event.findById(sport.eventId[i]);
                 if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
                     const host = await User.findById(event.hostId);
-                    arr = [(host.firstName + ' ' + host.lastName), event, event.time];
+                    const iconUrl = (host.profileImg) ? (host.profileImg) : iconImg;
+                    arr = [(host.firstName + ' ' + host.lastName), event, event.time, iconUrl];
                     idArr.push(event.id);
                     upcomingContent.push(arr);
                 }
@@ -279,7 +312,7 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     currentContent.sort(function (x, y) {
         return x[1].time - y[1].time;
     });
-    res.render('dashboard', { upcomingContent, currentContent, userId, userSports })
+    res.render('dashboard', { upcomingContent, currentContent, userId, userSports, userImg })
 }));
 
 

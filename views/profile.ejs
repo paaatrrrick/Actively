@@ -59,13 +59,13 @@
                                     <img src="/images/fb.png" alt="facebook" class="social">
                                     <input type="text" name="facebook" class="socialInput" onchange="somethingChanged()"
                                         id="facebook"
-                                        value="<%= (user.facebookLink) ? user.facebookLink : 'link your facebook?'%>">
+                                        value="<%= (user.facebookLink) ? user.facebookLink : 'link your facebook'%>">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="column w100">
-                        <h2 class="inputLabel">Biography</h2>
+                        <h2 class="inputLabel">Biography:</h2>
                         <textarea name="description" id="description" cols="8" rows="3" onchange="somethingChanged()"
                             class="input1"><%= (user.profileBio) ? user.profileBio : 'Share about your sports interests.'%></textarea>
                     </div>

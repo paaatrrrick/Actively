@@ -18,11 +18,19 @@ body {
     align-items: center;
     justify-content: space-between;
     background-color: #FFF;
-    padding: 0.75rem;
     width: 100%;
+    padding: 2px 10px 2px 10px;
     border-bottom: 1px #212529 solid;
 }
 
+
+#profileImg {
+    width: 50px;
+    height: 50px;
+    margin-right: 30px;
+    margin-top: 4px;
+    border-radius: 50%;
+}
 
 .secondButtonHolder {
     display: flex;
@@ -51,7 +59,7 @@ h1 {
     border-radius: 5px;
     font-size: 14px;
     padding: 0.2rem .4rem 0.2rem .4rem;
-    margin-left: 0.5rem;
+    margin-left: 8px;
     font-weight: 600;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
@@ -92,9 +100,27 @@ hr {
             hsl(191deg 60% 69%) 100%);
 }
 
+.personalInfoDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+
+}
+
+
+.profileIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+
 .dashBoardHolderDiv {
     padding: 15px;
-    margin: 2rem;
+    margin: 10px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -106,6 +132,8 @@ hr {
 h4 {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.5rem;
+    color: #212529;
+
 }
 
 h5 {
@@ -132,34 +160,47 @@ p {
     font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     font-weight: 400;
-    margin-left: 40px;
-    margin-bottom: 6px;
+    margin-left: 10px;
     background-color: #f7f7fa;
     padding: 3px 6px 3px 6px;
     border-radius: 5px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    border: none;
 
 }
 
-img {
+
+.sportIconImg {
     width: 30px;
-    margin-right: 10px;
+    margin-left: 10px;
+    margin-right: 20px;
+
 }
 
 .marginLeft {
     margin-left: 4px;
 }
 
+.peopleDiscoveryImg {
+    width: 15px;
+    height: 15px;
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+.groupsize:hover {
+    cursor: pointer;
+}
 
 .insideHolder {
-    margin-left: 40px;
+    margin-left: 60px;
     margin-bottom: 6px;
 }
 
 #nameText {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-    font-size: 1.25rem;
-    margin-top: 15px;
+    font-size: 1rem;
     margin-bottom: 0px;
 }
 
@@ -180,7 +221,6 @@ img {
     margin-top: 0.5rem;
     padding: 3px 6px 3px 6px;
     border-radius: 5px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 #joinBtn {
@@ -243,22 +283,29 @@ header {
 
 
 .hamburger {
+    height: 18px;
+    width: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
     background-color: #80fbbd;
-    padding: 8px;
+    padding: 4px;
     border-radius: 5px;
-    height: 18px;
-    margin-right: 3rem;
-    margin-left: 1rem;
+    margin-left: 8px;
+    /* height: 18px; */
+    /* margin-right: 3rem;
+    margin-left: 1rem; */
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
+.hamburger:hover {
+    cursor: pointer;
+}
+
 .bar {
-    width: 18px;
-    height: 2.5px;
-    margin: 1px;
+    width: 16px;
+    height: 2px;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
     background-color: #212529;
@@ -275,16 +322,114 @@ header {
 }
 
 .hamburger.active .bar:nth-child(1) {
-    transform: translateY(6.8px) rotate(45deg);
+    transform: translateY(7px) rotate(45deg);
 }
 
 .hamburger.active .bar:nth-child(3) {
-    transform: translateY(-6.8px) rotate(-45deg);
+    transform: translateY(-5px) rotate(-45deg);
 }
 
+.popupDiv {
+    /* width: 90vw; */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -90%);
+    /* max-width: 900px; */
+    width: min(80vw, 500px);
+    background-color: #f7f7fa;
+    border: solid 2px #263238;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
 
+.close {
+    display: none;
+}
+
+.headerDiv {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.headerDiv h4 {
+    color: #263238;
+}
+
+.headerDiv button {
+    background-color: #80fbbd;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+
+}
+
+.cardHolder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border: solid 3px #263238;
+    background-color: #f7f7fa;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100px;
+    height: 120px;
+    margin: 5px;
+
+}
+
+.card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    /* border: solid 4px #263238; */
+}
+
+.card a {
+    font-family: 'Open Sans', sans-serif;
+    color: #212529;
+    font-size: 12px;
+}
 
 @media only screen and (max-width: 1100px) {
+
+    #profileImg {
+        width: 35px;
+        height: 35px;
+        margin-right: 5px;
+    }
+
+    .card {
+        width: 80px;
+        height: 100px;
+    }
+
+    .card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .card a {
+        font-size: 10px;
+    }
 
     .nav-item {
         margin-bottom: 30px;
@@ -294,25 +439,6 @@ header {
         font-size: 20px;
     }
 
-    .bar {
-        width: 15px;
-        height: 2px;
-        margin: 1px;
-    }
-
-    .hamburger {
-        padding: 5px;
-        margin-right: 0;
-        margin-left: 1rem;
-    }
-
-    .hamburger.active .bar:nth-child(1) {
-        transform: translateY(6.9px) rotate(45deg);
-    }
-
-    .hamburger.active .bar:nth-child(3) {
-        transform: translateY(-6.9px) rotate(-45deg);
-    }
 
     .headerStuff {
         width: 95%;

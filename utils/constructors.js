@@ -50,16 +50,13 @@ module.exports.timeSwitch = (date) => {
 }
 
 
-module.exports.sendText = async (notifcation, event) => {
-    const user = await User.findById(event.hostId)
-    textStr = user.firstName + ' ' + user.lastName + " scheduled " + event.sportType + " for " + notifcation + " at the " + event.location + '.' + '\n' + 'Check it out on Actively: www.actively.group'
-    const sport = await Sport.find({ type: event.sportType })
-    const sportId = sport[0].id
-    usersArr = await User.find({})
+module.exports.updateNotification = async (user, event) => {
     telePhoneArr = []
-    for (i in usersArr) {
-        if (usersArr[i].sports.includes(sportId)) {
-            telePhoneArr.push(String(usersArr[i].phoneNumber))
+    textStr = user.firstName + ' ' + user.lastName + " Joined your " + event.sportType + ' Match' + '\n' + 'Check it out on Actively: www.actively.group'
+    for (i in event.participantId) {
+        if (event.participantId[i] != user.id) {
+            const participant = await User.findById(event.participantId[i])
+            telePhoneArr.push(String(participant.phoneNumber))
         }
     }
     for (i in telePhoneArr) {
@@ -71,5 +68,29 @@ module.exports.sendText = async (notifcation, event) => {
     }
 }
 
+
+module.exports.sendText = async (notifcation, event) => {
+    const user = await User.findById(event.hostId)
+    textStr = user.firstName + ' ' + user.lastName + " scheduled " + event.sportType + " for " + notifcation + " at the " + event.location + '.' + '\n' + 'Check it out on Actively: www.actively.group'
+    const sport = await Sport.find({ type: event.sportType })
+    const sportId = sport[0].id
+    usersArr = await User.find({})
+    telePhoneArr = []
+    for (i in usersArr) {
+        if (usersArr[i].sports.includes(sportId)) {
+            if (usersArr[i].notifcations == false) {
+            } else {
+                telePhoneArr.push(String(usersArr[i].phoneNumber))
+            }
+        }
+    }
+    for (i in telePhoneArr) {
+        client.messages.create({
+            to: String(telePhoneArr[i]),
+            from: '+19033213407',
+            body: textStr
+        })
+    }
+}
 
 
