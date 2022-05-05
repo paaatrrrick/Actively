@@ -6,8 +6,9 @@
     overflow: none;
 }
 
-body {
+.body {
     background-color: #f7f7fa;
+    height: 100vh;
 }
 
 .headerStuff {
@@ -45,11 +46,8 @@ body {
     align-items: center;
 }
 
-h1 {
-    font-family: 'Open Sans', sans-serif;
-    color: #212529;
-    font-size: 24px;
-}
+
+
 
 .btn1 {
     font-family: 'Open Sans', sans-serif;
@@ -65,11 +63,11 @@ h1 {
 }
 
 .bottomSection {
-    margin-top: 90px;
+    padding-top: 90px;
 }
 
 
-h3 {
+.h3 {
     font-family: 'Open Sans', sans-serif;
     color: #212529;
     font-size: 1.5rem;
@@ -109,7 +107,6 @@ hr {
 
 }
 
-
 .profileIcon {
     width: 50px;
     height: 50px;
@@ -127,23 +124,19 @@ hr {
     align-items: center;
     background-color: #FFF;
     align-items: flex-start;
+    box-shadow: 0 8px 24px rgb(13 13 18 / 4%);
 }
 
-h4 {
+.h4 {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.5rem;
     color: #212529;
 
 }
 
-h5 {
-    font-family: 'Open Sans', sans-serif;
-    color: #212529;
-    font-size: 1.5rem;
-}
 
 
-p {
+.p {
     font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     font-weight: 400;
@@ -230,112 +223,12 @@ p {
     font-weight: 400;
 }
 
-/* ----------------------------------------- */
-
-header {
-    width: 100%;
-    display: flex;
-    justify-content: end;
-}
-
-
-.nav-menu {
-    display: flex;
-    position: fixed;
-    left: -100%;
-    top: 50px;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    transition: 0.3s;
-    background: rgba(205, 205, 205, 0.5);
-    backdrop-filter: blur(2px);
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.nav-link {
-    font-family: 'Open Sans', sans-serif;
-    transition: 0.7s ease;
-    color: #262626;
-    text-decoration: none;
-    text-align: center;
-    border: 1.5px solid #262626;
-    padding: 5px 40px 5px 40px;
-    background: #FFF;
-    border-radius: 10px;
-    font-weight: 400;
-}
-
-.nav-item {
-    margin-bottom: 50px;
-}
-
-.nav-menu.active {
-    left: 0;
-}
-
-
-.nav-branding {
-    font-size: 36px;
-}
-
-
-.hamburger {
-    height: 18px;
-    width: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #80fbbd;
-    padding: 4px;
-    border-radius: 5px;
-    margin-left: 8px;
-    /* height: 18px; */
-    /* margin-right: 3rem;
-    margin-left: 1rem; */
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.hamburger:hover {
-    cursor: pointer;
-}
-
-.bar {
-    width: 16px;
-    height: 2px;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-    background-color: #212529;
-
-}
-
-.check {
-    font-weight: 600;
-    border: 1.5px solid #82cfe0;
-}
-
-.hamburger.active .bar:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active .bar:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-}
-
-.hamburger.active .bar:nth-child(3) {
-    transform: translateY(-5px) rotate(-45deg);
-}
 
 .popupDiv {
-    /* width: 90vw; */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -90%);
-    /* max-width: 900px; */
     width: min(80vw, 500px);
     background-color: #f7f7fa;
     border: solid 2px #263238;
@@ -400,7 +293,6 @@ header {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    /* border: solid 4px #263238; */
 }
 
 .card a {
@@ -434,11 +326,6 @@ header {
     .nav-item {
         margin-bottom: 30px;
     }
-
-    h1 {
-        font-size: 20px;
-    }
-
 
     .headerStuff {
         width: 95%;
