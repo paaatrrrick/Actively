@@ -112,6 +112,16 @@
                             </label>
                         </li>
                     </ul>
+                    <div class="stateSelect">
+                        <p class="h5">Choose Location:</p>
+                        <input type="hidden" name="country" id="countryId" value="US" />
+                        <select name="state" class="input states order-alpha" id="stateId">
+                            <option value="">Select State</option>
+                        </select>
+                        <select name="city" class="input cities order-alpha" id="cityId">
+                            <option value="">Select City</option>
+                        </select>
+                    </div>
                     <h6>Phone Number</h6>
                     <div class="row1">
                         <input type="tel" name='user[phoneNumber]' id='phoneNumber' placeholder="###-###-####"
@@ -139,6 +149,8 @@
                     return returnVar
                 }
             </script>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="//geodata.solutions/includes/statecity.js"></script>
 
 </body>
 

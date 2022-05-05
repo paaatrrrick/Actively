@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,7 +11,10 @@
     <title>Profile</title>
 </head>
 
-<body>
+<body> -->
+<% layout('/layouts/boilerplate') %>
+    <link rel="stylesheet" href="/stylesheets/default.css">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
     <% if(success.length> 0){ %>
         <div class="flashHolder" id='holderG'>
             <div class="innerFlash innerG">
@@ -22,106 +25,106 @@
             </div>
         </div>
         <% } %>
-            <a href="./dashboard" class='btn' id='register'>Dashboard</a>
-            <a href="/logout" id='login'>Logout</a>
+            <!-- <a href="./dashboard" class='btn' id='register'>Dashboard</a>
+            <a href="/logout" id='login'>Logout</a> -->
 
 
-
-            <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
-            <div class="mainHolder">
-                <form action="./profileinfo" method="POST">
-                    <div class="topSection">
-                        <div id='parent'>
-                            <img src="<%= (user.profileImg) ? user.profileImg : img%>" alt="" id="preview" width=300
-                                height=300 />
-                            <input type="hidden" role="uploadcare-uploader" data-crop="1:1"
-                                data-tabs="file camera url facebook gphotos" />
-                            <!-- Your preview will be put here -->
-                        </div>
-                        <div class="column">
-                            <div class="row2Column">
-                                <h1 id='first'>
-                                    <%=user.firstName%>
-                                </h1>
-                                <h1>
-                                    <%=user.lastName%>
-                                </h1>
+            <div class="body">
+                <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
+                <div class="mainHolder">
+                    <form action="./profileinfo" method="POST">
+                        <div class="topSection">
+                            <div id='parent'>
+                                <img src="<%= (user.profileImg) ? user.profileImg : img%>" alt="" id="preview" width=300
+                                    height=300 />
+                                <input type="hidden" role="uploadcare-uploader" data-crop="1:1"
+                                    data-tabs="file camera url facebook gphotos" />
+                                <!-- Your preview will be put here -->
                             </div>
-
-                            <div class="socialMediaHolder">
-                                <div class="row alignCenter socialDiv instagramDiv">
-                                    <img src="/images/ig.png" alt="facebook" class='social'>
-                                    <input type="text" name="instagram" class="socialInput"
-                                        onchange="somethingChanged()" id="instagram"
-                                        value="<%= (user.instagramLink) ? user.instagramLink : 'link your instagram'%>">
+                            <div class="column">
+                                <div class="row2Column">
+                                    <h1 id='first' class="h1">
+                                        <%=user.firstName%>
+                                    </h1>
+                                    <h1 class="h1">
+                                        <%=user.lastName%>
+                                    </h1>
                                 </div>
-                                <div class="row alignCenter socialDiv facebookDiv">
-                                    <img src="/images/fb.png" alt="facebook" class="social">
-                                    <input type="text" name="facebook" class="socialInput" onchange="somethingChanged()"
-                                        id="facebook"
-                                        value="<%= (user.facebookLink) ? user.facebookLink : 'link your facebook'%>">
+
+                                <div class="socialMediaHolder">
+                                    <div class="row alignCenter socialDiv instagramDiv">
+                                        <img src="/images/ig.png" alt="facebook" class='social'>
+                                        <input type="text" name="instagram" class="socialInput"
+                                            onchange="somethingChanged()" id="instagram"
+                                            value="<%= (user.instagramLink) ? user.instagramLink : 'link your instagram'%>">
+                                    </div>
+                                    <div class="row alignCenter socialDiv facebookDiv">
+                                        <img src="/images/fb.png" alt="facebook" class="social">
+                                        <input type="text" name="facebook" class="socialInput"
+                                            onchange="somethingChanged()" id="facebook"
+                                            value="<%= (user.facebookLink) ? user.facebookLink : 'link your facebook'%>">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="column w100">
-                        <h2 class="inputLabel">Biography:</h2>
-                        <textarea name="description" id="description" cols="8" rows="3" onchange="somethingChanged()"
-                            class="input1"><%= (user.profileBio) ? user.profileBio : 'Share about your sports interests.'%></textarea>
-                    </div>
-                    <div class="cityAge w100 m">
-                        <div class="inputRow">
-                            <h2 class="inputLabel mr">City:</h2>
-                            <input type="text" name="location" class="input1" onchange="somethingChanged()"
-                                id="location"
-                                value="<%= (user.mainLocation) ? user.mainLocation : 'What city do you live in?'%>">
+                        <div class="column w100">
+                            <h2 class="inputLabel h2">Biography:</h2>
+                            <textarea name="description" id="description" cols="8" rows="3"
+                                onchange="somethingChanged()"
+                                class="input1"><%= (user.profileBio) ? user.profileBio : 'Share about your sports interests.'%></textarea>
                         </div>
-                        <div class="inputRow ageHolder">
-                            <h2 class="inputLabel mr">Age:</h2>
-                            <input type="number" name="age" id="age" value="<%= (user.age) ? user.age : '00'%>"
-                                class="input1" min='0' max='99' onchange="somethingChanged()" style='width: 80px;'>
+                        <div class="cityAge w100 m">
+                            <div class="inputRow">
+                                <h2 class="inputLabel mr h2">
+                                    <%=user.city %>, <%=user.state %>
+                                </h2>
+                            </div>
+                            <div class="inputRow ageHolder">
+                                <h2 class="inputLabel mr h2">Age:</h2>
+                                <input type="number" name="age" id="age" value="<%= (user.age) ? user.age : '00'%>"
+                                    class="input1" min='0' max='99' onchange="somethingChanged()" style='width: 80px;'>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="sliderDiv">
-                        <div class="row sliderRow">
-                            <label>
-                                <% if (user.publicSocials==false) { %>
-                                    <input type="checkbox" id='shareNumber' onchange="somethingChanged()"
-                                        name='shareNumber'>
-                                    <%} else { %>
-                                        <input type="checkbox" checked id='shareNumber' onchange="somethingChanged()"
+                        <div class="sliderDiv">
+                            <div class="row sliderRow">
+                                <label>
+                                    <% if (user.publicSocials==false) { %>
+                                        <input type="checkbox" id='shareNumber' onchange="somethingChanged()"
                                             name='shareNumber'>
-                                        <% } %>
-                                            <span>
-                                                <i></i>
-                                            </span>
-                            </label>
-                            <h4>Show Phone Number</h5>
-                        </div>
-                        <div class="row sliderRow">
-                            <label>
-                                <% if (user.notifcations==false) { %>
-                                    <input type="checkbox" id='notifcations' onchange="somethingChanged()"
-                                        name='notifcations'>
-                                    <%} else { %>
-                                        <input type="checkbox" checked id='notifcations' onchange="somethingChanged()"
+                                        <%} else { %>
+                                            <input type="checkbox" checked id='shareNumber'
+                                                onchange="somethingChanged()" name='shareNumber'>
+                                            <% } %>
+                                                <span>
+                                                    <i></i>
+                                                </span>
+                                </label>
+                                <h4 class="h4">Show Phone Number</h4>
+                            </div>
+                            <div class="row sliderRow">
+                                <label>
+                                    <% if (user.notifcations==false) { %>
+                                        <input type="checkbox" id='notifcations' onchange="somethingChanged()"
                                             name='notifcations'>
-                                        <% } %>
-                                            <span>
-                                                <i></i>
-                                            </span>
-                            </label>
-                            <h4>Get Text Notifications</h5>
+                                        <%} else { %>
+                                            <input type="checkbox" checked id='notifcations'
+                                                onchange="somethingChanged()" name='notifcations'>
+                                            <% } %>
+                                                <span>
+                                                    <i></i>
+                                                </span>
+                                </label>
+                                <h4 class="h4">Get Text Notifications</h4>
+                            </div>
+
                         </div>
-
-                    </div>
-                    <div id="btnHolder">
-                        <button id='submitBtn' class="btn">Save Changes</button>
-                    </div>
-                </form>
-
+                        <div id="btnHolder">
+                            <button id='submitBtn' class="btn">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
 
@@ -129,7 +132,6 @@
                 function somethingChanged() {
                     var btn = document.getElementById('submitBtn')
                     btn.disabled = false
-                    console.log('here123')
                 }
 
                 function disapearG() {
@@ -159,8 +161,21 @@
                         }),
                     })
                 })
+
+
+                var myID = document.querySelector(".uploadcare--widget__button");
+                var myScrollFunc = function () {
+                    var y = window.scrollY;
+                    if (y >= 95) {
+                        myID.classList.add("displayNone");
+                    } else {
+                        myID.classList.remove("displayNone");
+                    }
+                };
+
+                window.addEventListener("scroll", myScrollFunc);
             </script>
 
-</body>
+            <!-- </body>
 
-</html>
+</html> -->

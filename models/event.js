@@ -5,6 +5,8 @@ const eventSchema = new Schema({
     sportType: { type: String, required: true },
     description: { type: String, required: false, default: 'This will definetly be a good time' },
     location: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
     level: { type: String, required: true, default: 'Anyone' },
     time: { type: Date, required: true },
     hostId: { type: String, required: true },

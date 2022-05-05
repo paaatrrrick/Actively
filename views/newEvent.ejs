@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,83 +13,84 @@
     <title>Actively - Home</title>
 </head>
 
-<body>
-    <a href="/logout" id='logout' class="btn1">Logout</a>
-
-    <div class="column alignStartToCenter main">
-        <!-- <form id='formForm' action="./newEvent" method="POST" onsubmit="return runChecks()"> -->
-        <div id="formForm">
-            <div class="column">
-                <h1>Create Event</h1>
-                <div class="radio-button row">
-                    <input type="radio" id="PingPong" name="type" value="PingPong" checked>
-                    <label for="PingPong">
-                        <div class="column alignCenter"><img class="cardImg" src="/images/PingPong.png" />
-                            <h4>PingPong</h4>
-                        </div>
-                    </label>
-                    <input type="radio" id="Tennis" name="type" value="Tennis">
-                    <label for="Tennis">
-                        <div class="column alignCenter"><img class="cardImg" src="/images/Tennis.png" />
-                            <h4>Tennis</h4>
-                        </div>
-                    </label>
-                    <input type="radio" id="Pickleball" name="type" value="Pickleball">
-                    <label for="Pickleball">
-                        <div class="column alignCenter"><img class="cardImg" src="/images/Pickleball.png" />
-                            <h4>Pickleball</h4>
-                        </div>
-                    </label>
-                    <input type="radio" id="Basketball" name="type" value="Basketball">
-                    <label for="Basketball">
-                        <div class="column alignCenter"><img class="cardImg" src="/images/Basketball.png" />
-                            <h4>Basketball</h4>
-                        </div>
-                    </label>
-                    <input type="radio" id="Soccer" name="type" value="Soccer">
-                    <label for="Soccer">
-                        <div class="column alignCenter"><img class="cardImg" src="/images/Soccer.png" />
-                            <h4>Soccer</h4>
-                        </div>
-                    </label>
-                    <input type="radio" id="Football" name="type" value="Football">
-                    <label for="Football">
-                        <div class="column alignCenter"><img class="cardImg" src="/images/Football.png" />
-                            <h4>Football</h4>
-                        </div>
-                    </label>
-                    <input type="radio" id="Spikeball" name="type" value="Spikeball">
-                    <label for="Spikeball">
-                        <div class="column alignCenter"><img class="cardImg" src="/images/Spikeball.png" />
-                            <h4>Spikeball</h4>
-                        </div>
-                    </label>
-                </div>
-                <div class="row1">
-                    <div class="row">
-                        <input type="datetime-local" class='form-control input mid' placeholder='Date and Time'
-                            name='time' id='time' required>
-                        <select type="text" name="skill" id="skill" class="input small">
-                            <option value="" disabled selected>Skill</option>
-                            <option value="Anyone">Anyone</option>
-                            <option value="Beginner">Beginner</option>
-                            <option value="Recreational">Recreational</option>
-                            <option value="Advanced">Advanced</option>
-                        </select>
+<body> -->
+<% layout('/layouts/boilerplate') %>
+    <link rel="stylesheet" href="/stylesheets/default.css">
+    <link rel="stylesheet" href="/stylesheets/newEvent.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+    <div class="body">
+        <div class="column alignStartToCenter main">
+            <div id="formForm">
+                <div class="column">
+                    <h1 class="h1">Create Event</h1>
+                    <div class="radio-button row">`
+                        <input type="radio" id="PingPong" name="type" value="PingPong" checked>
+                        <label for="PingPong">
+                            <div class="column alignCenter"><img class="cardImg" src="/images/PingPong.png" />
+                                <h4 class="h4">PingPong</h4>
+                            </div>
+                        </label>
+                        <input type="radio" id="Tennis" name="type" value="Tennis">
+                        <label for="Tennis">
+                            <div class="column alignCenter"><img class="cardImg" src="/images/Tennis.png" />
+                                <h4 class="h4">Tennis</h4>
+                            </div>
+                        </label>
+                        <input type="radio" id="Pickleball" name="type" value="Pickleball">
+                        <label for="Pickleball">
+                            <div class="column alignCenter"><img class="cardImg" src="/images/Pickleball.png" />
+                                <h4 class="h4">Pickleball</h4>
+                            </div>
+                        </label>
+                        <input type="radio" id="Basketball" name="type" value="Basketball">
+                        <label for="Basketball">
+                            <div class="column alignCenter"><img class="cardImg" src="/images/Basketball.png" />
+                                <h4 class="h4">Basketball</h4>
+                            </div>
+                        </label>
+                        <input type="radio" id="Soccer" name="type" value="Soccer">
+                        <label for="Soccer">
+                            <div class="column alignCenter"><img class="cardImg" src="/images/Soccer.png" />
+                                <h4 class="h4">Soccer</h4>
+                            </div>
+                        </label>
+                        <input type="radio" id="Football" name="type" value="Football">
+                        <label for="Football">
+                            <div class="column alignCenter"><img class="cardImg" src="/images/Football.png" />
+                                <h4 class="h4">Football</h4>
+                            </div>
+                        </label>
+                        <input type="radio" id="Spikeball" name="type" value="Spikeball">
+                        <label for="Spikeball">
+                            <div class="column alignCenter"><img class="cardImg" src="/images/Spikeball.png" />
+                                <h4 class="h4">Spikeball</h4>
+                            </div>
+                        </label>
                     </div>
-                    <div class="row">
-                        <input type="text" name="location" id="location" placeholder="Location" class="input mid">
-                        <input type="number" name="turnout" id="turnout" placeholder="Group Size" class="input small"
-                            min='2' max='500'>
+                    <div class="row1">
+                        <div class="row">
+                            <input type="datetime-local" class='form-control input mid' placeholder='Date and Time'
+                                name='time' id='time' required>
+                            <select type="text" name="skill" id="skill" class="input small">
+                                <option value="" disabled selected>Skill</option>
+                                <option value="Anyone">Anyone</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Recreational">Recreational</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <input type="text" name="location" id="location" placeholder="Location" class="input mid">
+                            <input type="number" name="turnout" id="turnout" placeholder="Group Size"
+                                class="input small" min='2' max='500'>
+                        </div>
                     </div>
+                    <textarea name="description" id="description" cols="40" rows="5" class="input large"
+                        placeholder="Description"></textarea>
+                    <button class='btn createEvent' id='createEvent'>Create Event</button>
                 </div>
-                <textarea name="description" id="description" cols="40" rows="5" class="input large"
-                    placeholder="Description"></textarea>
-                <button class='btn createEvent' id='createEvent'>Create Event</button>
             </div>
-            <!-- </form> -->
         </div>
-
         <script src="/scripts/newEventScript.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>
@@ -98,6 +99,6 @@
                 dateFormat: "Y-m-d H:i",
             });
         </script>
-</body>
+        <!-- </body>
 
-</html>
+</html> -->
