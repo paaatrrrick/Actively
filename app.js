@@ -8,6 +8,7 @@ const methodOverride = require('method-override');
 const path = require('path');
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const engine = require('ejs-mate');
 const session = require('express-session');
 const multer = require('multer')
 const { response } = require('express');
@@ -20,13 +21,14 @@ const { createSportsIdArr, timeSwitch, sendText, adjustTime, updateNotification 
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 const DB_DEFAULT = 'mongodb://localhost:27017/Actively'
-const db_url = process.env.DB_URL
-const currentUrl = db_url
+const db_url = process.env.DB_URL;
+const currentUrl = db_url;
 const sendTextMessages = true;
 const MongoStore = require('connect-mongo');
 const { constants } = require('buffer');
 const Events = require('twilio/lib/rest/Events');
 const user = require('./models/user.js');
+const { match } = require('assert');
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
 
 
@@ -42,6 +44,7 @@ db.once("open", () => {
 });
 
 const app = express();
+app.engine('ejs', engine)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }));
@@ -79,7 +82,7 @@ app.use((req, res, next) => {
     next();
 })
 
-app.get('/', (req, res) => {
+app.get('/home', (req, res) => {
     const isLoggedIn = req.session.isAuthenticated
     res.render('home', { isLoggedIn })
 });
@@ -92,7 +95,7 @@ app.get('/login', (req, res) => {
     }
 });
 
-app.get('/register', (req, res) => {
+app.get('/', (req, res) => {
     if (req.session.isAuthenticated) {
         res.redirect('/dashboard');
     } else {
@@ -108,14 +111,51 @@ app.get('/about', (req, res) => {
     res.render('about')
 });
 
-app.get('/newEvent', isLoggedIn, (req, res) => {
-    res.render('newEvent')
-});
+app.get('/friends', isLoggedIn, catchAsync(async (req, res) => {
+    navbarData = await navbarPreLoad(req.session.currentId)
+    res.render('friends', { navbarData })
+}));
+
+app.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
+    await User.updateOne(
+        { _id: req.session.currentId },
+        { $push: { friends: req.body.id } }
+    )
+    res.sendStatus(200);
+}));
+
+app.post('/removeFriend', isLoggedIn, catchAsync(async (req, res) => {
+    await User.updateOne({ _id: req.session.currentId }, { $pull: { friends: { $eq: req.body.id } } })
+    res.sendStatus(200);
+}));
+
+app.post('/findFriends', isLoggedIn, async (req, res) => {
+    var returnData = []
+    const users = await User.find({ firstName: req.body.first, lastName: req.body.last })
+    const currentUser = await User.findById(req.session.currentId);
+    for (let i = 0; i < users.length; i++) {
+        returnData.push({
+            first: users[i].firstName,
+            last: users[i].lastName,
+            id: users[i].id,
+            icon: users[i].profileImg,
+            isFriend: (currentUser.friends.includes(users[i].id))
+        })
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ key: returnData }))
+})
+
+app.get('/newEvent', isLoggedIn, catchAsync(async (req, res) => {
+    navbarData = await navbarPreLoad(req.session.currentId)
+    res.render('newEvent', { navbarData })
+}));
 
 app.get('/profile', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(req.session.currentId);
     const img = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/'
-    res.render('profile', { user, img })
+    navbarData = await navbarPreLoad(req.session.currentId)
+    res.render('profile', { user, img, navbarData })
 }));
 
 app.post('/profilephoto', isLoggedIn, catchAsync(async (req, res) => {
@@ -130,11 +170,10 @@ app.post('/profileinfo', isLoggedIn, catchAsync(async (req, res) => {
     if (shareNumber === 'on') {
         number = true
     }
-
     if (notifcations === 'on') {
         showNotifications = true
     }
-    const user = await User.findByIdAndUpdate({ _id: String(req.session.currentId) }, { profileBio: description, mainLocation: location, age: age, instagramLink: instagram, facebookLink: facebook, publicSocials: number, notifcations: showNotifications })
+    const user = await User.findByIdAndUpdate({ _id: String(req.session.currentId) }, { profileBio: description, age: age, instagramLink: instagram, facebookLink: facebook, publicSocials: number, notifcations: showNotifications })
     res.redirect('/profile');
 
 }));
@@ -142,22 +181,29 @@ app.post('/profileinfo', isLoggedIn, catchAsync(async (req, res) => {
 app.get('/profile/:id', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(req.params.id);
     const img = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/'
-    res.render('viewprofile', { user, img })
+    const currentUser = await User.findById(req.session.currentId)
+    const isFriend = (currentUser.friends.includes(user.id)) ? true : false;
+    navbarData = await navbarPreLoad(req.session.currentId)
+    res.render('viewprofile', { user, img, isFriend, navbarData })
 }));
 
 app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
+    console.log('a new event has been made')
     const { type, location, time, skill, description, turnout, notifcation } = req.body;
     const id = String(req.session.currentId);
-    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: time, hostId: id, groupSize: turnout })
+    var user = await User.findById(id)
+    const event = new Event({ sportType: type, description: description, location: location, level: skill, time: time, hostId: id, groupSize: turnout, city: user.city, state: user.state })
     await event.save();
+    console.log(notifcation)
+    console.log(sendTextMessages)
     if (notifcation !== 'nothing' & sendTextMessages) {
+        console.log('her her her')
         await sendText(notifcation, event)
     }
     const foundSport = await Sport.find({ type: type });
     const updatingSport = await Sport.findById(foundSport[0].id)
     updatingSport.eventId.push(event.id)
     await updatingSport.save();
-    var user = await User.findById(id)
     user.hostedEvents.push(event.id)
     await user.save();
     // req.flash('success', 'Successfully Created New Event');
@@ -172,9 +218,20 @@ app.post('/updateSportInterests', catchAsync(async (req, res, next) => {
         const foundSport = await Sport.find({ type: sportsArr[index] });
         eventIdArr.push(foundSport[0].id);
     }
-    const user = await User.findById(req.session.currentId);
-    user.sports = eventIdArr;
-    await user.save();
+    var state = '';
+    var city = '';
+    if (req.body.city != '' & req.body.state != '') {
+        state = req.body.state;
+        city = req.body.city;
+    } else {
+        const user = await User.findById(req.session.currentId);
+        state = user.state;
+        city = user.city;
+    }
+    await User.updateOne(
+        { _id: req.session.currentId },
+        { $set: { sports: eventIdArr, state: state, city: city } }
+    )
     res.redirect('/dashboard')
 }));
 
@@ -197,7 +254,7 @@ app.post('/register', catchAsync(async (req, res, next) => {
     const sportsArr = await createSportsIdArr(req.body.sport)
     const { email, firstName, lastName, password, sportA, phoneNumber } = req.body.user
     const username = email
-    const user = new User({ email: email, sports: sportsArr, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, username: username });
+    const user = new User({ email: email, sports: sportsArr, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, username: username, state: req.body.state, city: req.body.city });
     const newUser = await User.register(user, password)
     await user.save();
     req.session.isAuthenticated = true
@@ -211,7 +268,7 @@ app.get('/logout', (req, res) => {
     req.session.isAuthenticated = false
     req.session.currentId = null
     req.flash('success', 'Successfully Logged Out');
-    return res.redirect('/')
+    return res.redirect('/home')
 });
 
 app.post('/login', catchAsync(async (req, res, next) => {
@@ -254,67 +311,68 @@ app.post('/getProfiles', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 
-app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
+app.get('/dashboard', isLoggedIn, async (req, res, next) => {
     var upcomingContent = []
     var currentContent = []
-    var idArr = []
-    var userSports = []
-    var allSports = ['PingPong', 'Tennis', 'Pickleball', 'Basketball', 'Soccer', 'Football', 'Spikeball'];
     var date = new Date();
+    const user = await User.findById(req.session.currentId)
+    var sportNames = []
+    const userId = user.id
     const iconImg = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/';
-    const user = await User.findById(req.session.currentId);
-    const userImg = (user.profileImg) ? (user.profileImg) : iconImg;
-    for (eventIds in user.enrolledEvents) {
-        const event = await Event.findById(user.enrolledEvents[eventIds]);
-        const host = await User.findById(event.hostId);
-        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
+    for (sportIds of user.sports) {
+        const sport = await Sport.findById(sportIds, { type: 1 })
+        sportNames.push(sport.type)
+    }
+    var events = await Event.find({
+        city: user.city,
+        state: user.state,
+        sportType: { $in: sportNames }
+    })
+    const hostedEvents = await Event.find({
+        hostId: user.id
+    })
+    events = events.concat(hostedEvents)
+    const uniqueValuesSet = new Set();
+    const allEvents = events.filter((obj) => {
+        const isPresentInSet = uniqueValuesSet.has(obj.id);
+        uniqueValuesSet.add(obj.id);
+        return !isPresentInSet;
+    });
+    for (eachMatch of allEvents) {
+        if (eachMatch.time.getTime() >= date.getTime()) {
+            const host = await User.findById(eachMatch.hostId);
             const iconUrl = (host.profileImg) ? (host.profileImg) : iconImg;
-            arr = [(host.firstName + ' ' + host.lastName), event, event.time, iconUrl];
-            idArr.push(event.id);
-            currentContent.push(arr);
-        }
-    }
-
-    for (eventIds in user.hostedEvents) {
-        const event = await Event.findById(user.hostedEvents[eventIds])
-        if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
-            const iconUrl = (user.profileImg) ? (user.profileImg) : iconImg;
-            arr = [(user.firstName + ' ' + user.lastName), event, event.time, iconUrl];
-            idArr.push(event.id);
-            currentContent.push(arr);
-        }
-    }
-
-    for (sportIds in user.sports) {
-        const sport = await Sport.findById(user.sports[sportIds]);
-        userSports.push(sport.type)
-        index = allSports.indexOf(sport.type);
-        if (index > -1) {
-            allSports.splice(index, 1);
-        }
-        if (sport !== null) {
-            for (i in sport.eventId) {
-                const event = await Event.findById(sport.eventId[i]);
-                if (!idArr.includes(event.id) & event.time.getTime() >= date.getTime()) {
-                    const host = await User.findById(event.hostId);
-                    const iconUrl = (host.profileImg) ? (host.profileImg) : iconImg;
-                    arr = [(host.firstName + ' ' + host.lastName), event, event.time, iconUrl];
-                    idArr.push(event.id);
-                    upcomingContent.push(arr);
-                }
+            arr = [(host.firstName + ' ' + host.lastName), eachMatch, eachMatch.time, iconUrl];
+            if (eachMatch.participantId.includes(user.id) || eachMatch.hostId === user.id) {
+                currentContent.push(arr);
+            } else {
+                upcomingContent.push(arr)
             }
         }
     }
-    const userId = req.session.currentId
     upcomingContent.sort(function (x, y) {
         return x[1].time - y[1].time;
     });
     currentContent.sort(function (x, y) {
         return x[1].time - y[1].time;
     });
-    res.render('dashboard', { upcomingContent, currentContent, userId, userSports, userImg })
-}));
+    navbarData = await navbarPreLoad(req.session.currentId)
+    res.render('dashboard', { upcomingContent, currentContent, userId, navbarData })
+});
 
+async function navbarPreLoad(userId) {
+    var userSports = []
+    const iconImg = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/';
+    const user = await User.findById(userId);
+    const userImg = (user.profileImg) ? (user.profileImg) : iconImg;
+    const userCity = user.city
+    const userState = user.state
+    for (sportIds in user.sports) {
+        const sport = await Sport.findById(user.sports[sportIds]);
+        userSports.push(sport.type)
+    }
+    return { userSports, userImg, userCity, userState }
+}
 
 // app.get('/yomakesports', catchAsync(async (req, res) => {
 //     console.log('here')
@@ -351,23 +409,27 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
 //     return res.redirect('./');
 // });
 
+app.get('/standardizedUsers', async (req, res, next) => {
+    await User.updateMany({}, { $set: { friends: [], state: 'Iowa', city: 'Iowa City', notifcations: true, publicSocials: true, profileImg: 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/', age: 18 } })
+    return res.redirect('./');
+});
 
-app.get('/deleteEvents901', catchAsync(async (req, res) => {
-    delIdArr = []
-    var date = new Date();
-    date.setHours(date.getHours() - 6)
-    eventsArr = await Event.find({})
-    for (i in eventsArr) {
-        var eTime = eventsArr[i].time
-        if (eTime.getTime() < date.getTime()) {
-            delIdArr.push(eventsArr[i].id)
-            await Event.findByIdAndDelete(eventsArr[i].id)
-        }
-    }
-    await Sport.updateMany({}, { $pullAll: { eventId: delIdArr } })
-    await User.updateMany({}, { $pullAll: { enrolledEvents: delIdArr, hostedEvents: delIdArr } })
-    res.redirect('/')
-}))
+// app.get('/deleteEvents901', catchAsync(async (req, res) => {
+//     delIdArr = []
+//     var date = new Date();
+//     date.setHours(date.getHours() - 6)
+//     eventsArr = await Event.find({})
+//     for (i in eventsArr) {
+//         var eTime = eventsArr[i].time
+//         if (eTime.getTime() < date.getTime()) {
+//             delIdArr.push(eventsArr[i].id)
+//             await Event.findByIdAndDelete(eventsArr[i].id)
+//         }
+//     }
+//     await Sport.updateMany({}, { $pullAll: { eventId: delIdArr } })
+//     await User.updateMany({}, { $pullAll: { enrolledEvents: delIdArr, hostedEvents: delIdArr } })
+//     res.redirect('/')
+// }))
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
