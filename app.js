@@ -2,6 +2,12 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
+
+// const methodOverride = require('method-override');
+// const LocalStrategy = require('passport-local')
+// const engine = require('ejs-mate');
+// const session = require('express-session');
+// const flash = require('connect-flash');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -9,12 +15,6 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 const passport = require('passport');
-// const methodOverride = require('method-override');
-// const bodyParser = require('body-parser')
-// const LocalStrategy = require('passport-local')
-// const engine = require('ejs-mate');
-// const session = require('express-session');
-// const flash = require('connect-flash');
 const User = require('./models/user.js');
 const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
@@ -36,11 +36,11 @@ const user = require('./models/user.js');
 //Change For Going Live
 const db_url = process.env.DB_URL;
 const HostedPublicGroupId = "6290cfb510c085dfcda128d3"
-const currentUrl = db_url;
-const sendTextMessages = true;
-const allGroupId = HostedPublicGroupId;
-
-
+const currentUrl = db_url; //SET to db_url
+const sendTextMessages = true; //SET to true
+const allGroupId = HostedPublicGroupId; //Set to Hosted
+//Update ENV Frontend URL
+//Update Proxy on client
 
 mongoose.connect(currentUrl, {
     useNewUrlParser: true,
@@ -55,18 +55,25 @@ db.once("open", () => {
 
 
 const app = express();
-// app.use(express.json());
 app.use(bodyParser.json(), bodyParser.urlencoded({ extended: false }))
 app.use(cors({ origin: process.env.FRONT_END_URL }));
-// app.use(cookieParser());
+
 app.use(passport.initialize());
 
+// ALSO FOR HOSTING
+// Step 1:
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+// Step 2:
+app.get("*", function (request, response) {
+    response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
+// END
 
 
 
-// app.get('/about', (req, res) => {
-//     res.render('about')
-// });
+// app.use(cookieParser());
+// app.use(express.json());
+
 
 app.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne(
@@ -172,7 +179,6 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     user.hostedEvents.push(event.id)
     await user.save();
     return res.send(JSON.stringify('success'))
-    req.flash('success', 'Successfully Created New Event');
 }));
 
 
@@ -224,7 +230,6 @@ app.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req, res, next
     if (sendTextMessages) {
         updateNotification(user, event)
     }
-    // req.flash('success', 'Successfully Joined the ' + event.sportType + ' Match');
     return res.send(JSON.stringify('success'))
 }));
 
@@ -449,7 +454,6 @@ app.post('/register/groups', catchAsync(async (req, res) => {
 
 async function navbarPreLoad(userId) {
     var userSports = []
-    // var userSports = ['PingPong', 'Football', 'Tennis'];
     const iconImg = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/';
     const user = await User.findById(userId);
     const userImg = (user.profileImg) ? (user.profileImg) : iconImg;
@@ -529,7 +533,7 @@ async function navbarPreLoad(userId) {
 // })
 
 app.use((err, req, res, next) => {
-    console.log('at error handler')
+    // console.log('at error handler')
     return res.send(JSON.stringify("ERROR"));
 })
 
@@ -539,6 +543,6 @@ if (PORT == null || PORT == "") {
     PORT = 5000
 }
 app.listen(PORT, () => {
-    console.log('Serving on port 5000')
+    console.log(`Serving on port ${PORT}`)
 })
 
