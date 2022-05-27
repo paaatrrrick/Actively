@@ -12,6 +12,7 @@ const eventSchema = new Schema({
     hostId: { type: String, required: true },
     groupSize: { type: Number, required: false },
     participantId: [],
+    groups: []
 });
 
 module.exports = mongoose.model("Event", eventSchema);

@@ -4,12 +4,12 @@ if (process.env.NODE_ENV !== "production") {
 const User = require('../models/user.js');
 const Event = require('../models/event.js');
 const Sport = require('../models/sport.js');
-const user = require('../models/user.js');
+const Group = require('../models/group.js');
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
 
 module.exports.createSportsIdArr = async (dict) => {
     returnArr = []
-    for (let sport in dict) {
+    for (let sport of dict) {
         const foundSport = await Sport.find({ type: String(sport) });
         returnArr.push(String(foundSport[0].id))
     }
@@ -52,7 +52,7 @@ module.exports.timeSwitch = (date) => {
 
 module.exports.updateNotification = async (user, event) => {
     telePhoneArr = []
-    textStr = user.firstName + ' ' + user.lastName + " Joined your " + event.sportType + ' Match' + '\n' + 'Check it out on Actively: www.actively.group'
+    textStr = user.firstName + ' ' + user.lastName + " Joined your " + event.sportType + ' Match' + '\n' + 'Check it out on Actively: https://www.actively.group/login'
     for (i in event.participantId) {
         if (event.participantId[i] != user.id) {
             const participant = await User.findById(event.participantId[i])
@@ -71,19 +71,21 @@ module.exports.updateNotification = async (user, event) => {
 }
 
 
-module.exports.sendText = async (notifcation, event) => {
-    const user = await User.findById(event.hostId)
-    textStr = user.firstName + ' ' + user.lastName + " scheduled " + event.sportType + " for " + notifcation + " at the " + event.location + '.' + '\n' + 'Check it out on Actively: www.actively.group'
+module.exports.sendText = async (notifcation, event, allGroupId) => {
+    const user = await User.findById(event.hostId);
 
-    const sport = await Sport.find({ type: event.sportType })
-    const sportId = sport[0].id
-    usersArr = await User.find({ friends: event.hostId, sports: sport[0].id })
-    telePhoneArr = []
-    for (i in usersArr) {
-        if (usersArr[i].notifcations == false) {
-        } else {
-            telePhoneArr.push(String(usersArr[i].phoneNumber))
-        }
+    textStr = user.firstName + ' ' + user.lastName + " scheduled " + event.sportType + " for " + notifcation + " at the " + event.location + '.' + '\n' + 'Check it out on Actively: https://www.actively.group/login';
+    var telePhoneArr = [];
+    var groupIds = event.groups;
+    var index = groupIds.indexOf(allGroupId);
+    if (index !== -1) {
+        groupIds.splice(index, 1);
+    }
+    const users = await User.find({
+        groups: { $in: groupIds }
+    });
+    for (let user of users) {
+        telePhoneArr.push(user.phoneNumber);
     }
     for (i in telePhoneArr) {
         client.messages.create({
@@ -92,6 +94,29 @@ module.exports.sendText = async (notifcation, event) => {
             body: textStr
         })
     }
+
+    // const telePhoneArr = []
+    // for (let gId of event.groups) {
+    //     if (gId !== allGroupId) {
+    //         const group = await Group.findById(gId);
+    //         for (let pId of group.participantId) {
+    //             const user = await User.findById(pId)
+    //         }
+    //     }
+    // }
+
+
+    // console.log(groups)
+    // const sport = await Sport.find({ type: event.sportType })
+    // const sportId = sport[0].id
+    // usersArr = await User.find({ friends: event.hostId, sports: sport[0].id })
+    // telePhoneArr = []
+    // for (i in usersArr) {
+    //     if (usersArr[i].notifcations == false) {
+    //     } else {
+    //         telePhoneArr.push(String(usersArr[i].phoneNumber))
+    //     }
+    // }
 }
 
 

@@ -1,11 +1,27 @@
+
+const jwt = require("jsonwebtoken");
+const dotnev = require("dotenv").config();
+
 module.exports.isLoggedIn = (req, res, next) => {
-    // console.log('')
-    // console.log('Middleware')
-    // console.log(req.session.isAuthenticated)
-    if (!req.session.isAuthenticated) {
-        req.session.returnTo = req.originalUrl
-        return res.redirect('/');
-    } else {
-        next();
+    const token = req.headers["x-access'token"];
+    if (!token)
+        return res.send(JSON.stringify("not-logged-in"));
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+        res.ActivelyUserId = decoded._id;
+    } catch (er) {
+        return res.send(JSON.stringify("not-logged-in"));
     }
-}
+    next();
+};
+
+
+module.exports.errorCatch = (req, res, next) => {
+    try {
+        console.log('trying error')
+        next();
+    } catch (er) {
+        console.log('error founder')
+        return res.send(JSON.stringify("error"));
+    }
+};

@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     enrolledEvents: [],
     hostedEvents: [],
     friends: [],
+    groups: [],
     firstName: String,
     lastName: String,
     phoneNumber: String,
