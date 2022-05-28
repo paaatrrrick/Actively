@@ -301,10 +301,11 @@ app.post('/getProfiles', isLoggedIn, catchAsync(async (req, res) => {
     res.send(JSON.stringify({ key: users }))
 }));
 
-app.get('/isLoggedIn', isLoggedIn, catchAsync(async (req, res, next) => {
+app.get('/isLoggedIn', isLoggedIn, async (req, res, next) => {
+    console.log('at is logged in')
     navbarData = await navbarPreLoad(res.ActivelyUserId)
     res.send(JSON.stringify(navbarData))
-}));
+});
 
 app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var content = []
@@ -532,10 +533,10 @@ async function navbarPreLoad(userId) {
 //     next(new ExpressError('Page Not Found', 404))
 // })
 
-app.use((err, req, res, next) => {
-    // console.log('at error handler')
-    return res.send(JSON.stringify("ERROR"));
-})
+// app.use((err, req, res, next) => {
+//     // console.log('at error handler')
+//     return res.send(JSON.stringify("ERROR"));
+// })
 
 let PORT = process.env.PORT
 
