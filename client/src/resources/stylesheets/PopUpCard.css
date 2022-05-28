@@ -1,0 +1,90 @@
+.popUpDiv-PopUpDiv {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -90%);
+    width: min(80vw, 500px);
+    background-color: #f7f7fa;
+    border: solid 2px #263238;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.popUpDiv-headerDiv {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.popUpDiv-h4 {
+    color: #263238;
+}
+
+.popUpDiv-button {
+    background-color: #80fbbd;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+
+}
+
+.popUpDiv-cardHolder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.popUpDiv-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border: solid 3px #263238;
+    background-color: #f7f7fa;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100px;
+    height: 120px;
+    margin: 5px;
+
+}
+
+.popUpDiv-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.popUpDiv-link {
+    font-family: 'Open Sans', sans-serif;
+    color: #212529;
+    font-size: 12px;
+}
+
+@media only screen and (max-width: 1100px) {
+
+    .popUpDiv-card {
+        width: 80px;
+        height: 100px;
+    }
+
+    .popUpDiv-img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .popUpDiv-link {
+        font-size: 10px;
+    }
+
+}

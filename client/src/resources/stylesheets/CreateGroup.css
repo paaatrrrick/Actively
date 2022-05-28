@@ -1,0 +1,187 @@
+.CreateGroup-body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.CreateGroup-mainHolder {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.CreateGroup-h1 {
+    font-size: 40px;
+    color: #263238;
+    font-weight: 700;
+}
+
+.CreateGroup-btn {
+    width: 110px;
+    height: 60px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 20px;
+    transition-property: background-color;
+    transition-duration: 1s;
+    box-shadow: 0 4px 12px rgb(13 13 18 / 15%);
+}
+
+
+
+.CreateGroup-CurrentView {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-height: 400px;
+    height: 100vw;
+}
+
+.CreateGroup-bottomBtn {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.CreateGroup-back {
+    background-color: #fff;
+    color: #263238;
+    border: 1px solid #263238;
+    font-weight: 400;
+}
+
+.CreateGroup-back:hover {
+    background-color: #80fbbdc0;
+    cursor: pointer;
+
+}
+
+.CreateGroup-next {
+    background-color: #80fbbd;
+    color: #263238;
+    border: none;
+    font-weight: 600;
+
+}
+
+.CreateGroup-next:hover {
+    background-color: #05d16b;
+    cursor: pointer;
+}
+
+.CreateGroup-filler {
+    width: 110px;
+    height: 60px;
+}
+
+.CreateGroup-textInput {
+    width: 350px;
+    height: 40px;
+    min-width: 200px;
+    background: #fff;
+    border-style: solid;
+    border-color: rgb(240, 240, 240);
+    border-width: medium;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 5px;
+    margin-left: 0px;
+    margin-bottom: 1.5em;
+}
+
+.CreateGroup-textInput:focus {
+    outline: 2px solid #80fbbd;
+    border-color: #fff;
+}
+
+.CreateGroup-h3 {
+    font-weight: 400;
+    font-size: 35px;
+    margin-bottom: 20px;
+    color: #212529;
+
+}
+
+/* 1 */
+.CreateGroup-View1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/*3 */
+#CreateGroup-textarea {
+    resize: none;
+    width: 550px;
+    height: 150px;
+}
+
+/*5*/
+
+.CreateGroup-profileImg {
+    margin-top: 20px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+
+}
+
+/* 6 */
+
+.CreateGroup-bannerImg {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 800px;
+    height: 200px;
+}
+
+
+@media only screen and (max-width: 1100px) {
+    .CreateGroup-mainHolder {
+        align-items: center;
+    }
+
+    .CreateGroup-h3 {
+        font-size: 22px;
+    }
+
+    .CreateGroup-textInput {
+        width: 250px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .CreateGroup-textInput::placeholder {
+        font-size: 16px
+    }
+
+    #CreateGroup-textarea {
+        width: 280px;
+        height: 150px;
+    }
+
+    .CreateGroup-profileImg {
+        width: 125px;
+        height: 125px;
+    }
+
+    .CreateGroup-bannerImg {
+
+        width: 300px;
+        height: 75px;
+    }
+
+}

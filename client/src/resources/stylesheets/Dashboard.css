@@ -1,0 +1,43 @@
+.Dashboard {
+    background-color: #f7f7fa;
+    padding: 40px 20px;
+}
+
+.Dashboard-marginTop {
+    margin-top: 20px
+}
+
+#firstDashboardh3 {
+    margin-top: 40px;
+}
+
+.Dashboard-h3 {
+    font-family: 'Open Sans', sans-serif;
+    color: #212529;
+    font-size: 1.5rem;
+    margin: 0rem 1.5rem 0.5rem 1.5rem;
+}
+
+.Dashboard-hr {
+    background: #f7f7fa;
+    margin: 0rem 1.5rem 1rem 1.5rem;
+    height: .25rem;
+    border-radius: 5px;
+    border: none;
+    background-image: linear-gradient(100deg,
+            hsl(150deg 94% 74%) 0%,
+            hsl(152deg 89% 74%) 9%,
+            hsl(154deg 85% 73%) 18%,
+            hsl(156deg 81% 73%) 28%,
+            hsl(158deg 76% 72%) 38%,
+            hsl(161deg 73% 72%) 49%,
+            hsl(164deg 69% 71%) 60%,
+            hsl(167deg 65% 71%) 71%,
+            hsl(170deg 62% 70%) 81%,
+            hsl(173deg 59% 69%) 88%,
+            hsl(177deg 55% 69%) 93%,
+            hsl(180deg 53% 68%) 96%,
+            hsl(184deg 55% 69%) 98%,
+            hsl(188deg 58% 69%) 99%,
+            hsl(191deg 60% 69%) 100%);
+}

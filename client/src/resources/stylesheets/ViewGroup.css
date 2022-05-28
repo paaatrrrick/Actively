@@ -1,0 +1,177 @@
+.ViewGroup-highest {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f7f7fa;
+}
+
+.ViewGroup-body {
+    width: 800px;
+    max-width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.ViewGroup-container1 {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #e5e5eb;
+    padding-bottom: 16px;
+    border-radius: 5px;
+}
+
+.ViewGroup-images {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    margin-bottom: -60px;
+}
+
+.ViewGroup-bannerImg {
+    width: 100%;
+    margin-top: 60px;
+    height: 200px;
+    border-radius: 5px;
+}
+
+.ViewGroup-iconImg {
+    position: relative;
+    bottom: 70px;
+    left: 30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+}
+
+.ViewGroup-TopText {
+    width: 400px;
+}
+
+.ViewGroup-conentholder {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 50px;
+}
+
+.ViewGroup-h1 {
+    color: #212529;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.ViewGroup-h3 {
+    color: #212529;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.ViewGroup-p {
+    color: #212529;
+    font-size: 18px;
+    width: 500px;
+
+}
+
+
+.ViewGroup-container2 {
+    margin-top: 10px;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #e5e5eb;
+    padding-bottom: 16px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ViewGroup-hr {
+    width: 60%;
+    color: #212529;
+
+}
+
+.ViewGroup-contentholder2 {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+.ViewGroup-membersList {
+    width: 70%;
+}
+
+
+.ViewGroup-ml {
+    margin-left: 20px;
+    margin-bottom: -5px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .ViewGroup-conentholder {
+        align-items: center;
+        margin-left: 0px;
+    }
+
+    .ViewGroup-TopText {
+        width: 100%;
+        margin-left: 40px;
+    }
+
+    .ViewGroup-iconImg {
+        position: relative;
+        bottom: 40px;
+        left: 30px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .ViewGroup-contentholder2 {
+        align-items: center;
+    }
+
+    .ViewGroup-images {
+        margin-bottom: -40px;
+    }
+
+
+    .ViewGroup-body {
+        width: 600px;
+    }
+
+    .ViewGroup-bannerImg {
+        width: 100%;
+        height: 25vw;
+    }
+
+
+    .ViewGroup-h1 {
+        font-size: 24px;
+    }
+
+    .ViewGroup-h3 {
+        font-size: 16px;
+    }
+
+    .ViewGroup-p {
+        font-size: 12px;
+        width: 300px;
+
+    }
+
+    .ViewGroup-membersList {
+        width: 90%;
+        margin-left: -20px;
+    }
+}

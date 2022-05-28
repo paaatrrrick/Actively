@@ -1,0 +1,129 @@
+.Event {
+    padding: 15px;
+    margin: 30px 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF;
+    align-items: flex-start;
+    box-shadow: 0 8px 24px rgb(13 13 18 / 5%);
+}
+
+.Event-personalInfoDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+
+}
+
+.Event-profileIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+
+#nameText {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0px;
+}
+
+.Event-textSpan {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.Event-sportIconImg {
+    width: 30px;
+    margin-left: 10px;
+    margin-right: 20px;
+
+}
+
+.Event-h4 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: #212529;
+
+}
+
+.Event-groupsize {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-left: 10px;
+    background-color: #f7f7fa;
+    padding: 3px 6px 3px 6px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    border: none;
+    transition: 2s;
+    transition-property: background-color;
+
+}
+
+
+.Event-p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.Event-groupsize:hover {
+    cursor: pointer;
+    background-color: #80fbbd;
+}
+
+.Event-insideHolder {
+    margin-left: 60px;
+    margin-bottom: 6px;
+}
+
+.Event-Recreational {
+    background-color: #82cfe0;
+}
+
+.Event-Advanced {
+    background-color: #ffddc0;
+}
+
+.Event-Anyone {
+    background-color: #80fbbd;
+}
+
+.Event-Beginner {
+    background-color: #80fbbd;
+}
+
+.Event-divBottomItem {
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 3px 6px 3px 6px;
+    border-radius: 5px;
+}
+
+#joinBtn {
+    font-family: 'Open Sans', sans-serif;
+    border: none;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 3px 6px 3px 6px;
+    border-radius: 5px;
+}
+
+#joinBtn:hover {
+    cursor: pointer;
+}
+
+.Event-everyThingElse {
+    background-color: #80fbbd;
+}

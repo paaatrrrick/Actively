@@ -1,0 +1,362 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+.Register {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.Register-main {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.Register-h3 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #263238;
+
+}
+
+.Reigster-ul li {
+    font-size: 20px;
+    color: #263238;
+    margin-left: 40px;
+
+}
+
+.Register-Information {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 30px;
+    border-radius: 30px;
+    padding: 30px;
+}
+
+.Register-img {
+    width: 375px;
+}
+
+.Register-row2Col {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.Register-h1 {
+    color: #263238;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 18vh;
+    margin-top: 8vh;
+}
+
+#Register-logo {
+    background-image: -webkit-gradient(linear, left top, right top, from(#03F57C), color-stop(23%, #03F57C), to(#82cfe0));
+    background-image: linear-gradient(90deg, #03F57C, #03F57C 4%, #82cfe0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 55px;
+}
+
+.Register-currentSlide {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    /* border: 2px solid black; */
+}
+
+.Register-btn {
+    width: 110px;
+    height: 60px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    transition-property: background-color;
+    transition-duration: 1s;
+    box-shadow: 0 4px 12px rgb(13 13 18 / 15%);
+}
+
+.Register-bottomBtn {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.Register-back {
+    background-color: #fff;
+    color: #263238;
+    border: 2px solid #263238;
+}
+
+.Register-back:hover {
+    background-color: rgb(227, 227, 227);
+}
+
+.Register-next {
+    background-color: #80fbbd;
+    color: #263238;
+    border: none;
+}
+
+.Register-next:hover {
+    background-color: #05d16b;
+}
+
+.Register-view {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Register-h4 {
+    font-weight: 400;
+    font-size: 35px;
+    margin-bottom: 20px;
+    color: #212529;
+}
+
+.Register-View-Content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.ViewContent-stateCitySelectors {
+    margin-bottom: 110px;
+}
+
+.Register-dropdown {
+    width: 225px;
+    height: 50px;
+}
+
+
+
+/* 2 */
+/* .Register-ul {
+    list-style-type: none;
+}
+
+.Register-li {
+    display: inline-block;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+} */
+
+
+/* input[type="checkbox"] {
+    display: none;
+} */
+
+.Register-radio-button input[type="checkbox"] {
+    display: none;
+}
+
+.Register-radio-button label:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 28px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+}
+
+.Register-radio-button label {
+    border: 1px solid #262626;
+    border-radius: 5px;
+    padding: 7px;
+    display: block;
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+}
+
+.Register-radio-button input[type="checkbox"]:checked+label:before {
+    content: "✓";
+    background-color: #80fbbd;
+    transform: scale(1);
+}
+
+.Register-radio-button input[type="checkbox"]:checked+label {
+    margin: 8px;
+    border: 3px solid #80fbbd;
+}
+
+.Register-cardImg {
+    width: 60px;
+    height: 60px;
+}
+
+.Register-sporth4 {
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+/* 3 */
+
+.Register-View-Content3 {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
+.Register-mid {
+    width: 300px;
+    height: 30px;
+}
+
+/* 4 */
+
+.Register-flexwrap {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.Register-groupImg {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 2px;
+    border: 1px solid #212529;
+}
+
+.Register-w22 {
+    width: 350px;
+}
+
+.Register-cardRightSide {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.Register-grouph4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #212529;
+}
+
+
+.Register-grouph5 {
+    font-size: 12px;
+    font-weight: 400;
+    color: #212529;
+}
+
+@media only screen and (max-width: 1000px) {
+
+    #Register-logo {
+        font-size: 25px;
+    }
+
+    .Register-h1 {
+        font-size: 25px;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+
+    .Register-Information {
+        display: none;
+    }
+
+    .Register-h4 {
+        font-size: 22px;
+    }
+
+    .Register-dropdown {
+        width: 150px;
+    }
+
+    .ViewContent-stateCitySelectors {
+        margin-bottom: 30px;
+    }
+
+    .Register-cardImg {
+        width: 50px;
+        height: 50px;
+    }
+
+    .Register-radio-button label {
+        padding: 4px;
+        display: block;
+        margin: 2px 4px 2px 0px;
+    }
+
+    .Register-radio-button {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+
+    }
+
+    .Register-sporth4 {
+        font-size: 10px;
+    }
+
+    .Register-mid {
+        width: 50%;
+    }
+
+    .Register-mid::placeholder {
+        font-size: 14px;
+    }
+
+    .Register-w22 {
+        width: 100%;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+
+    .Register-flexwrap {
+        flex-direction: column;
+        align-items: center;
+    }
+
+}

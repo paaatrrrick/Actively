@@ -1,0 +1,392 @@
+/* .uploadcare--jcrop-holder>div>div,
+#preview {
+    border-radius: 50%;
+} */
+
+.uploadcare--widget_status_loaded {
+    display: none;
+}
+
+.Profile-parent .uploadcare--widget .uploadcare--widget__button {
+    visibility: hidden;
+    position: relative;
+    width: 20px;
+    height: 30px;
+    right: 80px;
+    bottom: 100px;
+}
+
+.Profile-parent .uploadcare--widget .uploadcare--widget__button:after {
+    content: ' ';
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-image: url('../images/pp4.png');
+    visibility: visible;
+    display: block;
+    position: absolute;
+    background-color: gray;
+    padding: 5px;
+    top: 2px;
+}
+
+
+.Profile-body {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.Profile-inputLabel {
+    padding-left: 5px;
+}
+
+.Profile-displayNone {
+    display: none;
+}
+
+#Profile-preview {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    border: 4px solid #212529;
+    padding: 4px;
+    margin-right: 25px;
+    z-index: -150;
+}
+
+
+.Profile-mainHolder {
+    min-width: 350px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: 10px;
+
+}
+
+#first {
+    padding-right: 15px;
+}
+
+.Profile-Profile-w100 {
+    width: 100%;
+}
+
+.Profile-topSection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.Profile-row2Column {
+    display: flex;
+    flex-direction: row;
+}
+
+.Profile-ageHolder {
+    margin-left: 100px;
+}
+
+.Profile-h1 {
+    font-size: 48px;
+    padding-bottom: 15px;
+}
+
+.Profile-h2 {
+    font-size: 32px;
+}
+
+.Profile-socialDiv {
+    padding: 6px;
+    border-radius: 15px;
+    width: 325px;
+}
+
+.Profile-instagramDiv {
+    border: 2px solid #c51899;
+}
+
+.Profile-facebookDiv {
+    border: 2px solid #2f77f2;
+    margin-left: 10px;
+}
+
+#description {
+    width: 100%;
+    resize: none
+}
+
+
+.Profile-socialMediaHolder {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+
+.Profile-socialInput {
+    background: #fff;
+    border-style: none;
+    font-size: 20px;
+    font-weight: 400;
+    color: #212529;
+    width: 100%;
+}
+
+.Profile-socialInput:focus {
+    outline: 0px solid #80fbbd;
+    border-radius: 4px;
+}
+
+
+.Profile-input1 {
+    background: #fff;
+    border-style: solid;
+    border-color: rgb(240, 240, 240);
+    border-width: medium;
+    padding: 3px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212529;
+    border-radius: 4px;
+
+    margin-top: 10px;
+}
+
+.Profile-input1:focus {
+    outline: 2px solid #80fbbd;
+    border-radius: 4px;
+    border-color: #fff;
+}
+
+
+.Profile-social {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.Profile-inputRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.Profile-cityAge {
+    display: flex;
+    flex-direction: row;
+}
+
+.Profile-m {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.Profile-mr {
+    margin-right: 15px;
+}
+
+#btnHolder {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#submitBtn {
+    border: none;
+    margin-top: 20px;
+    padding: 10px 40px;
+    border-radius: 20px;
+    width: 320px;
+    height: 40px;
+}
+
+
+.Profile-h4 {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+
+.Profile-sliderDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: -18px;
+    width: 95%;
+}
+
+.Profile-label {
+    margin: 20px;
+    position: relative;
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.Profile-label input {
+    position: relative;
+    z-index: 1;
+    appearance: none;
+    display: none;
+}
+
+.Profile-label span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffc1c0;
+    border-radius: 40px;
+    transition: 0.5s;
+    box-shadow: 0 2px 7px #ffc1c0;
+}
+
+.Profile-label input:checked~span {
+    background-color: #80fbbd;
+    box-shadow: 0 1px 3px #80fbbd;
+}
+
+.Profile-label span i {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 36px;
+    height: 36px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+.Profile-label input:checked~span i {
+    left: 42px;
+}
+
+.Profile-label span i::before {
+    content: '';
+    width: 6px;
+    top: 11px;
+    left: 7px;
+    height: 6px;
+    position: absolute;
+    background: #ffc1c0;
+    border-radius: 50%;
+    box-shadow: 15.5px 0 0 #ffc1c0;
+    transition: 0.5s;
+}
+
+.Profile-label input:checked~span i::before {
+    background: #80fbbd;
+    box-shadow: 15.5px 0 0 #80fbbd;
+}
+
+.Profile-label span i::after {
+    content: '';
+    bottom: 7.5px;
+    width: 15px;
+    height: 3px;
+    left: calc(50% - 7.5PX);
+    position: absolute;
+    border-radius: 3px;
+    background: #ffc1c0;
+    transition: 0.5s;
+}
+
+.Profile-label input:checked~span i::after {
+    bottom: 6px;
+    height: 7.5px;
+    border-radius: 0;
+    border-bottom-left-radius: 7.5px;
+    border-bottom-right-radius: 7.5px;
+    background: #80fbbd;
+}
+
+
+
+
+
+@media only screen and (max-width: 1000px) {
+    .Profile-labelsocialMediaHolder {
+        flex-direction: column;
+    }
+
+    .Profile-labelfacebookDiv {
+        margin-top: 5px;
+        margin-left: 0px;
+        margin-bottom: -10px;
+    }
+
+    .Profile-labelrow2Column {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .Profile-labelh1 {
+        font-size: 42px;
+    }
+
+    .Profile-labelh4 {
+        font-size: 18px;
+    }
+
+    #preview {
+        margin-top: 120px;
+    }
+
+    #submitBtn {
+        margin-bottom: 100px;
+    }
+
+
+
+
+}
+
+@media only screen and (max-width: 800px) {
+
+    .Profile-labelsliderDiv {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .Profile-labelsliderRow {
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
+
+    .Profile-labeltopSection {
+        flex-direction: column;
+    }
+
+    .Profile-labelcityAge {
+        margin-top: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .Profile-labelageHolder {
+        margin-top: 5px;
+        margin-left: 0px;
+    }
+
+    .Profile-labelbody {
+        justify-content: flex-start;
+    }
+}

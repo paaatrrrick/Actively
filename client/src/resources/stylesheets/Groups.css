@@ -1,0 +1,201 @@
+.Groups-body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.Groups-container {
+    margin: 10px;
+}
+
+.Groups-rowToColomn {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.Groups-h1 {
+    margin-right: 15px;
+}
+
+.Groups-input1 {
+    background: #fff;
+    border-style: solid;
+    border-color: rgb(240, 240, 240);
+    border-width: medium;
+    padding: 3px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212529;
+    border-radius: 12px;
+    margin-right: 5px;
+    width: 150px;
+    margin-top: 5px;
+}
+
+.Groups-btn1 {
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+    color: #263238;
+    background-color: #80fbbd;
+    border-radius: 25px;
+    font-size: 16px;
+    padding: 4px 12px;
+    font-weight: 600;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    height: 35px;
+    margin-right: 10px;
+    border: none;
+}
+
+.Groups-btn1:hover {
+    cursor: pointer;
+}
+
+
+.Groups-input1:focus {
+    outline: 2px solid #80fbbd;
+    border-radius: 4px;
+    border-color: #fff;
+}
+
+
+.Groups-friendDiv {
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    margin-top: 15px;
+    border-radius: 14px;
+    padding: 2px 8px;
+    height: 50px;
+    box-shadow: 0 2px 2px 2px rgb(0 0 0 / 4%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Groups-friendDiv h4 {
+    font-weight: 400;
+    font-size: 18px;
+    color: #212529;
+
+}
+
+.Groups-friendDiv .Groups-leftside {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.Groups-friendDiv .Groups-leftside img {
+    width: 45px;
+    border-radius: 50%;
+}
+
+.Groups-friendDiv .Groups-leftside h3 {
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #212529;
+    text-decoration: underline;
+    text-decoration-color: #fff;
+}
+
+.Groups-friendDiv .Groups-friend {
+    border-radius: 12px;
+    border: none;
+    font-family: 'Open Sans', sans-serif;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 400;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.Groups-friendDiv .Groups-friend:hover {
+    cursor: pointer;
+}
+
+.Groups-add {
+    background-color: #2f77f2;
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: #2f77f2;
+
+}
+
+.Groups-remove {
+    background-color: #fbc1c0;
+    color: #212529;
+}
+
+
+.Groups-displayNone {
+    display: none;
+}
+
+.Groups-p {
+    color: #212529;
+    font-size: 12px;
+    text-decoration: underline;
+    text-decoration-color: #fff;
+    margin-left: 2px;
+
+}
+
+
+@media only screen and (max-width: 1000px) {
+    .Groups-h1 {
+        margin-bottom: 10px;
+    }
+
+    .Groups-rowToColomn {
+        margin-top: 40px;
+    }
+
+
+    .Groups-input1 {
+        margin-top: 10px;
+        width: 100px;
+        border-radius: 10px;
+    }
+
+    .Groups-inputDiv {
+        flex-wrap: wrap;
+    }
+
+
+    .Groups-rowToColomn {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .Groups-friendDiv {
+        height: 40px;
+        border-radius: 14px;
+    }
+
+    .Groups-friendDiv h4 {
+        font-size: 16px;
+    }
+
+
+    .Groups-friendDiv .Groups-leftside img {
+        width: 35px;
+    }
+
+    .Groups-friendDiv .Groups-leftside h3 {
+        font-size: 14px;
+    }
+
+}

@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+.def-flashHolder {
+    position: absolute;
+    top: 70px;
+    left: 0px;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.def-innerFlash {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 50vw;
+    min-width: 300px;
+    padding: 2px 30px 2px 30px;
+    border-radius: 5px;
+    z-index: 500;
+    height: 50px;
+}
+
+.def-vanish {
+    display: none;
+}
+
+.def-wrap {
+    flex-wrap: wrap;
+}
+
+
+.def-innerFlash * {
+    z-index: 501;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.def-lashText {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.def-flashBtn {
+    text-decoration: none;
+    background-color: transparent;
+    border-radius: 5px;
+    border: none;
+    font-size: .9rem;
+    margin-left: 15px;
+    font-weight: 700;
+}
+
+.def-innerG {
+    background-color: #d4edda;
+}
+
+.def-textG {
+    color: #155724;
+}
+
+.def-btnG {
+    color: #0b2e13;
+}
+
+.def-innerR {
+    background-color: #f8d7da;
+}
+
+.def-textR {
+    color: #813138;
+}
+
+.def-btnR {
+    color: #491217;
+}
+
+
+.def-btn {
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+    background-color: #80fbbd;
+    border-radius: 5px;
+    color: #263238;
+    padding: 0.4em .8em 0.4em .8em;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.def-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.def-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.def-alignCenter {
+    align-items: center;
+}
+
+.def-justifyconentCenter {
+    justify-content: center;
+
+}
+
+.def-alignStart {
+    align-items: flex-start;
+}
+
+.def-badInput {
+    border-color: #fff;
+    outline: 2px solid #f8d7da;
+}
+
+.def-goodInput {
+    border-color: #fff;
+    outline: 2px solid #80fbbd;
+}
+
+
+#login {
+    position: absolute;
+    right: 200px;
+    top: 44px;
+    text-decoration: none;
+    padding: 0.2em .7em 0.2em .7em;
+    color: #263238;
+    text-align: center;
+    font-size: 16px;
+    border: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    border-color: #263238;
+}
+
+#register {
+    position: absolute;
+    right: 3vw;
+    top: 40px;
+    letter-spacing: 1.2px
+}
+
+#logout {
+    position: absolute;
+    right: 3vw;
+    top: 40px;
+    letter-spacing: 1.2px
+}
+
+#logo {
+    background-clip: text;
+    background-image: -webkit-gradient(linear, left top, right top, from(#03F57C), color-stop(23%, #03F57C), to(#82cfe0));
+    background-image: linear-gradient(90deg, #03F57C, #03F57C 4%, #82cfe0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 4rem;
+}
+
+@media only screen and (max-width: 1000px) {
+
+    #login {
+        top: 17px;
+        right: 160px;
+    }
+
+    #logo {
+        font-size: 2.5rem;
+    }
+
+    #logout {
+        top: 15px;
+    }
+
+    #register {
+        top: 15px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    #login {
+        font-size: 12px;
+        right: 125px;
+    }
+
+    #register {
+        font-size: 12px;
+    }
+}
