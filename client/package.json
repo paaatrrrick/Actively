@@ -24,7 +24,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://www.actively.group",
+  "proxy": "https://activelygroup.herokuapp.com/",
   "eslintConfig": {
     "extends": [
       "react-app",
