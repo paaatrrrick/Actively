@@ -1,6 +1,8 @@
 
 const jwt = require("jsonwebtoken");
-const dotnev = require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
 
 module.exports.isLoggedIn = (req, res, next) => {
     const token = req.headers["x-access'token"];
@@ -10,7 +12,7 @@ module.exports.isLoggedIn = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
         res.ActivelyUserId = decoded._id;
     } catch (er) {
-        return res.send(JSON.stringify("not-logged-in"));
+        return res.send(JSON.stringify("loggin-error"));
     }
     next();
 };
