@@ -12,7 +12,7 @@ module.exports.isLoggedIn = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
         res.ActivelyUserId = decoded._id;
     } catch (er) {
-        return res.send(JSON.stringify("loggin-error"));
+        return res.send(JSON.stringify("ERROR"));
     }
     next();
 };
@@ -24,6 +24,6 @@ module.exports.errorCatch = (req, res, next) => {
         next();
     } catch (er) {
         console.log('error founder')
-        return res.send(JSON.stringify("error"));
+        return res.send(JSON.stringify("ERROR"));
     }
 };

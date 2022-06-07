@@ -70,7 +70,7 @@ export default class Dashboard extends Component {
     render() {
         const { currentContent, userId } = this.state;
         var cEvents = []
-        for (var i = 0; i < currentContent.length; i++) {
+        for (var i = 0; currentContent && i < currentContent.length; i++) {
             cEvents.push(
                 <EventCard
                     hostName={currentContent[i][0]}
