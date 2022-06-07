@@ -64,9 +64,6 @@ app.use(passport.initialize());
 // Step 1:
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 // Step 2:
-app.get("/", function (request, response) {
-    response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
-});
 
 // END
 
@@ -74,8 +71,9 @@ app.get("/", function (request, response) {
 // app.use(cookieParser());
 // app.use(express.json());
 
+const baseController = express.Router();
 
-app.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne(
         { _id: res.ActivelyUserId },
         { $push: { friends: req.body.id } }
@@ -83,13 +81,13 @@ app.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
     return res.send(JSON.stringify('success'))
 }));
 
-app.post('/removeFriend', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/removeFriend', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne({ _id: res.ActivelyUserId }, { $pull: { friends: { $eq: req.body.id } } })
     return res.send(JSON.stringify('success'))
 }));
 
 
-app.post('/joingroup', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/joingroup', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne(
         { _id: res.ActivelyUserId },
         { $push: { groups: req.body.id } }
@@ -101,14 +99,14 @@ app.post('/joingroup', isLoggedIn, catchAsync(async (req, res) => {
     return res.send(JSON.stringify('success'))
 }));
 
-app.post('/leavegroup', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/leavegroup', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne({ _id: res.ActivelyUserId }, { $pull: { groups: { $eq: req.body.id } } })
     await Group.updateOne({ _id: req.body.id }, { $pull: { participantId: { $eq: res.ActivelyUserId } } })
     return res.send(JSON.stringify('success'))
 }));
 
 
-app.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne(
         { _id: res.ActivelyUserId },
         { $push: { friends: req.body.id } }
@@ -116,12 +114,12 @@ app.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
     return res.send(JSON.stringify('success'))
 }));
 
-app.post('/removeFriend', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/removeFriend', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne({ _id: res.ActivelyUserId }, { $pull: { friends: { $eq: req.body.id } } })
     return res.send(JSON.stringify('success'))
 }));
 
-app.post('/findFriends', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/findFriends', isLoggedIn, catchAsync(async (req, res) => {
     var returnData = []
     const users = await User.find({ firstName: req.body.first, lastName: req.body.last })
     const currentUser = await User.findById(res.ActivelyUserId);
@@ -137,20 +135,20 @@ app.post('/findFriends', isLoggedIn, catchAsync(async (req, res) => {
     return res.send(JSON.stringify(returnData))
 }));
 
-app.get('/profile', isLoggedIn, catchAsync(async (req, res) => {
+baseController.get('/profile', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(res.ActivelyUserId);
     const img = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/'
     navbarData = await navbarPreLoad(res.ActivelyUserId)
     return res.json({ user, img, navbarData })
 }));
 
-app.post('/profileinfo', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/profileinfo', isLoggedIn, catchAsync(async (req, res) => {
     var { description, instagram, facebook, age, shareNumber, notifcation, idUrl } = req.body;
     const user = await User.findByIdAndUpdate({ _id: String(res.ActivelyUserId) }, { profileBio: description, age: age, instagramLink: instagram, profileImg: idUrl, facebookLink: facebook, publicSocials: shareNumber, notifcations: notifcation })
     return res.send(JSON.stringify('success'))
 }));
 
-app.get('/profile/:id', isLoggedIn, catchAsync(async (req, res) => {
+baseController.get('/profile/:id', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(req.params.id);
     const currentUser = await User.findById(res.ActivelyUserId);
     const isFriend = (currentUser.friends.includes(user.id)) ? true : false;
@@ -158,7 +156,7 @@ app.get('/profile/:id', isLoggedIn, catchAsync(async (req, res) => {
     res.send(JSON.stringify({ user: user, ifFriend: isFriend, navbarData: navbarData }))
 }));
 
-app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
+baseController.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout, notifcation, groups } = req.body;
     var newGroup = []
     for (let group of groups) {
@@ -182,7 +180,7 @@ app.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
 }));
 
 
-app.get('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
+baseController.get('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     var groupArr = [{ label: "Share Publicly", value: allGroupId }];
     const user = await User.findById(res.ActivelyUserId);
     for (let groupids of user.groups) {
@@ -196,7 +194,7 @@ app.get('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
 }));
 
 
-app.post('/updateSportInterests', isLoggedIn, catchAsync(async (req, res, next) => {
+baseController.post('/updateSportInterests', isLoggedIn, catchAsync(async (req, res, next) => {
     sportsArr = req.body.desiredSports;
     eventIdArr = [];
     for (index in sportsArr) {
@@ -220,7 +218,7 @@ app.post('/updateSportInterests', isLoggedIn, catchAsync(async (req, res, next) 
     return res.send(JSON.stringify('success'))
 }));
 
-app.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
+baseController.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
     const event = await Event.findById(req.params.eventId);
     event.participantId = event.participantId.concat([String(res.ActivelyUserId)])
     await event.save();
@@ -234,7 +232,7 @@ app.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req, res, next
 }));
 
 
-app.post('/register', async (req, res, next) => {
+baseController.post('/register', async (req, res, next) => {
     const sportsArr = await createSportsIdArr(req.body.sports)
     const { state, city, first, last, email, password, phone, age, groups } = req.body
     const username = email
@@ -265,7 +263,7 @@ app.post('/register', async (req, res, next) => {
 });
 
 
-app.post('/login', catchAsync(async (req, res, next) => {
+baseController.post('/login', catchAsync(async (req, res, next) => {
     console.log('recieved')
     try {
         const { email, password } = req.body;
@@ -283,7 +281,7 @@ app.post('/login', catchAsync(async (req, res, next) => {
 }));
 
 
-app.post('/getProfiles', isLoggedIn, catchAsync(async (req, res) => {
+baseController.post('/getProfiles', isLoggedIn, catchAsync(async (req, res) => {
     const event = await Event.findById(req.body.id);
     var users = []
     for (let i = 0; i < event.participantId.length; i++) {
@@ -301,13 +299,13 @@ app.post('/getProfiles', isLoggedIn, catchAsync(async (req, res) => {
     res.send(JSON.stringify({ key: users }))
 }));
 
-app.get('/isLoggedIn', isLoggedIn, async (req, res, next) => {
+baseController.get('/isLoggedIn', isLoggedIn, async (req, res, next) => {
     console.log('at is logged in')
     navbarData = await navbarPreLoad(res.ActivelyUserId)
     res.send(JSON.stringify(navbarData))
 });
 
-app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
+baseController.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     var content = []
     var date = new Date();
     const userId = res.ActivelyUserId;
@@ -363,95 +361,98 @@ app.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
     return res.json({ content, userId, navbarData })
 }));
 
+const groupController = express.Router();
 
-app.post('/creategroup', isLoggedIn, catchAsync(async (req, res) => {
-    const { name, description, sportType, bannerImg, iconImg, usualLocation } = req.body
-    const user = await User.findById(res.ActivelyUserId);
-    const group = new Group({ name: name, description: description, sportType: sportType, bannerImg: bannerImg, iconImg: iconImg, usualLocation: usualLocation, participantId: [res.ActivelyUserId], hostId: res.ActivelyUserId, state: user.state, city: user.city });
-    await group.save();
-    await User.updateOne(
-        { _id: res.ActivelyUserId },
-        { $push: { groups: group.id } }
-    )
-    return res.send(JSON.stringify({ id: group.id }))
+groupController.post('/creategroup', isLoggedIn, catchAsync(async (req, res) => {
+	const { name, description, sportType, bannerImg, iconImg, usualLocation } = req.body
+	const user = await User.findById(res.ActivelyUserId);
+	const group = new Group({ name: name, description: description, sportType: sportType, bannerImg: bannerImg, iconImg: iconImg, usualLocation: usualLocation, participantId: [res.ActivelyUserId], hostId: res.ActivelyUserId, state: user.state, city: user.city });
+	await group.save();
+	await User.updateOne(
+		{ _id: res.ActivelyUserId },
+		{ $push: { groups: group.id } }
+	)
+	return res.send(JSON.stringify({ id: group.id }))
 }));
 
-app.get('/group/:groupId', isLoggedIn, catchAsync(async (req, res) => {
-    var returnData = []
-    const currentGroup = await Group.findById(req.params.groupId);
-    for (let i = 0; i < currentGroup.participantId.length; i++) {
-        const user = await User.findById(currentGroup.participantId[i]);
-        returnData.push({
-            first: user.firstName,
-            last: user.lastName,
-            id: user.id,
-            icon: user.profileImg,
-            isFriend: (user.friends.includes(res.ActivelyUserId))
-        })
-    }
-    const currentId = res.ActivelyUserId;
-    const navbarData = await navbarPreLoad(currentId)
-    return res.json({ returnData, currentGroup, navbarData, currentId })
+groupController.get('/group/:groupId', isLoggedIn, catchAsync(async (req, res) => {
+	var returnData = []
+	const currentGroup = await Group.findById(req.params.groupId);
+	for (let i = 0; i < currentGroup.participantId.length; i++) {
+		const user = await User.findById(currentGroup.participantId[i]);
+		returnData.push({
+			first: user.firstName,
+			last: user.lastName,
+			id: user.id,
+			icon: user.profileImg,
+			isFriend: (user.friends.includes(res.ActivelyUserId))
+		})
+	}
+	const currentId = res.ActivelyUserId;
+	const navbarData = await navbarPreLoad(currentId)
+	return res.json({ returnData, currentGroup, navbarData, currentId })
 }));
 
-app.get('/grouplist', isLoggedIn, catchAsync(async (req, res) => {
-    var returnData = []
-    const user = await User.findById(res.ActivelyUserId);
-    for (let i = 0; i < user.groups.length; i++) {
-        if (user.groups[i] !== allGroupId) {
-            const group = await Group.findById(user.groups[i]);
-            returnData.push({
-                name: group.name,
-                sport: group.sportType,
-                icon: group.iconImg,
-                id: group.id
-            })
-        }
-    }
-    const navbarData = await navbarPreLoad(res.ActivelyUserId);
-    return res.json({ returnData, navbarData })
+groupController.get('/grouplist', isLoggedIn, catchAsync(async (req, res) => {
+	var returnData = []
+	const user = await User.findById(res.ActivelyUserId);
+	for (let i = 0; i < user.groups.length; i++) {
+		if (user.groups[i] !== allGroupId) {
+			const group = await Group.findById(user.groups[i]);
+			returnData.push({
+				name: group.name,
+				sport: group.sportType,
+				icon: group.iconImg,
+				id: group.id
+			})
+		}
+	}
+	const navbarData = await navbarPreLoad(res.ActivelyUserId);
+	return res.json({ returnData, navbarData })
 }));
 
-app.get('/findgroups', isLoggedIn, catchAsync(async (req, res) => {
-    var returnData = []
-    const user = await User.findById(res.ActivelyUserId);
-    const groups = await Group.find({});
-    for (let i = 0; i < groups.length; i++) {
-        if (!user.groups.includes(groups[i].id)) {
-            returnData.push({
-                name: groups[i].name,
-                sport: groups[i].sportType,
-                icon: groups[i].iconImg,
-                id: groups[i].id
-            })
-        }
-    }
-    const navbarData = await navbarPreLoad(res.ActivelyUserId);
-    return res.json({ returnData, navbarData })
+groupController.get('/findgroups', isLoggedIn, catchAsync(async (req, res) => {
+	var returnData = []
+	const user = await User.findById(res.ActivelyUserId);
+	const groups = await Group.find({});
+	for (let i = 0; i < groups.length; i++) {
+		if (!user.groups.includes(groups[i].id)) {
+			returnData.push({
+				name: groups[i].name,
+				sport: groups[i].sportType,
+				icon: groups[i].iconImg,
+				id: groups[i].id
+			})
+		}
+	}
+	const navbarData = await navbarPreLoad(res.ActivelyUserId);
+	return res.json({ returnData, navbarData })
 }));
 
-app.post('/register/groups', catchAsync(async (req, res) => {
-    var returnData = []
-    const groups = await Group.find({});
-    for (let i = 0; i < groups.length; i++) {
-        if (returnData.length === 4) {
-            break;
-        } else {
-            if (req.body.sports.includes(groups[i].sportType) && groups[i].id !== allGroupId) {
-                returnData.push({
-                    name: groups[i].name,
-                    sport: groups[i].sportType,
-                    icon: groups[i].iconImg,
-                    location: groups[i].usualLocation,
-                    city: groups[i].city,
-                    state: groups[i].state,
-                    id: groups[i].id
-                })
-            }
-        }
-    }
-    return res.send(JSON.stringify({ groups: returnData }))
+groupController.post('/register/groups', catchAsync(async (req, res) => {
+	var returnData = []
+	const groups = await Group.find({});
+	for (let i = 0; i < groups.length; i++) {
+		if (returnData.length === 4) {
+			break;
+		} else {
+			if (req.body.sports.includes(groups[i].sportType) && groups[i].id !== allGroupId) {
+				returnData.push({
+					name: groups[i].name,
+					sport: groups[i].sportType,
+					icon: groups[i].iconImg,
+					location: groups[i].usualLocation,
+					city: groups[i].city,
+					state: groups[i].state,
+					id: groups[i].id
+				})
+			}
+		}
+	}
+	return res.send(JSON.stringify({ groups: returnData }))
 }));
+
+app.use('/api', [baseController, groupController]);
 
 async function navbarPreLoad(userId) {
     var userSports = []
@@ -537,6 +538,10 @@ async function navbarPreLoad(userId) {
 //     // console.log('at error handler')
 //     return res.send(JSON.stringify("ERROR"));
 // })
+
+app.get("/", function (request, response) {
+    response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 let PORT = process.env.PORT
 
