@@ -66,8 +66,11 @@ export default function Register() {
     }
 
     const checkLogin = async () => {
+        console.log('check login')
         const response = await fetch('/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
+        console.log('return')
+        console.log(data)
         oppositeFetchChecks(data);
     }
 

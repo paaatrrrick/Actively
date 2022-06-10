@@ -364,92 +364,92 @@ baseController.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) =
 const groupController = express.Router();
 
 groupController.post('/creategroup', isLoggedIn, catchAsync(async (req, res) => {
-	const { name, description, sportType, bannerImg, iconImg, usualLocation } = req.body
-	const user = await User.findById(res.ActivelyUserId);
-	const group = new Group({ name: name, description: description, sportType: sportType, bannerImg: bannerImg, iconImg: iconImg, usualLocation: usualLocation, participantId: [res.ActivelyUserId], hostId: res.ActivelyUserId, state: user.state, city: user.city });
-	await group.save();
-	await User.updateOne(
-		{ _id: res.ActivelyUserId },
-		{ $push: { groups: group.id } }
-	)
-	return res.send(JSON.stringify({ id: group.id }))
+    const { name, description, sportType, bannerImg, iconImg, usualLocation } = req.body
+    const user = await User.findById(res.ActivelyUserId);
+    const group = new Group({ name: name, description: description, sportType: sportType, bannerImg: bannerImg, iconImg: iconImg, usualLocation: usualLocation, participantId: [res.ActivelyUserId], hostId: res.ActivelyUserId, state: user.state, city: user.city });
+    await group.save();
+    await User.updateOne(
+        { _id: res.ActivelyUserId },
+        { $push: { groups: group.id } }
+    )
+    return res.send(JSON.stringify({ id: group.id }))
 }));
 
 groupController.get('/group/:groupId', isLoggedIn, catchAsync(async (req, res) => {
-	var returnData = []
-	const currentGroup = await Group.findById(req.params.groupId);
-	for (let i = 0; i < currentGroup.participantId.length; i++) {
-		const user = await User.findById(currentGroup.participantId[i]);
-		returnData.push({
-			first: user.firstName,
-			last: user.lastName,
-			id: user.id,
-			icon: user.profileImg,
-			isFriend: (user.friends.includes(res.ActivelyUserId))
-		})
-	}
-	const currentId = res.ActivelyUserId;
-	const navbarData = await navbarPreLoad(currentId)
-	return res.json({ returnData, currentGroup, navbarData, currentId })
+    var returnData = []
+    const currentGroup = await Group.findById(req.params.groupId);
+    for (let i = 0; i < currentGroup.participantId.length; i++) {
+        const user = await User.findById(currentGroup.participantId[i]);
+        returnData.push({
+            first: user.firstName,
+            last: user.lastName,
+            id: user.id,
+            icon: user.profileImg,
+            isFriend: (user.friends.includes(res.ActivelyUserId))
+        })
+    }
+    const currentId = res.ActivelyUserId;
+    const navbarData = await navbarPreLoad(currentId)
+    return res.json({ returnData, currentGroup, navbarData, currentId })
 }));
 
 groupController.get('/grouplist', isLoggedIn, catchAsync(async (req, res) => {
-	var returnData = []
-	const user = await User.findById(res.ActivelyUserId);
-	for (let i = 0; i < user.groups.length; i++) {
-		if (user.groups[i] !== allGroupId) {
-			const group = await Group.findById(user.groups[i]);
-			returnData.push({
-				name: group.name,
-				sport: group.sportType,
-				icon: group.iconImg,
-				id: group.id
-			})
-		}
-	}
-	const navbarData = await navbarPreLoad(res.ActivelyUserId);
-	return res.json({ returnData, navbarData })
+    var returnData = []
+    const user = await User.findById(res.ActivelyUserId);
+    for (let i = 0; i < user.groups.length; i++) {
+        if (user.groups[i] !== allGroupId) {
+            const group = await Group.findById(user.groups[i]);
+            returnData.push({
+                name: group.name,
+                sport: group.sportType,
+                icon: group.iconImg,
+                id: group.id
+            })
+        }
+    }
+    const navbarData = await navbarPreLoad(res.ActivelyUserId);
+    return res.json({ returnData, navbarData })
 }));
 
 groupController.get('/findgroups', isLoggedIn, catchAsync(async (req, res) => {
-	var returnData = []
-	const user = await User.findById(res.ActivelyUserId);
-	const groups = await Group.find({});
-	for (let i = 0; i < groups.length; i++) {
-		if (!user.groups.includes(groups[i].id)) {
-			returnData.push({
-				name: groups[i].name,
-				sport: groups[i].sportType,
-				icon: groups[i].iconImg,
-				id: groups[i].id
-			})
-		}
-	}
-	const navbarData = await navbarPreLoad(res.ActivelyUserId);
-	return res.json({ returnData, navbarData })
+    var returnData = []
+    const user = await User.findById(res.ActivelyUserId);
+    const groups = await Group.find({});
+    for (let i = 0; i < groups.length; i++) {
+        if (!user.groups.includes(groups[i].id)) {
+            returnData.push({
+                name: groups[i].name,
+                sport: groups[i].sportType,
+                icon: groups[i].iconImg,
+                id: groups[i].id
+            })
+        }
+    }
+    const navbarData = await navbarPreLoad(res.ActivelyUserId);
+    return res.json({ returnData, navbarData })
 }));
 
 groupController.post('/register/groups', catchAsync(async (req, res) => {
-	var returnData = []
-	const groups = await Group.find({});
-	for (let i = 0; i < groups.length; i++) {
-		if (returnData.length === 4) {
-			break;
-		} else {
-			if (req.body.sports.includes(groups[i].sportType) && groups[i].id !== allGroupId) {
-				returnData.push({
-					name: groups[i].name,
-					sport: groups[i].sportType,
-					icon: groups[i].iconImg,
-					location: groups[i].usualLocation,
-					city: groups[i].city,
-					state: groups[i].state,
-					id: groups[i].id
-				})
-			}
-		}
-	}
-	return res.send(JSON.stringify({ groups: returnData }))
+    var returnData = []
+    const groups = await Group.find({});
+    for (let i = 0; i < groups.length; i++) {
+        if (returnData.length === 4) {
+            break;
+        } else {
+            if (req.body.sports.includes(groups[i].sportType) && groups[i].id !== allGroupId) {
+                returnData.push({
+                    name: groups[i].name,
+                    sport: groups[i].sportType,
+                    icon: groups[i].iconImg,
+                    location: groups[i].usualLocation,
+                    city: groups[i].city,
+                    state: groups[i].state,
+                    id: groups[i].id
+                })
+            }
+        }
+    }
+    return res.send(JSON.stringify({ groups: returnData }))
 }));
 
 app.use('/api', [baseController, groupController]);
