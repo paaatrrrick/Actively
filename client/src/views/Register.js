@@ -302,7 +302,7 @@ export default function Register() {
                     <div className="Register-Information">
                         <h4 className='Home-h4'>Find local sport players</h4>
                         <ul className='Reigster-ul'>
-                            <li>Connect with other loca; players playing your favorite sport</li>
+                            <li>Connect with other local players playing your favorite sport</li>
                             <li>Quickly create events or join others</li>
                             <li>Set your desired skill level</li>
                             <li>Feel safe by knowing your upcoming partner's information</li>
