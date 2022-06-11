@@ -6,10 +6,8 @@ if (process.env.NODE_ENV !== "production") {
 
 module.exports.isLoggedIn = (req, res, next) => {
     console.log('at checking login')
-    console.log(req.headers)
     const token = req.headers["x-access'token"];
     console.log(token)
-    console.log(typeof token)
     //check if token exists or is null in an if statement
     if (!token || token === "" || token === undefined || token === null || token === "null") {
         console.log('top')

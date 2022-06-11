@@ -55,8 +55,6 @@ export default function Register() {
             }),
         });
         const res = await response.json();
-        console.log('returned')
-        console.log(res)
         if (res === 'taken') {
             setFlash(true);
         } else {

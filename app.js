@@ -270,10 +270,8 @@ baseController.post('/login', catchAsync(async (req, res, next) => {
         const { email, password } = req.body;
         const user = await User.authenticate()(email, password)
         if (user.user.email == null) {
-            console.log('login from bad password')
             return res.send("Invalid Email or Password");
         } else {
-            console.log('login success')
             const token = jwt.sign({ _id: user.user._id, }, process.env.JWT_PRIVATE_KEY, { expiresIn: "30d" });
             console.log('token: ' + token)
             return res.send(JSON.stringify({ user: user, token: token }))
