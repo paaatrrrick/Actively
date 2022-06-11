@@ -43,7 +43,7 @@ export default class Login extends Component {
     }
 
     async checkLogin() {
-        const response = await fetch('/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         oppositeFetchChecks(data);
     }
@@ -58,7 +58,7 @@ export default class Login extends Component {
             password: this.state.password
         }
         if (this.state.email && this.state.password) {
-            axios.post('/login', user)
+            axios.post('/api//login', user)
                 .then(res => this.redirect(res))
         }
     }

@@ -36,7 +36,7 @@ export default function Register() {
 
     const join = async () => {
         console.log('joined')
-        const response = await fetch(`/register`, {
+        const response = await fetch(`/api/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export default function Register() {
 
     const checkLogin = async () => {
         console.log('check login')
-        const response = await fetch('/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         console.log('return')
         console.log(data)
