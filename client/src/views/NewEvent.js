@@ -32,7 +32,7 @@ export default function NewEvent() {
     }
 
     const checkLogin = async () => {
-        const response = await fetch('/newevent', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/newevent', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         changeLoading(false);
@@ -104,7 +104,7 @@ export default function NewEvent() {
                 notifcation: notifcation,
                 groups: selectedGroups
             }
-            fetch('/newEvent', {
+            fetch('/api/newEvent', {
                 method: 'POST',
                 headers: {
                     "x-access'token": window.localStorage.getItem('token'),
