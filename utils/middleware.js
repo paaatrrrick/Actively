@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== "production") {
 
 module.exports.isLoggedIn = (req, res, next) => {
     console.log('at checking login')
+    console.log(req.headers)
     const token = req.headers["x-access'token"];
     console.log(token)
     console.log(typeof token)

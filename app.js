@@ -265,18 +265,22 @@ baseController.post('/register', async (req, res, next) => {
 
 
 baseController.post('/login', catchAsync(async (req, res, next) => {
-    console.log('recieved')
+    console.log('at /login')
     try {
         const { email, password } = req.body;
         const user = await User.authenticate()(email, password)
         if (user.user.email == null) {
+            console.log('login from bad password')
             return res.send("Invalid Email or Password");
         } else {
+            console.log('login success')
             const token = jwt.sign({ _id: user.user._id, }, process.env.JWT_PRIVATE_KEY, { expiresIn: "30d" });
+            console.log('token: ' + token)
             return res.send(JSON.stringify({ user: user, token: token }))
         }
 
     } catch {
+        console.log('login failed from error')
         return res.send("Invalid Email or Password");
     }
 }));
@@ -307,6 +311,7 @@ baseController.get('/isLoggedIn', isLoggedIn, async (req, res, next) => {
 });
 
 baseController.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
+    console.log('at /dashboard')
     var content = []
     var date = new Date();
     const userId = res.ActivelyUserId;
@@ -540,7 +545,7 @@ async function navbarPreLoad(userId) {
 //     return res.send(JSON.stringify("ERROR"));
 // })
 
-app.get("/", function (request, response) {
+app.get("*", function (request, response) {
     response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 

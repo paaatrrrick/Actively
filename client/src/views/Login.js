@@ -32,6 +32,8 @@ export default class Login extends Component {
         })
     }
     redirect(res) {
+        console.log('at res redirect', res)
+        console.log(res.data)
         if (res.data.user) {
             this.setState({
                 email: '',
