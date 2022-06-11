@@ -16,8 +16,7 @@ export default class EventCard extends Component {
         this.props.callBack(this.props.eventDetails._id);
     }
     async joinEvent(e) {
-        console.log(`/event/${this.props.eventDetails._id}`)
-        const response = await fetch(`/event/${this.props.eventDetails._id}/${this.props.eventDetails.hostId}`, {
+        const response = await fetch(`/api/event/${this.props.eventDetails._id}/${this.props.eventDetails.hostId}`, {
             method: 'POST',
             headers: {
                 "x-access'token": window.localStorage.getItem('token'),

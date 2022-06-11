@@ -25,7 +25,7 @@ export default class Friends extends Component {
     }
 
     async checkLogin() {
-        const response = await fetch('/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         this.setState({
@@ -45,7 +45,7 @@ export default class Friends extends Component {
 
     async friendUpdate(id, index, isFriend) {
         var location = (isFriend ? 'removeFriend' : 'addFriend');
-        const response = await fetch(`/${location}`, {
+        const response = await fetch(`/api/${location}`, {
             method: 'POST',
             headers: {
                 "x-access'token": window.localStorage.getItem('token'), 'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ export default class Friends extends Component {
     }
 
     async searchFriend() {
-        const response = await fetch('/findFriends', {
+        const response = await fetch('/api/findFriends', {
             method: 'POST', headers: {
                 "x-access'token": window.localStorage.getItem('token'), 'Content-Type': 'application/json'
             },

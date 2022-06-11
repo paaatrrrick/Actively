@@ -33,7 +33,7 @@ export default class Dashboard extends Component {
         })
     }
     async fetchDashboard() {
-        const response = await fetch('/dashboard', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/dashboard', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         this.setState({
@@ -45,7 +45,7 @@ export default class Dashboard extends Component {
     }
 
     popUpCard(id) {
-        fetch('/getProfiles', {
+        fetch('/api/getProfiles', {
             method: 'POST',
             headers: {
                 "x-access'token": window.localStorage.getItem('token'),

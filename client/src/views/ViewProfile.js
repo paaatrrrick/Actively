@@ -26,7 +26,7 @@ export default class ViewProfile extends Component {
         if (this.state.isFriend) {
             location = 'removeFriend';
         }
-        fetch(`/${location}`, {
+        fetch(`/api/${location}`, {
             method: 'POST',
             headers: {
                 "x-access'token": window.localStorage.getItem('token'),
@@ -51,7 +51,7 @@ export default class ViewProfile extends Component {
     }
 
     async fetchProfile() {
-        const response = await fetch(`/profile/${this.props.match.params.id}`, { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch(`/api/profile/${this.props.match.params.id}`, { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         this.setState({

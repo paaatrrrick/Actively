@@ -35,7 +35,7 @@ export default class ViewGroup extends Component {
         if (this.state.inGroup) {
             location = 'leavegroup';
         }
-        const response = await fetch(`/${location}`, {
+        const response = await fetch(`/api/${location}`, {
             method: 'POST',
             headers: {
                 "x-access'token": window.localStorage.getItem('token'), 'Content-Type': 'application/json'
@@ -57,7 +57,7 @@ export default class ViewGroup extends Component {
 
     async friendUpdate(id, index, isFriend) {
         var location = (isFriend ? 'removeFriend' : 'addFriend');
-        const response = await fetch(`/${location}`, {
+        const response = await fetch(`/api/${location}`, {
             method: 'POST',
             headers: {
                 "x-access'token": window.localStorage.getItem('token'), 'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ export default class ViewGroup extends Component {
 
     async searchFriend() {
         console.log('searching')
-        const response = await fetch(`/group/${this.props.match.params.id}`, { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch(`/api/group/${this.props.match.params.id}`, { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         this.setState({

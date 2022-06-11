@@ -25,7 +25,7 @@ export default function Profile() {
     const [age, ageSet, ageUpdate, ageDel] = useInputState(0);
     const [bio, bioSet, bioUpdate, bioDel] = useInputState();
     const checkLogin = async () => {
-        const response = await fetch('/profile', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/profile', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         changeLoading(false);
@@ -51,7 +51,7 @@ export default function Profile() {
             notifcation: notifcation,
             idUrl: img
         }
-        const response = await fetch('/profileinfo', { method: 'POST', headers: { "x-access'token": window.localStorage.getItem('token'), 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+        const response = await fetch('/api/profileinfo', { method: 'POST', headers: { "x-access'token": window.localStorage.getItem('token'), 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
         const res = await response.json();
         fetchChecks(res);
         changeRedirect(true);

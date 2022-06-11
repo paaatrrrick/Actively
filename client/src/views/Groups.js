@@ -29,7 +29,7 @@ export default class Groups extends Component {
         })
     }
     async findGroups() {
-        const response = await fetch('/findgroups', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/findgroups', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         this.setState({
@@ -40,7 +40,7 @@ export default class Groups extends Component {
     }
 
     async checkLogin() {
-        const response = await fetch('/grouplist', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/grouplist', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         this.setState({

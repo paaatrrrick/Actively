@@ -25,7 +25,7 @@ export default function CreateGroup() {
 
 
     const checkLogin = async () => {
-        const response = await fetch('/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
         changeLoading(false);
@@ -41,7 +41,7 @@ export default function CreateGroup() {
             iconImg: profileImg,
             usualLocation: location
         }
-        const response = await fetch('/creategroup', {
+        const response = await fetch('/api/creategroup', {
             method: 'POST',
             headers: {
                 "x-access'token": window.localStorage.getItem('token'),

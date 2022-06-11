@@ -58,7 +58,7 @@ export default class NavBar extends Component {
                 state: this.state.userState,
                 city: this.state.userCity
             };
-            const response = await fetch('/updateSportInterests', {
+            const response = await fetch('/api/updateSportInterests', {
                 method: 'POST',
                 headers: {
                     "x-access'token": window.localStorage.getItem('token'),

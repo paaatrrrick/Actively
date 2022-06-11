@@ -87,7 +87,7 @@ export default function Register() {
     }
 
     const findGroups = async () => {
-        const response = await fetch(`/register/groups`, {
+        const response = await fetch(`/api/register/groups`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -22,7 +22,7 @@ export default class Home extends Component {
 
 
     async checkLogin() {
-        const response = await fetch('/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
+        const response = await fetch('/api/isLoggedIn', { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         oppositeFetchChecks(data);
     }
