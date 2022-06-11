@@ -56,7 +56,8 @@ db.once("open", () => {
 
 const app = express();
 app.use(bodyParser.json(), bodyParser.urlencoded({ extended: false }))
-app.use(cors({ origin: process.env.FRONT_END_URL }));
+// app.use(cors({ origin: process.env.FRONT_END_URL }));
+app.use(cors({}));
 
 app.use(passport.initialize());
 
