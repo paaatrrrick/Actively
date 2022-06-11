@@ -320,9 +320,96 @@
 
 
 
-
-
 @media only screen and (max-width: 1000px) {
+    .Profile-h1 {
+        font-size: 24px;
+        padding-bottom: 5px;
+    }
+
+    .Profile-h4 {
+        font-size: 16px;
+    }
+
+    .Profile-h2 {
+        font-size: 20px;
+    }
+
+    .Profile-facebookDiv {
+        margin-top: 5px;
+        margin-left: 0px;
+    }
+
+    .Profile-socialDiv {
+        width: 150px;
+        padding: 5px;
+    }
+
+    .Profile-socialInput {
+        font-size: 12px;
+    }
+
+    .Profile-social {
+        width: 15px;
+        height: 15px;
+    }
+
+    #Profile-preview {
+        width: 75px;
+        height: 75px;
+        margin-top: 40px;
+    }
+
+    .Profile-topSection {
+        margin-bottom: 0px;
+    }
+
+    .Profile-body {
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding-top: 40px;
+    }
+
+    #description {
+        width: 90vw;
+    }
+
+    .Profile-mr {
+        margin-right: px;
+    }
+
+
+    .Profile-m {
+        margin-top: 10px;
+        margin-bottom: 0px;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .Profile-sliderRow {
+        margin-bottom: -15px;
+    }
+
+    .Profile-ageHolder {
+        margin-left: 0px;
+    }
+
+    .Profile-sliderDiv {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+
+    .Profile-input1 {
+        margin-left: 5px;
+    }
+}
+
+
+
+/* @media only screen and (max-width: 1000px) {
     .Profile-labelsocialMediaHolder {
         flex-direction: column;
     }
@@ -389,4 +476,4 @@
     .Profile-labelbody {
         justify-content: flex-start;
     }
-}
+} */
