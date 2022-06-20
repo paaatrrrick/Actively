@@ -50,7 +50,6 @@ export default function CreateGroup() {
             body: JSON.stringify(data),
         })
         const res = await response.json();
-        console.log(res)
         fetchChecks(res);
         changeRedirect(`/group/${res.id}`)
     }
@@ -68,8 +67,6 @@ export default function CreateGroup() {
     }, [redirect])
 
     const checkIfInfo = () => {
-        console.log('checking info')
-        console.log(view)
         switch (view) {
             case 1:
                 if (name === "") {

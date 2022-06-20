@@ -81,18 +81,17 @@ export default function NewEvent() {
                 if (hours === 0) {
                     hours = 12
                 }
-                return ' at ' + String(hours) + ":" + String(minutes) + " " + amPm
+                return String(date1.toString().slice(0, 10)) + ' at ' + String(hours) + ":" + String(minutes) + " " + amPm
             }
+            console.log('here123')
             const d = new Date(time);
-            var today = new Date();
-            var tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1)
-            var notifcation = 'nothing'
-            if (d.getDate() === today.getDate() & d > today) {
-                notifcation = 'today' + helper(d)
-            } else if (d.getHours() < 9 & d.getDate() === tomorrow.getDate()) {
-                notifcation = 'tomorrow' + helper(d)
-            }
+            var weekOut = new Date();
+            console.log(weekOut)
+            weekOut.setDate(weekOut.getDate() + 7);
+            console.log(weekOut)
+            let notifcation;
+            d < weekOut ? notifcation = helper(d) : notifcation = 'nothing'
+            console.log(notifcation)
 
             const data = {
                 type: sportType,

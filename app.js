@@ -23,8 +23,7 @@ const { isLoggedIn, } = require('./utils/middleware');
 const { sendText, updateNotification, createSportsIdArr } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
-const DB_DEFAULT = 'mongodb://localhost:27017/Actively';
-const PUBLIC_ID_DEFAULT = "628d3cfc990d3f409b7ca4f7";
+
 
 // const MongoStore = require('connect-mongo');
 const Events = require('twilio/lib/rest/Events');
@@ -36,11 +35,16 @@ const user = require('./models/user.js');
 //Change For Going Live
 const db_url = process.env.DB_URL;
 const HostedPublicGroupId = "6290cfb510c085dfcda128d3"
+
+//Local Host
+const DB_DEFAULT = 'mongodb://0.0.0.0:27017/Actively';
+const PUBLIC_ID_DEFAULT = "628d3cfc990d3f409b7ca4f7";
+
+//Update Proxy on client
 const currentUrl = db_url; //SET to db_url
 const sendTextMessages = true; //SET to true
 const allGroupId = HostedPublicGroupId; //Set to Hosted
-//Update ENV Frontend URL
-//Update Proxy on client
+
 
 mongoose.connect(currentUrl, {
     useNewUrlParser: true,
@@ -160,8 +164,12 @@ baseController.get('/profile/:id', isLoggedIn, catchAsync(async (req, res) => {
 baseController.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) => {
     const { type, location, time, skill, description, turnout, notifcation, groups } = req.body;
     var newGroup = []
-    for (let group of groups) {
-        newGroup.push(group.value)
+    if (groups.label) {
+        newGroup.push(groups.value)
+    } else {
+        for (let group of groups) {
+            newGroup.push(group.value)
+        }
     }
     const id = String(res.ActivelyUserId);
     var user = await User.findById(id)
@@ -223,7 +231,7 @@ baseController.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req
     const event = await Event.findById(req.params.eventId);
     event.participantId = event.participantId.concat([String(res.ActivelyUserId)])
     await event.save();
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(res.ActivelyUserId);
     user.enrolledEvents = user.enrolledEvents.concat([String(res.ActivelyUserId)])
     await user.save();
     if (sendTextMessages) {
@@ -265,7 +273,6 @@ baseController.post('/register', async (req, res, next) => {
 
 
 baseController.post('/login', catchAsync(async (req, res, next) => {
-    console.log('at /login')
     try {
         const { email, password } = req.body;
         const user = await User.authenticate()(email, password)
@@ -278,7 +285,6 @@ baseController.post('/login', catchAsync(async (req, res, next) => {
         }
 
     } catch {
-        console.log('login failed from error')
         return res.send("Invalid Email or Password");
     }
 }));
@@ -303,13 +309,11 @@ baseController.post('/getProfiles', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 baseController.get('/isLoggedIn', isLoggedIn, async (req, res, next) => {
-    console.log('at is logged in')
     navbarData = await navbarPreLoad(res.ActivelyUserId)
     res.send(JSON.stringify(navbarData))
 });
 
 baseController.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) => {
-    console.log('at /dashboard')
     var content = []
     var date = new Date();
     const userId = res.ActivelyUserId;
@@ -461,6 +465,7 @@ app.use('/api', [baseController, groupController]);
 async function navbarPreLoad(userId) {
     var userSports = []
     const iconImg = 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/';
+    const users = await User.find({});
     const user = await User.findById(userId);
     const userImg = (user.profileImg) ? (user.profileImg) : iconImg;
     const userCity = user.city

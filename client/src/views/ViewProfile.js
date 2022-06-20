@@ -21,7 +21,6 @@ export default class ViewProfile extends Component {
         this.fetchProfile = this.fetchProfile.bind(this);
     }
     friendUpdate() {
-        console.log('at friend update')
         var location = 'addFriend';
         if (this.state.isFriend) {
             location = 'removeFriend';
@@ -45,7 +44,6 @@ export default class ViewProfile extends Component {
                 })
             })
             .catch((error) => {
-                console.log("Error");
                 console.log(error);
             })
     }

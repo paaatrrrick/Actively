@@ -4,6 +4,8 @@ import axios from 'axios';
 import "../resources/stylesheets/Login.css"
 import "../resources/stylesheets/default.css"
 import oppositeFetchChecks from './helperfunctions/oppositeFetchChecks';
+import Flash from './Flash'
+
 
 
 import CoachBro from '../resources/images/Coach-bro.svg'
@@ -13,7 +15,8 @@ export default class Login extends Component {
         super(props)
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            flash: false
         }
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
@@ -32,8 +35,6 @@ export default class Login extends Component {
         })
     }
     redirect(res) {
-        console.log('at res redirect', res)
-        console.log(res.data)
         if (res.data.user) {
             this.setState({
                 email: '',
@@ -41,6 +42,11 @@ export default class Login extends Component {
             })
             window.localStorage.setItem('token', res.data.token)
             window.location.href = `${(window.location.href.substring(0, (window.location.href.length - window.location.pathname.length)))}/dashboard`;
+        } else {
+            console.log('bad information')
+            this.setState({
+                flash: true
+            })
         };
     }
 
@@ -69,6 +75,7 @@ export default class Login extends Component {
         return (
             <div className="Login">
                 <Link to="/Home" className="Login-btn1" id='logout'>Home</Link>
+                {this.state.flash ? <Flash text="Incorrect Email or Password" bad={true} /> : <p></p>}
                 <div id='all'>
                     <form id='formForm' onSubmit={this.onSubmit}>
                         <h1 className='Login-h1'>Login</h1>

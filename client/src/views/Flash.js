@@ -3,7 +3,6 @@ import React from 'react';
 export default function Flash(props) {
 
     const disapearG = () => {
-        console.log('here123')
         const element = document.getElementById('holderG')
         element.classList.add('def-vanish')
     }

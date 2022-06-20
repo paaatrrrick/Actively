@@ -27,11 +27,7 @@ export default class ViewGroup extends Component {
     }
 
     async joinGroup() {
-        console.log('clicked')
         var location = 'joingroup';
-        console.log(this.state.inGroup);
-        console.log(this.state.group)
-        console.log(this.state.group._id)
         if (this.state.inGroup) {
             location = 'leavegroup';
         }
@@ -44,15 +40,12 @@ export default class ViewGroup extends Component {
                 id: this.state.group._id
             }),
         })
-        console.log('returned1')
-
         const data = await response.json();
         fetchChecks(data);
         const opposite = !this.state.inGroup;
         this.setState({
             inGroup: opposite
         })
-        console.log('returned')
     }
 
     async friendUpdate(id, index, isFriend) {
@@ -76,7 +69,6 @@ export default class ViewGroup extends Component {
     }
 
     async searchFriend() {
-        console.log('searching')
         const response = await fetch(`/api/group/${this.props.match.params.id}`, { headers: { "x-access'token": window.localStorage.getItem('token') } })
         const data = await response.json();
         fetchChecks(data);
@@ -107,7 +99,7 @@ export default class ViewGroup extends Component {
             </div>
         ))
         return (
-            <div className="">
+            <div className="ViewGroup-body-highest">
                 <div className="ViewGroup-highest">
                     <div className="ViewGroup-body">
                         <div className="ViewGroup-container1">
