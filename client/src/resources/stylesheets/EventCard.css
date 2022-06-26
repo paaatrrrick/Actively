@@ -91,7 +91,7 @@
 }
 
 .Event-Advanced {
-    background-color: #ffddc0;
+    background-color: #ffaeae;
 }
 
 .Event-Anyone {
@@ -126,4 +126,15 @@
 
 .Event-everyThingElse {
     background-color: #80fbbd;
+}
+
+#delEventButton-Card {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #ffaeae;
+    margin-top: 8px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }

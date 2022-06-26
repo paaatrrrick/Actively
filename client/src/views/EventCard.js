@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../resources/stylesheets/EventCard.css"
 import "../resources/stylesheets/default.css"
+import trash from '../resources/images/trash-solid.svg'
+
 
 
 
@@ -11,6 +13,10 @@ export default class EventCard extends Component {
         this.joinEvent = this.joinEvent.bind(this);
         this.makeTimePretty = this.makeTimePretty.bind(this);
         this.callBackPopUp = this.callBackPopUp.bind(this);
+        this.callDelPopUp = this.callDelPopUp.bind(this);
+    }
+    callDelPopUp() {
+        this.props.callDel(this.props.eventDetails._id);
     }
     callBackPopUp() {
         this.props.callBack(this.props.eventDetails._id);
@@ -44,9 +50,11 @@ export default class EventCard extends Component {
     render() {
         const { hostName, eventDetails, eventTime, hostImg, userId } = this.props;
         var followUpText = '';
-        var joinBtn = '';
+        let joinBtn;
+        let delBtn;
         if (eventDetails.hostId === userId) {
             followUpText = "- your event"
+            delBtn = <img onClick={this.callDelPopUp} src={trash} alt="finish Line" id='delEventButton-Card' />
         } else if (eventDetails.participantId.includes(userId)) {
             followUpText = "- joined"
         } else {
@@ -100,6 +108,7 @@ export default class EventCard extends Component {
                         {eventDetails.level}
                     </p>
                     {joinBtn}
+                    {delBtn}
                 </div>
             </div >
         )

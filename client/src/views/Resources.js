@@ -42,6 +42,7 @@ export default class Resources extends Component {
                     href="https://icons8.com">Icons8</a></div>
                 <a href="https://icons8.com/icon/VYZOATN3aG7T/add-friend">Add Friend</a> icon by <a
                     href="https://icons8.com">Icons8</a>
+                <a target="_blank" href="https://icons8.com/icon/G01ACMKXfdpJ/trash">Trash</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
             </div>
         )
     }

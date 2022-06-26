@@ -1,13 +1,6 @@
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
-
-
-// const methodOverride = require('method-override');
-// const LocalStrategy = require('passport-local')
-// const engine = require('ejs-mate');
-// const session = require('express-session');
-// const flash = require('connect-flash');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -28,9 +21,7 @@ const ExpressError = require('./utils/ExpressError.js');
 // const MongoStore = require('connect-mongo');
 const Events = require('twilio/lib/rest/Events');
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
 const { UserList } = require('twilio/lib/rest/ipMessaging/v2/service/user');
-const user = require('./models/user.js');
 
 //Change For Going Live
 const db_url = process.env.DB_URL;
@@ -73,8 +64,6 @@ app.use(express.static(path.resolve(__dirname, "./client/build")));
 // END
 
 
-// app.use(cookieParser());
-// app.use(express.json());
 
 const baseController = express.Router();
 
@@ -176,7 +165,6 @@ baseController.post('/newEvent', isLoggedIn, catchAsync(async (req, res, next) =
     const event = new Event({ sportType: type, description: description, location: location, level: skill, time: time, hostId: id, groupSize: turnout, city: user.city, state: user.state, groups: newGroup })
     await event.save();
     if (notifcation !== 'nothing' & sendTextMessages) {
-        console.log('notifcation will be getting sent')
         await sendText(notifcation, event, allGroupId)
     }
     const foundSport = await Sport.find({ type: type });
@@ -239,6 +227,16 @@ baseController.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req
     }
     return res.send(JSON.stringify('success'))
 }));
+
+baseController.post('/delEvent/:eventId', isLoggedIn, catchAsync(async (req, res, next) => {
+    console.log('here123')
+    id = req.params.eventId
+    await Event.findByIdAndDelete(id)
+    await Sport.updateMany({}, { $pullAll: { eventId: [id] } })
+    await User.updateMany({}, { $pullAll: { enrolledEvents: [id], hostedEvents: [id] } })
+    return res.send(JSON.stringify('success'))
+}));
+
 
 
 baseController.post('/register', async (req, res, next) => {
@@ -538,15 +536,6 @@ async function navbarPreLoad(userId) {
 // //     await User.updateMany({}, { $pullAll: { enrolledEvents: delIdArr, hostedEvents: delIdArr } })
 // //     res.redirect('/')
 // // }))
-
-// app.all('*', (req, res, next) => {
-//     next(new ExpressError('Page Not Found', 404))
-// })
-
-// app.use((err, req, res, next) => {
-//     // console.log('at error handler')
-//     return res.send(JSON.stringify("ERROR"));
-// })
 
 app.get("*", function (request, response) {
     response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));

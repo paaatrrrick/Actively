@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EventCard from "./EventCard"
+import DelPopUpCard from './DelPopUpCard';
 import NavBar from './NavBar';
 import Loading from './Loading';
 import PopUpCard from './PopUpCard';
@@ -17,6 +18,8 @@ export default class Dashboard extends Component {
             userId: '',
             navbarData: '',
             cardShowing: false,
+            delCardShowing: false,
+            delCardId: 0,
             cardInfo: [],
             loading: true
 
@@ -24,11 +27,13 @@ export default class Dashboard extends Component {
         this.fetchDashboard = this.fetchDashboard.bind(this);
         this.popUpCard = this.popUpCard.bind(this);
         this.closePopUp = this.closePopUp.bind(this);
-
+        this.delCard = this.delCard.bind(this);
     }
+
     closePopUp() {
         this.setState({
             cardShowing: false,
+            delCardShowing: false,
             cardInfo: []
         })
     }
@@ -42,6 +47,13 @@ export default class Dashboard extends Component {
             navbarData: data.navbarData,
             loading: false
         });
+    }
+
+    delCard(id) {
+        this.setState({
+            delCardShowing: true,
+            delCardId: id
+        })
     }
 
     popUpCard(id) {
@@ -81,6 +93,7 @@ export default class Dashboard extends Component {
                     key={currentContent[i][1]._id}
                     userId={userId}
                     callBack={this.popUpCard}
+                    callDel={this.delCard}
                 />
             )
         }
@@ -97,6 +110,7 @@ export default class Dashboard extends Component {
             <div>
                 <NavBar navbar={this.state.navbarData} callBackFunction={this.fetchDashboard} />
                 {this.state.cardShowing ? <PopUpCard popUpData={this.state.cardInfo} closeFunction={this.closePopUp} /> : <div></div>}
+                {this.state.delCardShowing ? <DelPopUpCard id={this.state.delCardId} closeFunction={this.closePopUp} /> : <></>}
                 <div className="Dashboard">
                     <div className="">
                         <h3 className="Dashboard-h3" id='firstDashboardh3'>Matches in {this.state.navbarData.userCity}</h3>
