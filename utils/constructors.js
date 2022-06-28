@@ -5,6 +5,7 @@ const User = require('../models/user.js');
 const Event = require('../models/event.js');
 const Sport = require('../models/sport.js');
 const Group = require('../models/group.js');
+const { model } = require('mongoose');
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
 
 module.exports.createSportsIdArr = async (dict) => {
@@ -70,6 +71,26 @@ module.exports.updateNotification = async (user, event) => {
     }
 }
 
+module.exports.deleteEventText = async (eventId) => {
+    let telephoneArr = [];
+    const event = await Event.findById(eventId);
+    textStr = `You're upcoming ${event.sportType} match at ${event.location} was just cancelled`;
+    for (i in event.participantId) {
+        const participant = await User.findById(event.participantId[i])
+        telephoneArr.push(String(participant.phoneNumber))
+    }
+
+    for (i in telePhoneArr) {
+        client.messages.create({
+            to: String(telePhoneArr[i]),
+            from: '+19033213407',
+            body: textStr
+        })
+    }
+
+
+}
+
 
 module.exports.sendText = async (notifcation, event, allGroupId) => {
     const user = await User.findById(event.hostId);
@@ -95,28 +116,6 @@ module.exports.sendText = async (notifcation, event, allGroupId) => {
         })
     }
 
-    // const telePhoneArr = []
-    // for (let gId of event.groups) {
-    //     if (gId !== allGroupId) {
-    //         const group = await Group.findById(gId);
-    //         for (let pId of group.participantId) {
-    //             const user = await User.findById(pId)
-    //         }
-    //     }
-    // }
-
-
-    // console.log(groups)
-    // const sport = await Sport.find({ type: event.sportType })
-    // const sportId = sport[0].id
-    // usersArr = await User.find({ friends: event.hostId, sports: sport[0].id })
-    // telePhoneArr = []
-    // for (i in usersArr) {
-    //     if (usersArr[i].notifcations == false) {
-    //     } else {
-    //         telePhoneArr.push(String(usersArr[i].phoneNumber))
-    //     }
-    // }
 }
 
 

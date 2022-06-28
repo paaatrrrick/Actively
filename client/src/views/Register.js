@@ -8,6 +8,10 @@ import { Redirect } from 'react-router-dom';
 import Flash from './Flash'
 import oppositeFetchChecks from './helperfunctions/oppositeFetchChecks';
 import { Link } from 'react-router-dom';
+import logo from '../resources/images/activelyLogo.jpg'
+import PP from '../resources/images/OnlinePrivacyPolicy.pdf'
+import TC from '../resources/images/OnlineTermsandConditions.pdf'
+
 
 
 
@@ -30,6 +34,7 @@ export default function Register() {
     const [password, setPassword] = useInputState("");
     const [phone, setPhone] = useInputState("");
     const [age, setAge] = useInputState("");
+    const [ppTc, setPpTc] = useState(false);
 
     const [groups, setGroups] = useState([]);
     const [userGroups, setUserGroups] = useState([]);
@@ -107,7 +112,7 @@ export default function Register() {
                 }
                 break;
             case 2:
-                if (first !== "" && last !== "" && email !== "" && password !== "" && phone !== "" && age !== "") {
+                if (first !== "" && last !== "" && email !== "" && password !== "" && phone !== "" && age !== "" && ppTc) {
                     findGroups()
                     return true;
                 }
@@ -160,6 +165,13 @@ export default function Register() {
         setState123(state123 + 1000)
     }
 
+    const openPrivacyPolicy = () => {
+        window.open(PP);
+    }
+    const openTermsandConditions = () => {
+        window.open(TC);
+    }
+
 
     const updateState = (e) => {
         const states = csc.getStatesOfCountry('231')
@@ -188,7 +200,11 @@ export default function Register() {
             <Link to="/home" className='def-btn' id="register">Back Home</Link>
             {flash ? <Flash text="Email already taken" bad={true} /> : <p></p>}
             <div className="Register-main">
-                <h1 className='Register-h1'>Sign Up for <span id='Register-logo'>Actively</span></h1>
+                {/* <span id='Register-logo'>Actively</span> */}
+                <div className="register-flexrow">
+                    <h1 className='Register-h1'>Sign Up for</h1>
+                    <img src={logo} id='register-logoImg' alt="Actively Logo" />
+                </div>
                 <div className="Register-row2Col">
                     <div className="Register-currentSlide">
                         {view === 0
@@ -253,6 +269,10 @@ export default function Register() {
                                             <div className="def-row">
                                                 <input type="tel" name="phone" value={phone} onChange={setPhone} placeholder="Phone Number" className="Register-inputClass NewEvent-input Register-mid" />
                                                 <input type="number" name="age" value={age} onChange={setAge} placeholder="Age" className="Register-inputClass NewEvent-input Register-mid" min='18' max='99' />
+                                            </div>
+                                            <div className="Register-checkbox-row">
+                                                <input type="checkbox" id="PP-checkbox" onClick={() => setPpTc(!ppTc)} checked={ppTc} />
+                                                <p className='register-paragraph'>I agree to the <span className='register-link-underline' onClick={openPrivacyPolicy}>Privay Policy</span>, <span className='register-link-underline' onClick={openTermsandConditions}>Terms, and Conditions</span></p>
                                             </div>
                                         </div>
                                     </div>

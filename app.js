@@ -13,7 +13,7 @@ const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
 const Group = require('./models/group.js');
 const { isLoggedIn, } = require('./utils/middleware');
-const { sendText, updateNotification, createSportsIdArr } = require('./utils/constructors');
+const { sendText, updateNotification, createSportsIdArr, deleteEventText } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
 
@@ -229,11 +229,14 @@ baseController.post('/event/:eventId/:userId', isLoggedIn, catchAsync(async (req
 }));
 
 baseController.post('/delEvent/:eventId', isLoggedIn, catchAsync(async (req, res, next) => {
-    console.log('here123')
     id = req.params.eventId
+    if (sendTextMessages) {
+        await deleteEventText(id);
+    }
     await Event.findByIdAndDelete(id)
     await Sport.updateMany({}, { $pullAll: { eventId: [id] } })
     await User.updateMany({}, { $pullAll: { enrolledEvents: [id], hostedEvents: [id] } })
+
     return res.send(JSON.stringify('success'))
 }));
 
