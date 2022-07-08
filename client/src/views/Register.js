@@ -279,7 +279,7 @@ export default function Register() {
                                     :
                                     <div className="Register-view">
                                         <h4 className='Register-h4'>Optionally, join some groups in your area</h4>
-                                        <div className="Register-radio-button Register-flexwrap">`
+                                        <div className="Register-radio-button Register-flexwrap">
                                             {groups.map(group => (
                                                 <div key={`${group.id}-Register1234`} className="Register-w22">
                                                     <input

@@ -301,6 +301,8 @@
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .Register-groupImg {
@@ -426,6 +428,9 @@
     .Register-flexwrap {
         flex-direction: column;
         align-items: center;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        height: 250px;
     }
 
 }
