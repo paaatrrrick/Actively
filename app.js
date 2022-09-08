@@ -13,9 +13,13 @@ const Event = require('./models/event.js');
 const Sport = require('./models/sport.js');
 const Group = require('./models/group.js');
 const { isLoggedIn, } = require('./utils/middleware');
-const { sendText, updateNotification, createSportsIdArr, deleteEventText } = require('./utils/constructors');
+const { sendText, updateNotification, createSportsIdArr, deleteEventText, sendTextToGroup } = require('./utils/constructors');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError.js');
+const http = require("http");
+const { Server } = require("socket.io");
+const { addUser, removeUser, getUser } = require("./utils/websocketUsers");
+
 
 
 // const MongoStore = require('connect-mongo');
@@ -23,7 +27,7 @@ const Events = require('twilio/lib/rest/Events');
 const jwt = require('jsonwebtoken');
 const { UserList } = require('twilio/lib/rest/ipMessaging/v2/service/user');
 
-//Change For Going Live
+//Change For Goinsdfsdg Live
 const db_url = process.env.DB_URL;
 const HostedPublicGroupId = "6290cfb510c085dfcda128d3"
 
@@ -35,7 +39,6 @@ const PUBLIC_ID_DEFAULT = "628d3cfc990d3f409b7ca4f7";
 const currentUrl = db_url; //SET to db_url
 const sendTextMessages = true; //SET to true
 const allGroupId = HostedPublicGroupId; //Set to Hosted
-
 
 mongoose.connect(currentUrl, {
     useNewUrlParser: true,
@@ -52,7 +55,7 @@ db.once("open", () => {
 const app = express();
 app.use(bodyParser.json(), bodyParser.urlencoded({ extended: false }))
 // app.use(cors({ origin: process.env.FRONT_END_URL }));
-app.use(cors({}));
+app.use(cors());
 
 app.use(passport.initialize());
 
@@ -63,9 +66,127 @@ app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 // END
 
-
+const server = http.createServer(app);
+const io = new Server(server);
+// const io = socketio(server, { wsEngine: "ws" });
 
 const baseController = express.Router();
+
+//MOBILE ROUTES:
+
+
+io.on("connection", socket => {
+    socket.on("join", (props) => {
+        const name = props.userId;
+        const room = props.groupId;
+        const { error, user } = addUser({ id: socket.id, name, room });
+        if (error) {
+            return;
+        }
+        socket.join(user.room);
+    });
+
+    socket.on("sendMessage", async (props) => {
+        const { message, currDate } = props;
+        const user = await getUser(socket.id);
+        try {
+            io.to(user.room).emit("message", { user: user.name, message: message });
+            if (sendTextMessages) {
+                console.log("SENDING TEXT");
+                sendTextToGroup(message, user.name, user.room);
+            }
+            const group = await Group.findById(user.room);
+            const newMessage = {
+                message: message,
+                sender: user.name,
+                date: currDate,
+            }
+            group.messages.push(newMessage);
+            group.mostRecentMessage = message;
+            group.mostRecentDate = currDate;
+            await group.save();
+        } catch (err) {
+            console.log(err.message);
+        }
+    });
+
+    socket.on("abortTheRoom", () => {
+        const user = removeUser(socket.id);
+        if (user) {
+            io.to(user.room).emit("message", {
+                user: "admin",
+                text: `${user.name} has just left!`,
+            });
+        }
+    });
+});
+
+baseController.get('/mobile/groupMessages/:id', isLoggedIn, catchAsync(async (req, res, next) => {
+    const groupId = req.params.id;
+    const id = res.ActivelyUserId;
+    const group = await Group.findById(groupId);
+    const messages = group.messages;
+    const usersInGroup = [];
+    for (let i = 0; i < group.participantId.length; i++) {
+        const user = await User.findById(group.participantId[i]);
+        //TODO updated the request to be more specific the desired data
+        usersInGroup.push(user);
+    }
+    //set groupCode to joinId if it exists on group
+    console.log('here123');
+    const groupCode = group.joinId ? group.joinId : 'None';
+    console.log(groupCode)
+    res.send(JSON.stringify({ messages: messages, usersInGroup: usersInGroup, userId: id, groupCode: groupCode }));
+}));
+
+baseController.get('/mobile/showGroups', isLoggedIn, catchAsync(async (req, res, next) => {
+    var groupArr = [];
+    const user = await User.findById(res.ActivelyUserId);
+    for (let groupids of user.groups) {
+        if (groupids !== allGroupId) {
+            const group = await Group.findById(groupids);
+            groupArr.push({ mostRecentMessage: group.mostRecentMessage, mostRecentDate: group.mostRecentDate, name: group.name || 'None', icon: group.iconImg, id: group.id });
+        }
+    }
+    groupArr.sort((a, b) => {
+        return new Date(b.mostRecentDate) - new Date(a.mostRecentDate);
+    });
+    res.send(JSON.stringify({ groups: groupArr }))
+}));
+
+baseController.post('/mobile/joinGroupByCode', isLoggedIn, catchAsync(async (req, res) => {
+    console.log('joinGroupByCode');
+    console.log(req.body);
+    const { code } = req.body.code;
+    const groups = await Group.find({
+        code: code,
+    });
+    const user = await User.findById(res.ActivelyUserId);
+    if (groups.length !== 0) {
+        if (!user.groups.includes(groups[0].id)) {
+
+            await User.updateOne(
+                { _id: res.ActivelyUserId },
+                { $push: { groups: groups[0].id } }
+            )
+            await Group.updateOne(
+                { _id: groups[0].id },
+                { $push: { participantId: res.ActivelyUserId } }
+            )
+            return res.send(JSON.stringify(groups[0].id))
+        } else {
+            return res.send(JSON.stringify('alreadyJoined'));
+        }
+    } else {
+        return res.send(JSON.stringify('failure'));
+    }
+
+}));
+
+// const hostedEvents = await Event.find({
+//     hostId: user.id
+// })
+
 
 baseController.post('/addFriend', isLoggedIn, catchAsync(async (req, res) => {
     await User.updateOne(
@@ -258,7 +379,7 @@ baseController.post('/register', async (req, res, next) => {
         });
         const newUser = await User.register(user, password)
         await user.save();
-        const token = jwt.sign({ _id: user.id, }, process.env.JWT_PRIVATE_KEY, { expiresIn: "30d" });
+        const token = jwt.sign({ _id: user.id, }, process.env.JWT_PRIVATE_KEY, { expiresIn: "1000d" });
         for (let group of newGroups) {
             await Group.updateOne(
                 { _id: group },
@@ -274,13 +395,14 @@ baseController.post('/register', async (req, res, next) => {
 
 
 baseController.post('/login', catchAsync(async (req, res, next) => {
+    // console.log('hey something worked at least');
     try {
         const { email, password } = req.body;
         const user = await User.authenticate()(email, password)
         if (user.user.email == null) {
             return res.send("Invalid Email or Password");
         } else {
-            const token = jwt.sign({ _id: user.user._id, }, process.env.JWT_PRIVATE_KEY, { expiresIn: "30d" });
+            const token = jwt.sign({ _id: user.user._id, }, process.env.JWT_PRIVATE_KEY, { expiresIn: "1000d" });
             console.log('token: ' + token)
             return res.send(JSON.stringify({ user: user, token: token }))
         }
@@ -319,7 +441,6 @@ baseController.get('/dashboard', isLoggedIn, catchAsync(async (req, res, next) =
     var date = new Date();
     const userId = res.ActivelyUserId;
     const user = await User.findById(res.ActivelyUserId);
-
     var userGroups = user.groups
     var index = userGroups.indexOf(allGroupId);
     if (index !== -1) {
@@ -375,13 +496,14 @@ const groupController = express.Router();
 groupController.post('/creategroup', isLoggedIn, catchAsync(async (req, res) => {
     const { name, description, sportType, bannerImg, iconImg, usualLocation } = req.body
     const user = await User.findById(res.ActivelyUserId);
-    const group = new Group({ name: name, description: description, sportType: sportType, bannerImg: bannerImg, iconImg: iconImg, usualLocation: usualLocation, participantId: [res.ActivelyUserId], hostId: res.ActivelyUserId, state: user.state, city: user.city });
+    const group = new Group({ name: name, description: description, sportType: sportType, bannerImg: bannerImg, iconImg: iconImg, usualLocation: usualLocation, participantId: [res.ActivelyUserId], hostId: res.ActivelyUserId, state: user.state, city: user.city, mostRecentMessage: '', mostRecentDate: Date.now(), joinId: String(Math.floor(Math.random() * 90000) + 10000) });
     await group.save();
     await User.updateOne(
         { _id: res.ActivelyUserId },
         { $push: { groups: group.id } }
     )
     return res.send(JSON.stringify({ id: group.id }))
+
 }));
 
 groupController.get('/group/:groupId', isLoggedIn, catchAsync(async (req, res) => {
@@ -461,6 +583,10 @@ groupController.post('/register/groups', catchAsync(async (req, res) => {
     return res.send(JSON.stringify({ groups: returnData }))
 }));
 
+
+
+
+
 app.use('/api', [baseController, groupController]);
 
 async function navbarPreLoad(userId) {
@@ -513,13 +639,18 @@ async function navbarPreLoad(userId) {
 // //     return res.redirect('./');
 // // });
 
+// app.get('/standardizedGroups', async (req, res, next) => {
+//     await Group.updateMany({}, { $set: { mostRecentMessage: 'this person sent a cool message' } })
+//     console.log('standardizing');
+// });
+
 // app.get('/standardizedUsers', async (req, res, next) => {
 // await User.updateMany({}, { $set: { friends: [], state: 'Iowa', city: 'Iowa City', notifcations: true, publicSocials: true, profileImg: 'https://ucarecdn.com/a0411345-97eb-44ba-be97-1a1ac4ec79d9/', age: 18 } })
 // return res.redirect('./');
 // console.log('stra')
 // const group = new Group({ name: "Public", description: "Public", sportType: "PingPong" });
 // await group.save();
-// console.log('strandrat')
+// console.log('strandr
 // await User.updateMany({}, { $set: { groups: [allGroupId] } })
 // });
 
@@ -544,12 +675,15 @@ app.get("*", function (request, response) {
     response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 
-let PORT = process.env.PORT
 
+let PORT = process.env.PORT;
 if (PORT == null || PORT == "") {
-    PORT = 5000
+    PORT = 3000;
 }
-app.listen(PORT, () => {
-    console.log(`Serving on port ${PORT}`)
-})
+// const server = app.listen(PORT, () => {
+//     console.log(`Serving on port ${PORT}`)
+// })
 
+server.listen(PORT, function () {
+    console.log(`Serving on port ${PORT}`)
+});

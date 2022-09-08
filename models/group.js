@@ -12,6 +12,10 @@ const groupSchema = new Schema({
     state: { type: String },
     name: { type: String },
     participantId: [],
+    mostRecentMessage: { type: String },
+    mostRecentDate: { type: Date },
+    messages: [],
+    joinId: { type: String },
 });
 
 module.exports = mongoose.model("Group", groupSchema);

@@ -87,9 +87,26 @@ module.exports.deleteEventText = async (eventId) => {
             body: textStr
         })
     }
-
-
 }
+
+module.exports.sendTextToGroup = async (message, senderId, groupId) => {
+    const group = await Group.findById(groupId);
+    const host = await User.findById(senderId);
+    console.log(message)
+    const textStr = `${host.firstName} ${host.lastName}: ${message}`;
+    for (i in group.participantId) {
+        if (group.participantId[i] != senderId) {
+            const participant = await User.findById(group.participantId[i]);
+            console.log('sending text to ' + participant.phoneNumber);
+            // client.messages.create({
+            //     to: String(participant.phoneNumber),
+            //     from: '+19033213407',
+            //     body: textStr
+            // })
+        }
+    }
+}
+
 
 
 module.exports.sendText = async (notifcation, event, allGroupId) => {
