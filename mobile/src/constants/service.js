@@ -6,6 +6,7 @@ const API_CALL = {
     // ENDPOINT: 'localhost:3001',
     login: URL_CALL + '/login',
     showGroups: URL_CALL + '/mobile/showGroups',
+    deleteProfile: URL_CALL + '/mobile/deleteProfile',
     groupMessages: URL_CALL + '/mobile/groupMessages',
     joinGroupByCode: URL_CALL + '/mobile/joinGroupByCode',
     register: URL_CALL + '/register',

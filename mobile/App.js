@@ -7,6 +7,7 @@ import Login from './src/views/Login.js';
 import Join from './src/views/Join.js';
 import GroupChat from './src/views/GroupChat.js';
 import CreateGroup from './src/views/CreateGroup.js';
+import Settings from './src/views/Settings.js';
 
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ function App() {
         <Stack.Screen name="GroupChat" component={GroupChat} options={{ title: 'Group Chat', headerShown: false }} />
         <Stack.Screen name="CreateGroup" component={CreateGroup} options={{ title: 'Create Group', headerShown: false }} />
         <Stack.Screen name="Join" component={Join} options={{ title: 'Join', headerShown: false }} />
+        <Stack.Screen name="Settings" component={Settings} options={{ title: 'Join', headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

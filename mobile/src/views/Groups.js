@@ -5,7 +5,6 @@ import { checkAuth } from '../utils/authUtils.js';
 import { getData } from '../utils/authUtils.js';
 import API_CALL from '../constants/service.js';
 import GroupPopUp from '../components/GroupPopUp.js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import JoinPopUp from '../components/JoinPopUp.js';
 import {
     useFonts,
@@ -68,7 +67,7 @@ function Groups({ navigation }) {
         <ScrollView style={{ width: "100%", height: '100%', backgroundColor: 'white' }}>
             <View style={appStyles.navbar}>
                 <Image source={require("../resources/activelyLogo.jpg")} style={{ width: 100, height: 30, marginLeft: 12, marginTop: 5 }} />
-                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '40%', marginRight: 12, }}>
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '60%' }}>
                     <Pressable style={[appStyles.genericShadow, appStyles.smallButton]} onPress={() => navigation.navigate('CreateGroup')}>
                         <Text style={{
                             fontFamily: 'OpenSans_400Regular', fontSize: 14, color: '#262626',
@@ -78,6 +77,11 @@ function Groups({ navigation }) {
                         <Text style={{
                             fontFamily: 'OpenSans_400Regular', fontSize: 14, color: '#262626',
                         }} >Join</Text>
+                    </Pressable>
+                    <Pressable style={[appStyles.genericShadow, appStyles.smallButton]} onPress={() => navigation.navigate('Settings')}>
+                        <Text style={{
+                            fontFamily: 'OpenSans_400Regular', fontSize: 14, color: '#262626',
+                        }} >Settings</Text>
                     </Pressable>
                 </View>
             </View>
