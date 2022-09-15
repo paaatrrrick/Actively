@@ -34,7 +34,7 @@ const appStyles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: 'space-between',
-        marginTop: 30,
+        marginTop: 60,
         marginBottom: 10,
     },
     genericShadow: {

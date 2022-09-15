@@ -7,7 +7,6 @@ import API_CALL from '../constants/service.js';
 import GroupPopUp from '../components/GroupPopUp.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import JoinPopUp from '../components/JoinPopUp.js';
-import { v4 as uuidv4 } from 'uuid';
 import {
     useFonts,
     OpenSans_300Light,
@@ -85,7 +84,7 @@ function Groups({ navigation }) {
             <View style={styles.container}>
                 {groups.map((group) => {
                     return (
-                        <GroupPopUp nav={navigateAway} group={group} key={`${uuidv4()}`} />
+                        <GroupPopUp nav={navigateAway} group={group} key={group.id} />
                     )
                 })}
             </View>

@@ -66,7 +66,7 @@ function GroupChat({ route, navigation }) {
             socket.emit("abortTheRoom");
             socket.off();
         };
-    }, [API_CALL.ENDPOINT, location.search]);
+    }, [API_CALL.ENDPOINT]);
 
     const getGroupData = async () => {
         const token = await getData();
@@ -112,16 +112,16 @@ function GroupChat({ route, navigation }) {
                     </Pressable>
                 </View>
             </View>
-            <ScrollView style={{ width: '100%', height: '80%' }} >
-                {messages.map((message) => {
+            <ScrollView style={{ width: '100%', height: '40%' }} >
+                {messages.map((message, index) => {
                     return (
-                        <View key={`${uuidv4()}`} style={{
+                        <View key={index} style={{
                             width: '100%', display: 'flex', flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: message.userId === userId ? 'flex-end' : 'flex-start',
                             marginBottom: 10
                         }}>
-                            <View key={`${uuidv4()}`} style={{
+                            <View style={{
                                 display: 'flex',
                                 alignItems: message.userId === userId ? 'flex-end' : 'flex-start',
                                 justifyContent: 'center',
@@ -129,16 +129,16 @@ function GroupChat({ route, navigation }) {
                                 marginRight: message.userId === userId ? 15 : 0,
                                 marginLeft: message.userId === userId ? 0 : 15,
                             }}>
-                                <Text key={`${uuidv4()}`} style={{ marginBottom: 2, fontSize: 10, fontFamily: 'OpenSans_300Light' }}>{message.senderFirst} {message.senderLast}</Text>
-                                <View key={`${uuidv4()}`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', maxWidth: '60%', backgroundColor: '#80fbbd', borderRadius: 10, padding: 8, paddingTop: 5, paddingBottom: 5 }}>
-                                    <Text key={`${uuidv4()}`} style={{ color: '#262626', fontFamily: 'OpenSans_400Regular', }}>{message.text}</Text>
+                                <Text style={{ marginBottom: 2, fontSize: 10, fontFamily: 'OpenSans_300Light' }}>{message.senderFirst} {message.senderLast}</Text>
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', maxWidth: '60%', backgroundColor: '#80fbbd', borderRadius: 10, padding: 8, paddingTop: 5, paddingBottom: 5 }}>
+                                    <Text style={{ color: '#262626', fontFamily: 'OpenSans_400Regular', }}>{message.text}</Text>
                                 </View>
                             </View>
                         </View>
                     )
                 })}
             </ScrollView>
-            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '90%', height: 50, marginBottom: 10 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '90%', height: 50, marginBottom: '90%' }}>
                 <TextInput
                     style={{
                         height: 40,

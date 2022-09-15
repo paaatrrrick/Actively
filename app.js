@@ -20,14 +20,12 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { addUser, removeUser, getUser } = require("./utils/websocketUsers");
 
-
-
 // const MongoStore = require('connect-mongo');
 const Events = require('twilio/lib/rest/Events');
 const jwt = require('jsonwebtoken');
 const { UserList } = require('twilio/lib/rest/ipMessaging/v2/service/user');
 
-//Change For Goinsdfsdg Live
+//Change For GoingLive
 const db_url = process.env.DB_URL;
 const HostedPublicGroupId = "6290cfb510c085dfcda128d3"
 
@@ -92,7 +90,6 @@ io.on("connection", socket => {
         try {
             io.to(user.room).emit("message", { user: user.name, message: message });
             if (sendTextMessages) {
-                console.log("SENDING TEXT");
                 sendTextToGroup(message, user.name, user.room);
             }
             const group = await Group.findById(user.room);
@@ -180,6 +177,23 @@ baseController.post('/mobile/joinGroupByCode', isLoggedIn, catchAsync(async (req
     } else {
         return res.send(JSON.stringify('failure'));
     }
+
+}));
+
+baseController.post('/mobile/deleteProfile', isLoggedIn, catchAsync(async (req, res) => {
+    const user = await User.findById(res.ActivelyUserId);
+    for (let groupids of user.groups) {
+        const group = await Group.findById(groupids);
+        if (group) {
+            const index = group.participantId.indexOf(res.ActivelyUserId);
+            if (index > -1) {
+                group.participantId.splice(index, 1);
+            }
+            await group.save();
+        }
+    }
+    await User.findByIdAndDelete(res.ActivelyUserId);
+    res.send(JSON.stringify('success'));
 
 }));
 

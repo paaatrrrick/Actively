@@ -45,8 +45,6 @@ export default function CreateGroup({ navigation }) {
         } else {
             const token = await getData();
             if (token !== 'Error') {
-                console.log('about to send');
-                console.log(image);
                 const data = {
                     name: name,
                     description: "Description",
@@ -66,7 +64,6 @@ export default function CreateGroup({ navigation }) {
 
                 })
                 const myData = await response.json();
-                console.log(myData);
                 navigation.navigate('GroupChat', { id: myData.id });
             }
         }
