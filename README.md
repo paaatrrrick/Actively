@@ -10,6 +10,8 @@
 
 I worked on Actively for over 6 months. The project grew my taught me full stack web / ios development. While it is no longer deployed live, I learned tons from this project.
 
+### 50 live users, leading to great feedback and improvements
+
 ### Features
 * Match Making
 * Group Chat (websockets)
